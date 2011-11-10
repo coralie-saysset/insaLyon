@@ -1,0 +1,61 @@
+\documentclass{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[francais]{babel}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+
+
+\lhead{Coralie Saysset - Romain Gerard}
+\chead{}
+\rhead{B3301}
+
+\begin{document}
+
+\begin{center} 
+\Huge{Références croisées sur un ensemble de fichier C++}
+\end{center}
+
+\section{Spécifications}
+Le but du programme est de permettre de retrouver les emplacements d'identifcateurs dans une collection de fichiers. L'emplacement de chaque occurence sera désigné
+par le nom du fichier ainsi que le numero de ligne où elle a été rencontrée. On ne considèrera pas la position sur la ligne.
+
+Dans le cas où un identifacteur apparaitrait plusieurs fois sur une même ligne, nous avons pris la décision d'afficher la ligne conserné une fois par occurence. Etant donné qu'un même identificateur ne devrait pas être présent de trop nombreuses fois sur une même ligne, nous avons jugé que cette présentation ne nuirait pas à la lisibilité de notre programme.
+
+
+\subsection{Définition du vocabulaire}
+
+\begin{itemize}
+\item \textbf{ligne} : On considèrera une ligne comme une suite de caractère terminé par un retour chariot
+
+\item \textbf{Identificateur} : C'est un mot sensible à la casse composé uniquement de caractères alphanumériques et du caractère `\_`. Les identificateurs présents dans des commentaires ou des chaines littérales ne seront pas pris en compte. 
+
+\item \textbf{Déliminateur} : C'est un unique caractère qui représente une séparation entre deux mots 
+
+\item \textbf{Référence croisée} : Une référence croisée est une occurence d'un identificateur
+
+\end{itemize}
+
+
+\subsection{Spécifications des options}
+
+\begin{center}
+\textbf{$tp\_stl\ [-e]\ [-k fichier\_mot\_clef]\ [nomfichier]+$}
+\end{center}
+
+\begin{itemize}
+
+ \item[] \textbf{-e} : Permet d'inverser le comportement par défaut du programme. Elle exclue de la référence croisée tous les mots clefs
+ 
+ \item[] \textbf{-k fichier\_mot\_clef} : Permet de spécifier au programme une liste de mot clef à rechercher pour la référence croisée
+
+ \item[] \textbf{nomfichier} : Chemin d'un fichier où chercher les références des identifacateurs
+
+\end{itemize}
+
+\subsection{Plan des tests fonctionnels}
+
+
+\end{document}
