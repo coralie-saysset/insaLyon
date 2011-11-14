@@ -18,7 +18,7 @@ using namespace std;
 
 
 //------------------------------------------------------ Include personnel
-#include "lecture.h"
+#include "lecture.hpp"  
 
 //------------------------------------------------------------- Constantes
 
