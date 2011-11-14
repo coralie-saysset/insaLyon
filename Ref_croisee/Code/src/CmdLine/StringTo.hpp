@@ -26,6 +26,12 @@ using namespace CmdLine;
     template<typename T>
         T stringTo( const std::string& arg )
     {/*{{{*/
+       
+        // J'aimerai bien avoir une assertion statique,
+        // là le programme plante uniquement à l'execution
+        // mais il doit être possible de s'en rendre compte à la compilation
+        // J'ai bien un moyen avec des macros, mais je suis pas trop fan
+        // A voir... 
          throw UnknownConvertion();
          arg == arg;
 
