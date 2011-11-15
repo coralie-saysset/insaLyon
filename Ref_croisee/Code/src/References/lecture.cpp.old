@@ -18,7 +18,7 @@ using namespace std;
 
 
 //------------------------------------------------------ Include personnel
-#include "lecture.h"
+#include "lecture.hpp"
 
 //------------------------------------------------------------- Constantes
 
@@ -71,6 +71,12 @@ lecture::~lecture ( )
 } //----- Fin de ~lecture
 
 
+
+// ===  FUNCTION  ======================================================================
+//         Name:  litMotClef
+//  Description:  Permet d'extraire les mots clefs du fichier indiqué en paramètre
+//  Paramètre:    Le chemin vers le fichier contenant les mots clefs
+// =====================================================================================
 set<string> lecture::litMotClef ( string nomFichier )
 {
 	ifstream fichierMotClef ( nomFichier.c_str(), ios::in );
