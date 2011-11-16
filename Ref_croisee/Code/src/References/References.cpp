@@ -140,12 +140,10 @@ void References::chargerMotsClefs(  ) {
     _motsClefs.insert( "void" );
     _motsClefs.insert( "volatile" );
     _motsClefs.insert( "while" );
-
-
 }
 
 
-void References::ChargerIdentificateurs( const string& nomFichier ) {
+void References::chargerIdentificateurs( const string& nomFichier ) {
 
 	ifstream fichierIdentificateur;
 
@@ -168,5 +166,49 @@ void References::ChargerIdentificateurs( const string& nomFichier ) {
         // ignore le nombre de caractere "valeur max d'un entier" jusqu'à rencontrer \n
     }
     fichierIdentificateur.close( );
+
+}
+
+
+
+//----------------------------------------------------------------------
+//  METHODES PROTEGES
+//----------------------------------------------------------------------
+bool References::isSeparateur( const char c ) const {
+
+    switch(c) {
+
+        case ' ':
+        case '+':
+        case '-':
+        case '*':
+        case '/':
+        case '%':
+        case '.':
+        case ':':
+        case ';':
+        case ',':
+        case '&':
+        case '|':
+        case '^':
+        case '!':
+        case '(':
+        case ')':
+        case '[':
+        case ']':
+        case '<':
+        case '>':
+        case '{':
+        case '}':
+        case '#':
+        case '\n':
+            return true;
+            break;
+
+        default:
+            return false;
+            break;
+        
+    }
 
 }

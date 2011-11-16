@@ -43,14 +43,20 @@ class References
         //----------------------------------------------------------------------
         void chargerMotsClefs( const std::string& nomFichier );
         void chargerMotsClefs(  );
-        void ChargerIdentificateurs( const std::string& nomFichier );
+        void chargerIdentificateurs( const std::string& nomFichier );
 
     protected:
-        enum Mode { Inverse };
-        enum Etat { A_DEFINIR };
+        enum Mode { Normal, Inverse };
+        enum Etat { Libre, Commentaire, MotClef, Separateur };
 
         std::set<std::string> _motsClefs;
         std::set<std::string> _identificateurs;
+
+        //----------------------------------------------------------------------
+        //  METHODES PROTEGE
+        //----------------------------------------------------------------------
+        bool isSeparateur( const char c ) const;
+
 }; 
 
 //--------------------------- Autres définitions dépendantes de References
