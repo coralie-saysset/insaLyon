@@ -87,7 +87,60 @@ void References::chargerMotsClefs( const string& nomFichier ) {
 
 void References::chargerMotsClefs(  ) {
 
-    _motsClefs.insert( "A Remplir" );
+    _motsClefs.insert( "asm" );
+    _motsClefs.insert( "auto" );
+    _motsClefs.insert( "break" );
+    _motsClefs.insert( "bool" );
+    _motsClefs.insert( "case" );
+    _motsClefs.insert( "catch" );
+    _motsClefs.insert( "char" );
+    _motsClefs.insert( "class" );
+    _motsClefs.insert( "const" );
+    _motsClefs.insert( "continue" );
+    _motsClefs.insert( "default" );
+    _motsClefs.insert( "delete" );
+    _motsClefs.insert( "do" );
+    _motsClefs.insert( "double" );
+    _motsClefs.insert( "else" );
+    _motsClefs.insert( "enum" );
+    _motsClefs.insert( "extern" );
+    _motsClefs.insert( "explicit" );
+    _motsClefs.insert( "false" );
+    _motsClefs.insert( "float" );
+    _motsClefs.insert( "for" );
+    _motsClefs.insert( "friend" );
+    _motsClefs.insert( "goto" );
+    _motsClefs.insert( "if" );
+    _motsClefs.insert( "inline" );
+    _motsClefs.insert( "int" );
+    _motsClefs.insert( "long" );
+    _motsClefs.insert( "mutable" );
+    _motsClefs.insert( "new" );
+    _motsClefs.insert( "operator" );
+    _motsClefs.insert( "private" );
+    _motsClefs.insert( "protected" );
+    _motsClefs.insert( "public" );
+    _motsClefs.insert( "register" );
+    _motsClefs.insert( "return" );
+    _motsClefs.insert( "short" );
+    _motsClefs.insert( "signed" );
+    _motsClefs.insert( "sizeof" );
+    _motsClefs.insert( "static" );
+    _motsClefs.insert( "struct" );
+    _motsClefs.insert( "switch" );
+    _motsClefs.insert( "template" );
+    _motsClefs.insert( "this" );
+    _motsClefs.insert( "throw" );
+    _motsClefs.insert( "try" );
+    _motsClefs.insert( "true" );
+    _motsClefs.insert( "typedef" );
+    _motsClefs.insert( "unsigned" );
+    _motsClefs.insert( "union" );
+    _motsClefs.insert( "virtual" );
+    _motsClefs.insert( "void" );
+    _motsClefs.insert( "volatile" );
+    _motsClefs.insert( "while" );
+
 
 }
 
