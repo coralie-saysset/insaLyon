@@ -1,3 +1,6 @@
+#ifndef test
+#define test
+#endif
 //============================================================================
 // Name        : Ref_croisee.cpp
 // Author      : 
@@ -17,13 +20,19 @@ using namespace std;
 
 int main( int argc, char** argv) {
 
+    CmdLine::Parser parser( "Permet de référencer des mots clefs à travers des fichiers" );
+    parser.addOption("exclude,e",  "Inverse le fonctionnement du programme");
+    parser.addOption("keyword,k",  "Spécifie la liste des mots clefs à utiliser", true);
 
-	References fic;
-	string monFichier;
-	monFichier = "motClef";
-	fic.chargerMotsClefs ( monFichier );
+    CmdLine::Argument args;
+    parser.parse(argc, argv, args);
+
+    vector<string> fics = args.get<vector<string> >( "__args__" );
+
+	References references;
+
+    references.referencer( fics );
 
 
-	//cout << parser << endl;
 	return 0;
 }

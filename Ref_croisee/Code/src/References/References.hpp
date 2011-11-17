@@ -19,6 +19,8 @@
 
 #include	<string>
 #include	<set>
+#include	<vector>
+#include	<fstream>
 
 //------------------------------------------------------------------------ 
 // Rôle de la classe References
@@ -28,7 +30,6 @@
 
 class References
 {
-
     public:
 
         References& operator = ( const References &other ); 
@@ -44,18 +45,35 @@ class References
         void chargerMotsClefs( const std::string& nomFichier );
         void chargerMotsClefs(  );
         void chargerIdentificateurs( const std::string& nomFichier );
+        void referencer( const std::vector<std::string>& fichiers );
 
     protected:
         enum Mode { Normal, Inverse };
-        enum Etat { Libre, Commentaire, MotClef, Separateur };
+        enum Etat { Separateur, Commentaire, MotClef, Preprocesseur, Literal };
+
+        Mode _mode;
+        Etat _etat;
 
         std::set<std::string> _motsClefs;
         std::set<std::string> _identificateurs;
 
         //----------------------------------------------------------------------
-        //  METHODES PROTEGE
+        //  METHODES PROTEGES
         //----------------------------------------------------------------------
         bool isSeparateur( const char c ) const;
+        void changerEtat( std::ifstream& fic );
+        void lireFlux( std::ifstream& fic );
+
+
+        //----------------------------------------------------------------------
+        //  METHODES ETATS
+        //----------------------------------------------------------------------
+        void lirePreprocesseur( std::ifstream& fic );
+        void lireSeparateur( std::ifstream& fic );
+        void lireMotClef( std::ifstream& fic );
+        void lireCommentaire( std::ifstream& fic );
+        void lireLiteral( std::ifstream& fic );
+
 
 }; 
 

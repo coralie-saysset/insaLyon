@@ -1,5 +1,5 @@
 export CXX=g++
-export CXXFLAGS= -W -Wall -O2 -pedantic -g -pipe
+export CXXFLAGS= -W -Wall -O2 -pedantic -g -pipe 
 
 SRC=$(wildcard *.cpp CmdLine/*.cpp References/*.cpp)
 OBJ=$(SRC:.cpp=.o)
