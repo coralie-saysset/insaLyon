@@ -15,6 +15,7 @@
 
 #include "CmdLine/cmdLine.hpp"
 #include "References/Referenceur.hpp"
+#include "References/References.hpp"
 
 using namespace std;
 
@@ -30,8 +31,11 @@ int main( int argc, char** argv) {
     vector<string> fics = args.get<vector<string> >( "__args__" );
 
 	Referenceur referenceur;
+    References refs;
 
-    referenceur.referencer( fics );
+    referenceur.referencer( fics, refs );
+
+    refs.display( cout );
 
 
 	return 0;

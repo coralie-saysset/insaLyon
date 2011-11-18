@@ -1,5 +1,5 @@
-export CXX=g++
-export CXXFLAGS= -W -Wall -O2 -pedantic -g -pipe 
+CXX=g++
+CXXFLAGS= -W -Wall -O2 -pedantic -g -pipe 
 
 SRC=$(wildcard *.cpp CmdLine/*.cpp References/*.cpp)
 OBJ=$(SRC:.cpp=.o)
@@ -9,7 +9,7 @@ $(EXEC): $(OBJ)
 	$(CXX) -o $(EXEC) $(CXXFLAGS) $^ 
 
 %.o: %.cpp %.hpp
-	$(CXX) $(CXXFLAGS) -c $< -o $@
+	$(CXX) $(INCLUDES) -c $< -o $@
 
 clean: 
 	rm -f *.o $(OBJ) $(EXEC)
