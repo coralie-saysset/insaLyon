@@ -14,7 +14,7 @@
 #include <set>
 
 #include "CmdLine/cmdLine.hpp"
-#include "References/References.hpp"
+#include "References/Referenceur.hpp"
 
 using namespace std;
 
@@ -29,9 +29,9 @@ int main( int argc, char** argv) {
 
     vector<string> fics = args.get<vector<string> >( "__args__" );
 
-	References references;
+	Referenceur referenceur;
 
-    references.referencer( fics );
+    referenceur.referencer( fics );
 
 
 	return 0;
