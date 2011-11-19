@@ -26,8 +26,7 @@ int main( int argc, char** argv )
 
     parser.parse( argc, argv, args );
 
-    vector<string> fics;// = args.get<vector<string> >( "__args__" );
-    args.get<References >( "__args__" );
+    vector<string> fics = args.get<vector<string> >( "__args__" );
 
     References refs;
     Referenceur referenceur;

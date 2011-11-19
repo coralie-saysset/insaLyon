@@ -23,16 +23,13 @@ namespace CmdLine {
 
 using namespace CmdLine;
 
+#define STATIC_ASSERT( x , MSG ) typedef char __STATIC_ASSERT__##MSG[( x )?1:-1]
+
     template<typename T>
         T stringTo( const std::string& arg )
     {/*{{{*/
        
-        // J'aimerai bien avoir une assertion statique,
-        // là le programme plante uniquement à l'execution
-        // mais il doit être possible de s'en rendre compte à la compilation
-        // Les macros C que je connais ne marche pas sur avec les templates ...
-         throw UnknownConvertion();
-         arg == arg;
+         STATIC_ASSERT( sizeof(T) != sizeof(T),  Impossible_de_convertir_l_argument_vers_ce_type );
 
          return T();
     }/*}}}*/
