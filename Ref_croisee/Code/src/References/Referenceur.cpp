@@ -1,48 +1,43 @@
 // =====================================================================================
-// 
+//
 //       Filename:  Referenceur.cpp
-// 
+//
 //    Description:  Implementation de la classe Referenceur
 //                  Permet de visualiser l'aparition de mots clefs dans une collection
 //                  de fichiers
 //        Created:  15/11/2011 23:37:07
 //       Compiler:  g++
-// 
+//
 //         Author:  Romain GERARD, romain.gerard@insa-lyon.fr
-// 
+//
 // =====================================================================================
 
-
-
 using namespace std;
+
 #include    <iostream>
-#include	<limits>
-#include	<fstream>
+#include    <limits>
+#include    <fstream>
 
 #include    "Referenceur.hpp"
 
-//Referenceur & Referenceur::operator = ( const Referenceur & unReferenceur )
-//{
-//}
-//
-//Referenceur::Referenceur ( const Referenceur & unReferenceur )
-//{
-//#ifdef MAP
-//    cout << "Appel au constructeur de copie de <Referenceur>" << endl;
-//#endif
-//}
-//
-//
+namespace Reference_croisee {
+
+using namespace Reference_croisee;
+
+
+
+//----------------------------------------------------------------------
+//  CONSTRUCTEURS
+//----------------------------------------------------------------------
 Referenceur::Referenceur ( ):
-    _mode(Normal), _etat(Separateur)
-{
+    _mode( Normal ), _etat( Separateur )
+{/*{{{*/
     chargerMotsClefsCpp();
+
 #ifdef MAP
     cout << "Appel au constructeur de <Referenceur>" << endl;
 #endif
-}
-
-
+}/*}}}*/
 
 
 
@@ -50,9 +45,10 @@ Referenceur::Referenceur ( ):
 //----------------------------------------------------------------------
 //  METHODES PUBLIQUES
 //----------------------------------------------------------------------
-void Referenceur::chargerMotsClefs( const string& nomFichier ) {
+void Referenceur::chargerMotsClefs( const string& nomFichier )
+{/*{{{*/
 
-	ifstream fichierMotClef;
+    ifstream fichierMotClef;
 
     //----------------------------------------------------------------------
     //  Si le fichier ne peut être ouvert ou si la lecture échoue
@@ -66,30 +62,19 @@ void Referenceur::chargerMotsClefs( const string& nomFichier ) {
     //  On extrait la liste de mot clef
     //----------------------------------------------------------------------
     string motRecupere;
-    while ( fichierMotClef >> motRecupere )
-    {
+
+    while ( fichierMotClef >> motRecupere ) {
         _identificateurs.insert( motRecupere );
-        fichierMotClef.ignore(numeric_limits<int>::max(), '\n');
+        fichierMotClef.ignore( numeric_limits<int>::max(), '\n' );
         // ignore le nombre de caractere "valeur max d'un entier" jusqu'à rencontrer \n
     }
+
     fichierMotClef.close( );
 
-}
+}/*}}}*/
 
-inline bool Referenceur::estInserable( const string& mot ) const {
-
-    if( _mode == Normal ) {
-         return _identificateurs.empty() ? _motsClefsCpp.count( mot ) :
-                                           _identificateurs.count( mot );
-    }else if( _mode == Inverse ) {
-        return  _identificateurs.empty() ? false :
-                                          ( !_identificateurs.count( mot ) && 
-                                            _motsClefsCpp.count( mot ) );
-    }
-
-}
-
-void Referenceur::chargerMotsClefsCpp(  ) {
+void Referenceur::chargerMotsClefsCpp()
+{/*{{{*/
 
     _motsClefsCpp.insert( "asm" );
     _motsClefsCpp.insert( "auto" );
@@ -155,10 +140,10 @@ void Referenceur::chargerMotsClefsCpp(  ) {
     _motsClefsCpp.insert( "volatile" );
     _motsClefsCpp.insert( "while" );
     _motsClefsCpp.insert( "wchar_t" );
-}
+}/*}}}*/
 
-
-void Referenceur::referencer( const vector<string>& fichiers, References& ref ) {
+void Referenceur::referencer( const vector<string>& fichiers, References& refs )
+{/*{{{*/
 
     vector<string>::const_iterator it;
     FichierLu fichier;
@@ -168,22 +153,40 @@ void Referenceur::referencer( const vector<string>& fichiers, References& ref ) 
         fichier.open( it->c_str() );
 
         while( !fichier.eof() ) {
-            
+
             changerEtat( fichier );
-            lireFlux( fichier, ref );
+            lireFlux( fichier, refs );
 
         }
 
         fichier.close();
     }
 
-}
+}/*}}}*/
+
+
 
 
 //----------------------------------------------------------------------
 //  METHODES PROTEGES
 //----------------------------------------------------------------------
-inline bool Referenceur::isSeparateur( const char c ) const {
+inline bool Referenceur::estInserable( const string& mot ) const
+{/*{{{*/
+
+    if( _mode == Normal ) {
+        return _identificateurs.empty() ? _motsClefsCpp.count( mot ) :
+               _identificateurs.count( mot );
+
+    } else if( _mode == Inverse ) {
+        return  _identificateurs.empty() ? false :
+                ( !_identificateurs.count( mot ) &&
+                  _motsClefsCpp.count( mot ) );
+    }
+
+}/*}}}*/
+
+inline bool Referenceur::isSeparateur( const char c ) const
+{/*{{{*/
 
     // Je me suis basé sur la table ASCII
     return ( c >= -1 && c <= '/' ) ||
@@ -192,87 +195,96 @@ inline bool Referenceur::isSeparateur( const char c ) const {
            ( c >= '{' && c <= '~' ) ||
            ( c == '`' );
 
-}
+}/*}}}*/
 
-void Referenceur::changerEtat( FichierLu& fic ) {
+void Referenceur::changerEtat( FichierLu& fic )
+{/*{{{*/
 
     const char c = fic.peek();
 
     if( c == '#' ) {
-            _etat = Preprocesseur;
+        _etat = Preprocesseur;
 
-    }else if(  c == '/' ) {
-            _etat = Commentaire;
+    } else if(  c == '/' ) {
+        _etat = Commentaire;
 
-    }else if(  c == '"' || c == '\'' ) {
-            _etat = Literal;
+    } else if(  c == '"' || c == '\'' ) {
+        _etat = Literal;
 
-    }else if( isSeparateur( c ) ) {
-            _etat = Separateur;
+    } else if( isSeparateur( c ) ) {
+        _etat = Separateur;
 
-    }else {
-            _etat = MotClef;
+    } else {
+        _etat = MotClef;
     }
-}
+}/*}}}*/
 
-void Referenceur::lireFlux( FichierLu& fic, References& ref ) {
+void Referenceur::lireFlux( FichierLu& fic, References& refs )
+{/*{{{*/
 
-    switch(_etat) {
+    switch( _etat ) {
 
         case Preprocesseur:
-            lirePreprocesseur( fic, ref );
+            lirePreprocesseur( fic, refs );
             break;
 
         case Separateur:
-            lireSeparateur( fic, ref );
+            lireSeparateur( fic, refs );
             break;
 
         case Commentaire:
-            lireCommentaire( fic, ref );
+            lireCommentaire( fic, refs );
             break;
 
         case MotClef:
-            lireMotClef( fic, ref );
+            lireMotClef( fic, refs );
             break;
 
         case Literal:
-            lireLiteral( fic, ref );
+            lireLiteral( fic, refs );
             break;
     }
 
-}
+}/*}}}*/
+
+
+
 
 //----------------------------------------------------------------------
 //  METHODES ETATS
 //----------------------------------------------------------------------
-void Referenceur::lirePreprocesseur( FichierLu& fic, References& ref ) {
+void Referenceur::lirePreprocesseur( FichierLu& fic, References& refs )
+{/*{{{*/
 
     char last = fic.get();
 
     while( fic.peek() != '\n' || last == '\\' ) {
         last = fic.get();
     }
-    fic.get();
-
-
-}
-
-void Referenceur::lireCommentaire( FichierLu& fic, References& ref ) {
 
     fic.get();
-    
+
+
+}/*}}}*/
+
+void Referenceur::lireCommentaire( FichierLu& fic, References& refs )
+{/*{{{*/
+
+    fic.get();
+
     if( fic.peek() == '/' ) {
         while ( !fic.eof() && fic.get() != '\n' );
-        
+
     } else if( fic.peek() == '*' ) {
         while ( !fic.eof() && ( fic.get() != '*' || fic.peek() != '/' ) );
+
         fic.get();
     }
 
-}
+}/*}}}*/
 
-
-void Referenceur::lireMotClef( FichierLu& fic, References& ref ) {
+void Referenceur::lireMotClef( FichierLu& fic, References& refs )
+{/*{{{*/
 
     string mot;
     mot.append( 1, fic.get() );
@@ -282,18 +294,19 @@ void Referenceur::lireMotClef( FichierLu& fic, References& ref ) {
     }
 
     if( estInserable( mot ) ) {
-        ref.add( mot, fic.getNomFichier(), fic.getNbLignesLues() );
+        refs.add( mot, fic.getNomFichier(), fic.getNbLignesLues() );
     }
 
-}
+}/*}}}*/
 
-void Referenceur::lireSeparateur( FichierLu& fic, References& ref ) {
+void Referenceur::lireSeparateur( FichierLu& fic, References& refs )
+{/*{{{*/
 
-   fic.get();
-}
+    fic.get();
+}/*}}}*/
 
-
-void Referenceur::lireLiteral( FichierLu& fic, References& ref ) {
+void Referenceur::lireLiteral( FichierLu& fic, References& refs )
+{/*{{{*/
 
     char last = fic.get();
 
@@ -301,14 +314,18 @@ void Referenceur::lireLiteral( FichierLu& fic, References& ref ) {
         while( fic.peek() != '"' || last == '\\' ) {
             last = fic.get();
         }
+
         fic.get();
 
     } else if( last == '\'' ) {
         while( fic.peek() != '\'' || last == '\\' ) {
             last = fic.get();
         }
+
         fic.get();
 
     }
+
+}/*}}}*/
 
 }

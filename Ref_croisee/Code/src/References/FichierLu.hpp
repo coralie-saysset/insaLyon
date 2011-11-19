@@ -8,23 +8,34 @@
 #ifndef FICHIERLU_HPP_
 #define FICHIERLU_HPP_
 
-#include	<fstream>
-#include	<string>
+#include    <fstream>
+#include    <string>
 
-class FichierLu : public std::ifstream
-{
+
+namespace Reference_croisee {
+
+using namespace Reference_croisee;
+
+/* =====================================================================================
+ *        Class:  FichierLu
+ *  Description:  Permet de lire un fichier en concervant son nom et le nombre de ligne
+ *                déjà parcourue
+ * =====================================================================================*/
+class FichierLu : public std::ifstream {
 
     public:
-        FichierLu& operator = ( const FichierLu& unFichierLu );
+        FichierLu ( const std::string& nomFichier = "" );
 
-
-        FichierLu ( const FichierLu& unFichierLu );
-        FichierLu ( const std::string nomFichier = "" );
-
+        //----------------------------------------------------------------------
+        //  METHODES MASQUEES
+        //----------------------------------------------------------------------
         void close();
-        void open( const char * filename,  ios_base::openmode mode = ios_base::in );
+        void open( const char* filename,  ios_base::openmode mode = ios_base::in );
+        int get();
 
-        int get ();
+        //----------------------------------------------------------------------
+        //  METHODES PUBLIQUES
+        //----------------------------------------------------------------------
         int getNbLignesLues();
         std::string getNomFichier();
 
@@ -34,5 +45,6 @@ class FichierLu : public std::ifstream
         std::string _nomFichier;
 };
 
+}
 
 #endif

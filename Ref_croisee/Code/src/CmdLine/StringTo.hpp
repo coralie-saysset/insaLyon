@@ -30,8 +30,7 @@ using namespace CmdLine;
         // J'aimerai bien avoir une assertion statique,
         // là le programme plante uniquement à l'execution
         // mais il doit être possible de s'en rendre compte à la compilation
-        // J'ai bien un moyen avec des macros, mais je suis pas trop fan
-        // A voir... 
+        // Les macros C que je connais ne marche pas sur avec les templates ...
          throw UnknownConvertion();
          arg == arg;
 

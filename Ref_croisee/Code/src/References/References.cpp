@@ -1,48 +1,49 @@
 // =====================================================================================
-// 
+//
 //       Filename:  References.cpp
-// 
-//    Description:  
+//
+//    Description:
 //        Created:  18/11/2011 22:50:44
 //       Compiler:  g++
-// 
+//
 //         Author:  Romain GERARD, romain.gerard@insa-lyon.fr
-// 
+//
 // =====================================================================================
 
 
 
-using namespace std;
 #include <iostream>
 #include "References.hpp"
 
-References::References ( )
-{
-}
+namespace Reference_croisee {
+
+using namespace std;
+using namespace Reference_croisee;
 
 
-
-
-void References::add( const string& motClef, const string& nomFichier, const int ligne ) {
+//----------------------------------------------------------------------
+//  METHODES PUBLIQUES
+//----------------------------------------------------------------------
+void References::add( const string& motClef, const string& nomFichier, const int ligne )
+{/*{{{*/
 
 
     if( !_references.count( motClef ) ) {
         _references.insert( make_pair( motClef, map<string, list<int> >() ) );
         _references[motClef].insert( make_pair( nomFichier, list<int>( 1, ligne ) ) );
 
-    }else if( !_references[motClef].count( nomFichier ) ) {
+    } else if( !_references[motClef].count( nomFichier ) ) {
         _references[motClef].insert( make_pair( nomFichier, list<int>( 1, ligne ) ) );
-        
-    }else {
-        _references[motClef][nomFichier].push_back( ligne ); 
+
+    } else {
+        _references[motClef][nomFichier].push_back( ligne );
     }
 
 
-}
+}/*}}}*/
 
-
-
-void References::display( ostream& flux ) const {
+void References::display( ostream& flux ) const
+{/*{{{*/
 
     tr1::unordered_map<string, map<string, list<int> > >::const_iterator itClef;
     map<string, list<int> >::const_iterator itFic;
@@ -61,9 +62,13 @@ void References::display( ostream& flux ) const {
                 flux << ' ' << *itLigne;
 
             }
+
             flux << '\t';
         }
+
         flux << endl;
     }
+
+}/*}}}*/
 
 }

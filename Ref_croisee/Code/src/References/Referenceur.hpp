@@ -1,15 +1,15 @@
 // =====================================================================================
-// 
+//
 //       Filename:  References.hpp
-// 
+//
 //    Description:  Interface de la classe References
-//                  Permet de visualiser la répartition de mots clefs dans une 
+//                  Permet de visualiser la répartition de mots clefs dans une
 //                  collection de fichiers
 //        Created:  15/11/2011 23:30:30
 //       Compiler:  g++
-// 
+//
 //         Author:  Romain GERARD, romain.gerard@insa-lyon.fr
-// 
+//
 // =====================================================================================
 
 
@@ -17,36 +17,39 @@
 #define Referenceur_HPP
 
 
-#include	<string>
-#include	<set>
-#include	<vector>
-#include	"FichierLu.hpp"
-#include	"References.hpp"
+#include    <string>
+#include    <set>
+#include    <vector>
+#include    "FichierLu.hpp"
+#include    "References.hpp"
 
-//------------------------------------------------------------------------ 
+namespace Reference_croisee {
+
+using namespace Reference_croisee;
+
+//------------------------------------------------------------------------
 // Rôle de la classe References
-// Description : Permet de visualiser la répartition de mots clefs dans une 
+// Description : Permet de visualiser la répartition de mots clefs dans une
 //               collection de fichiers
-//------------------------------------------------------------------------ 
-class Referenceur
-{
+//------------------------------------------------------------------------
+class Referenceur {
+
     public:
-
-        Referenceur& operator = ( const Referenceur& other ); 
-        Referenceur ();  
-        Referenceur ( const Referenceur& other );
-
+        Referenceur();
 
         //----------------------------------------------------------------------
         //  METHODES PUBLIQUES
         //----------------------------------------------------------------------
         void chargerMotsClefs( const std::string& nomFichier );
-        void referencer( const std::vector<std::string>& fic, References& refhiers );
+        void referencer( const std::vector<std::string>& fic, References& refs );
 
     protected:
         enum Mode { Normal, Inverse };
         enum Etat { Separateur, Commentaire, MotClef, Preprocesseur, Literal };
 
+        //----------------------------------------------------------------------
+        //  ATTRIBUTS MEMBRES
+        //----------------------------------------------------------------------
         Mode _mode;
         Etat _etat;
 
@@ -60,20 +63,21 @@ class Referenceur
         void chargerMotsClefsCpp();
         bool isSeparateur( const char c ) const;
         void changerEtat( FichierLu& fic );
-        void lireFlux( FichierLu& fic, References& ref );
+        void lireFlux( FichierLu& fic, References& refs );
 
 
         //----------------------------------------------------------------------
         //  METHODES ETATS
         //----------------------------------------------------------------------
-        void lirePreprocesseur( FichierLu& fic, References& ref );
-        void lireSeparateur( FichierLu& fic, References& ref );
-        void lireMotClef( FichierLu& fic, References& ref );
-        void lireCommentaire( FichierLu& fic, References& ref );
-        void lireLiteral( FichierLu& fic, References& ref );
+        void lirePreprocesseur( FichierLu& fic, References& refs );
+        void lireSeparateur( FichierLu& fic, References& refs );
+        void lireMotClef( FichierLu& fic, References& refs );
+        void lireCommentaire( FichierLu& fic, References& refs );
+        void lireLiteral( FichierLu& fic, References& refs );
 
 
-}; 
+};
 
+}
 #endif
 
