@@ -23,7 +23,7 @@
 namespace CmdLine {
 
 using namespace CmdLine;
-class Argument;
+class Arguments;
 
 
 /* =====================================================================================
@@ -59,7 +59,7 @@ class Parser {
            *         Name:  parse
            *  Description:  Extrait et stocke les informations de la ligne de commande
            * =====================================================================================*/
-          void parse( int argc, char** argv, Argument& args );
+          void parse( int argc, char** argv, Arguments& args );
 
           /* ===  FUNCTION  ======================================================================
            *         Name:  display
@@ -106,7 +106,7 @@ class Parser {
            *         Name:  processInput
            *  Description:  Traite la ligne de commande
            * =====================================================================================*/
-          void processInput( std::string::iterator& it, Argument& args );
+          void processInput( std::string::iterator& it, Arguments& args );
 
           /* ===  FUNCTION  ======================================================================
            *         Name:  ChangeState

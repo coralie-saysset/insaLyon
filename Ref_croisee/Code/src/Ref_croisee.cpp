@@ -19,7 +19,7 @@ using namespace Reference_croisee;
 int main( int argc, char** argv )
 {/*{{{*/
 
-    CmdLine::Argument args;
+    CmdLine::Arguments args;
     CmdLine::Parser parser( "Permet de référencer des mots clefs à travers des fichiers" );
     parser.addOption( "exclude,e",  "Inverse le fonctionnement du programme" );
     parser.addOption( "keyword,k",  "Spécifie la liste des mots clefs à utiliser", true );

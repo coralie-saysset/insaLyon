@@ -28,7 +28,7 @@ using namespace CmdLine;
  *        Class:  Argument
  *  Description:  Permet de gérer les options de la ligne de commande
  * =====================================================================================*/
-class Argument {
+class Arguments {
 
      public:
          /* ===  FUNCTION  ======================================================================

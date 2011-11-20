@@ -11,7 +11,7 @@
 // =====================================================================================
 
 #include    "Parser.hpp"
-#include    "Argument.hpp"
+#include    "Arguments.hpp"
 #include    <string>
 #include    <map>
 #include    <utility>
@@ -102,7 +102,7 @@ void Parser::display( ostream& flux ) const
 
 }/*}}}*/
 
-void Parser::parse( int argc, char** argv, Argument& args )
+void Parser::parse( int argc, char** argv, Arguments& args )
 {/*{{{*/
 
      string cmdLine;
@@ -155,7 +155,7 @@ void Parser::changeState( string::iterator& it )
 
 }/*}}}*/
 
-void Parser::processInput( string::iterator& it, Argument& args )
+void Parser::processInput( string::iterator& it, Arguments& args )
 {/*{{{*/
 
 

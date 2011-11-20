@@ -20,7 +20,7 @@
 #ifndef CMDLINE_HPP
 #define CMDLINE_HPP
 
-#include  "Argument.hpp"
+#include  "Arguments.hpp"
 #include  "Parser.hpp"
 
 #endif
