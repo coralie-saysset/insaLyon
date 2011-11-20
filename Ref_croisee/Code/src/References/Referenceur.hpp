@@ -37,6 +37,7 @@ class Referenceur {
     public:
         Referenceur( const std::string fichierMotClef = std::string(),
                      const bool modeInverse = false );
+        ~Referenceur();
 
         //----------------------------------------------------------------------
         //  METHODES PUBLIQUES
@@ -56,7 +57,7 @@ class Referenceur {
         Etat _etat;
 
         std::set<std::string> _motsClefsCpp;
-        std::set<std::string> _identificateurs;
+        std::set<std::string>* _identificateurs;
 
         //----------------------------------------------------------------------
         //  METHODES PROTEGES

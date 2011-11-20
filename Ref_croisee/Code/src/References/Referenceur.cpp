@@ -30,7 +30,7 @@ using namespace Reference_croisee;
 //  CONSTRUCTEURS
 //----------------------------------------------------------------------
 Referenceur::Referenceur ( const string fichierMotClef, const bool modeInverse ):
-    _mode( modeInverse ? Inverse : Normal ), _etat( Separateur )
+    _mode( modeInverse ? Inverse : Normal ), _etat( Separateur ), _identificateurs( 0 )
 {/*{{{*/
 
 #ifdef MAP
@@ -45,7 +45,12 @@ Referenceur::Referenceur ( const string fichierMotClef, const bool modeInverse )
 
 }/*}}}*/
 
-
+Referenceur::~Referenceur()
+{/*{{{*/
+    if( _identificateurs ) {
+        delete _identificateurs;
+    }
+}/*}}}*/
 
 
 //----------------------------------------------------------------------
@@ -53,6 +58,12 @@ Referenceur::Referenceur ( const string fichierMotClef, const bool modeInverse )
 //----------------------------------------------------------------------
 void Referenceur::chargerMotsClefs( const string& nomFichier )
 {/*{{{*/
+
+    if( _identificateurs ) {
+        delete _identificateurs;
+    }
+
+    _identificateurs = new set<string>();
 
     ifstream fichierMotClef;
 
@@ -70,7 +81,7 @@ void Referenceur::chargerMotsClefs( const string& nomFichier )
     string motRecupere;
 
     while ( fichierMotClef >> motRecupere ) {
-        _identificateurs.insert( motRecupere );
+        _identificateurs->insert( motRecupere );
         fichierMotClef.ignore( numeric_limits<int>::max(), '\n' );
         // ignore le nombre de caractere "valeur max d'un entier" jusqu'à rencontrer \n
     }
@@ -184,13 +195,14 @@ inline bool Referenceur::estInserable( const string& mot ) const
 {/*{{{*/
 
     if( _mode == Normal ) {
-        return _identificateurs.empty() ? _motsClefsCpp.count( mot ) :
-               _identificateurs.count( mot );
+        return _identificateurs ? _identificateurs->count( mot ) :
+               _motsClefsCpp.count( mot );
 
     } else if( _mode == Inverse ) {
-        return  _identificateurs.empty() ? false :
-                ( !_identificateurs.count( mot ) &&
-                  _motsClefsCpp.count( mot ) );
+        return  _identificateurs ? ( !_identificateurs->count( mot )
+                                     && _motsClefsCpp.count( mot ) ) :
+                !_motsClefsCpp.count( mot );
+
     }
 
 }/*}}}*/
