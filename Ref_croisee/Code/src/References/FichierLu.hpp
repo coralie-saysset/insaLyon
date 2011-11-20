@@ -45,6 +45,6 @@ class FichierLu : public std::ifstream {
         std::string _nomFichier;
 };
 
-}
+}/*}}}*/
 
 #endif

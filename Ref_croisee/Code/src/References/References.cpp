@@ -71,4 +71,4 @@ void References::display( ostream& flux ) const
 
 }/*}}}*/
 
-}
+}/*}}}*/

@@ -45,7 +45,7 @@ class References {
 
 };
 
-}
+}/*}}}*/
 
 #endif
 

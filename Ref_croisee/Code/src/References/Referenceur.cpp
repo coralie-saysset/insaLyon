@@ -29,14 +29,20 @@ using namespace Reference_croisee;
 //----------------------------------------------------------------------
 //  CONSTRUCTEURS
 //----------------------------------------------------------------------
-Referenceur::Referenceur ( ):
-    _mode( Normal ), _etat( Separateur )
+Referenceur::Referenceur ( const string fichierMotClef, const bool modeInverse ):
+    _mode( modeInverse ? Inverse : Normal ), _etat( Separateur )
 {/*{{{*/
-    chargerMotsClefsCpp();
 
 #ifdef MAP
     cout << "Appel au constructeur de <Referenceur>" << endl;
 #endif
+
+    chargerMotsClefsCpp();
+
+    if( !fichierMotClef.empty() ) {
+        chargerMotsClefs( fichierMotClef );
+    }
+
 }/*}}}*/
 
 
@@ -164,6 +170,10 @@ void Referenceur::referencer( const vector<string>& fichiers, References& refs )
 
 }/*}}}*/
 
+inline void Referenceur::setModeInverse( const bool mode )
+{/*{{{*/
+    _mode = ( mode ) ? Inverse : Normal;
+}/*}}}*/
 
 
 
@@ -328,4 +338,4 @@ void Referenceur::lireLiteral( FichierLu& fic, References& refs )
 
 }/*}}}*/
 
-}
+}/*}}}*/

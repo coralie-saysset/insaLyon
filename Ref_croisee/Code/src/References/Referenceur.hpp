@@ -35,12 +35,14 @@ using namespace Reference_croisee;
 class Referenceur {
 
     public:
-        Referenceur();
+        Referenceur( const std::string fichierMotClef = std::string(),
+                     const bool modeInverse = false );
 
         //----------------------------------------------------------------------
         //  METHODES PUBLIQUES
         //----------------------------------------------------------------------
         void chargerMotsClefs( const std::string& nomFichier );
+        inline void setModeInverse( const bool mode );
         void referencer( const std::vector<std::string>& fic, References& refs );
 
     protected:
@@ -78,6 +80,6 @@ class Referenceur {
 
 };
 
-}
+}/*}}}*/
 #endif
 

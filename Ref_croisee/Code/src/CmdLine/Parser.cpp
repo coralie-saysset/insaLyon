@@ -122,8 +122,9 @@ void Parser::parse( int argc, char** argv, Argument& args )
           processInput( it, args );
      }
 
-     args._arguments.insert( make_pair( "__args__", _freeArgs ) );
-
+     if( !_freeArgs.empty() ) {
+         args._arguments.insert( make_pair( "__args__", _freeArgs ) );
+     }
      //    for( map<string, string>::iterator it = args._arguments.begin();
      //         it != args._arguments.end(); it++ ) {
      //        cout << it->first << " : " << it->second << endl;

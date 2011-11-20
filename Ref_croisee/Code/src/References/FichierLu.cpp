@@ -62,7 +62,7 @@ int FichierLu::get()
 }/*}}}*/
 
 //----------------------------------------------------------------------
-// METHODES NON HERITÉES 
+// METHODES NON HERITÉES
 //----------------------------------------------------------------------
 int FichierLu::getNbLignesLues()
 {/*{{{*/
@@ -76,4 +76,4 @@ string FichierLu::getNomFichier()
     return _nomFichier;
 }/*}}}*/
 
-}
+}/*}}}*/
