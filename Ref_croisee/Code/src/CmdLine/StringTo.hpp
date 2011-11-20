@@ -30,7 +30,6 @@ using namespace CmdLine;
     {/*{{{*/
        
          STATIC_ASSERT( sizeof(T) != sizeof(T),  Impossible_de_convertir_l_argument_vers_ce_type );
-
          return T();
     }/*}}}*/
 
