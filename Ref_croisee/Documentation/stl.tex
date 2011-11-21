@@ -6,117 +6,149 @@
 \usepackage{amssymb}
 \usepackage{fancyhdr}
 \pagestyle{fancy}
-
+\usepackage{graphicx}
+\usepackage{minted}
 
 \lhead{Coralie Saysset - Romain Gerard}
 \chead{}
 \rhead{B3301}
 
-\usepackage{graphicx}
+
 \begin{document}
 
 \begin{center} 
-\Huge{Références croisées sur un ensemble de fichier C++}
+\Huge{Références croisées \\ Spécification et Conception}
 \end{center}
 
-\section{Spécifications}
-Le but du programme est de permettre de retrouver les emplacements d'identifcateurs dans une collection de fichiers. L'emplacement de chaque occurence sera désigné
-par le nom du fichier ainsi que le numero de ligne où elle a été rencontrée. On ne considèrera pas la position sur la ligne.
-
-Dans le cas où un identifacteur apparaitrait plusieurs fois sur une même ligne, nous avons pris la décision d'afficher la ligne conserné une fois par occurence. Etant donné qu'un même identificateur ne devrait pas être présent de trop nombreuses fois sur une même ligne, nous avons jugé que cette présentation ne nuirait pas à la lisibilité de notre programme.
 
 
-\subsection{Définition du vocabulaire}
-
-\begin{itemize}
-\item \textbf{ligne} : On considèrera une ligne comme une suite de caractère terminé par un retour chariot
-
-\item \textbf{Identificateur} : C'est un mot sensible à la casse composé uniquement de caractères alphanumériques et du caractère `\_`. Les identificateurs présents dans des commentaires ou des chaines littérales ne seront pas pris en compte. 
-
-\item \textbf{Déliminateur} : C'est un unique caractère qui représente une séparation entre deux mots 
-
-\item \textbf{Référence croisée} : Une référence croisée est une occurence d'un identificateur
-
-\end{itemize}
+%-----------------------------------------------------------------------------------------------------------------------------------%
+%	Spécification compléte
+%-----------------------------------------------------------------------------------------------------------------------------------%
+\begin{section}{Spécification complète}
 
 
-\subsection{Spécifications des options}
+  \begin{subsection}{Définitions}
 
-\begin{center}
-\textbf{$tp\_stl\ [-e]\ [-k fichier\_mot\_clef]\ [nomfichier]+$}
-\end{center}
+    \begin{itemize}
+      \item \textbf{ligne} : Une suite de caractères terminées par un retour chariot
 
-\begin{itemize}
+      \item \textbf{Identificateur} : Mot sensible à la casse composé uniquement de caractères alphanumériques et du caractère `\_`. 
+				      Les commentaires ou chaines litérales ne peuvent contenir d'identifcateurs
 
- \item[] \textbf{-e} : Permet d'inverser le comportement par défaut du programme. Elle exclue de la référence croisée tous les mots clefs
- 
- \item[] \textbf{-k fichier\_mot\_clef} : Permet de spécifier au programme une liste de mot clef à rechercher pour la référence croisée
+      \item \textbf{Délimiteur} : Un caractère représentant une séparation entre deux mots (Ex: une virgule, un espace, un point, ...) 
 
- \item[] \textbf{nomfichier} : Chemin d'un fichier où chercher les références des identifacateurs
+      \item \textbf{Référence croisée} : Fait de rechercher un identificateur dans un ou plusieurs fichiers sources pour déterminer sa localisation
+    \end{itemize}
 
-\end{itemize}
-
-\subsection{Identification des classes}
-
-\subsubsection{Structure pour stocker les mots clefs}
-
-\paragraph{Besoins utilisateurs :}
-Les mots clefs sont stockés dans un fichier. Pour en faciliter l'accès dans le programme nous souhaitons les charger en mémoire. Ce pose alors la question du choix de la structure de donnée pour les contenir ?
-
-Nous avons besoins d'une structure permettant de nous dire facilement si un mot clef est présent ou non dans la structure de données. Un mot clef ne peut être présent qu'une seule fois dans la structure, car les doublons n'ont pas de sens dans ce problème. De plus l'ordre n'a que peu d'importance.
-
-Nous avons donc besoin uniquement de connaitre rapidement la présence ou non d'un mot clef.
-
-\paragraph{Analyse d'une liste :} 
-
-Comme nous l'avons vu dans nos besoins, seul l'accès en lecture nous intérèsse. Une liste est une structure plate, c'est à dire qu'il n'y a qu'une direction possible.
-Dans le pire des cas il nous faut donc parcourir tous les éléments de la liste pour savoir si le mot clef est présent.
-La complexité d'une telle structure pour la recherche est donc linéaire ( O(n) ).
-
-\begin{figure}[htp]
-\centering
-\includegraphics[scale=0.6]{images/liste.jpg}
-\caption{Liste chainée}
-\label{}
-\end{figure}
-
-\paragraph{Analyse d'un arbre :}
-Un arbre est une structure possédant plusieurs directions. De plus si l'on utilise un arbre binaire
-le choix de la direction est déterminé par le noeud courant et la valeur que l'on cherche. 
-
-Dans le pire des cas, si l'arbre n'est pas isométrique il
-faut parcourir tous les noeuds pour savoir si la clef est présente ou non. Par contre dans les cas moyen avec un arbre équilibré la recherche se fait en log(n).
-
-\paragraph{Choix de la structure :}
-Une structure en arbre nous semble plus adapté car nous souhaitons favoriser la recherche. Dans les cas moyens la liste reste en compléxité linéaire tandis qu'un arbre est de compléxité logarithmique.
-
-Nous avons donc décidé de stocker la liste des mots clefs dans une stucture sous forme d'arbre.
-
- 
-\begin{figure}[htp]
-\centering
-\includegraphics[scale=0.5]{images/arbre.png}
-\caption{Arbre binaire}
-\label{}
-\end{figure}
-
-\subsection{Structure pour stocker les identifiants}
-
-\paragraph{Besoins :}
-Chaque identificateur présents dans la collection de fichier(s) doit être stocké en mémoire avec la liste de ses occurences. Un identificateur a donc une clef (lui même) et une valeur (sa liste d'occurence). Nous souhaitons optimiser l'insertion et la lecture des valeurs des identificateurs. On se pose alors la question du choix de la stucture de donnée a adopter.
+  \end{subsection}
 
 
-\paragraph{Analyse d'un arbre rouge et noir :}
+  \begin{subsection}{Description du programme}
+    Le but du programme est de permettre de retrouver rapidement l'emplacement d'identifcateurs dans une collection de fichiers.
+    On cherche à connaitre dans quel(s) fichier(s) et à quelle(s) lignes les identifcateurs apparaissent.
+    
+    Dans le cas où un identifacteur apparaitrait plusieurs fois sur une même ligne, nous avons pris la décision d'afficher
+    la ligne conserné autant de fois qu'il y a d'occurences. 
+    
+    Ex: Pour le code ci-dessous présent dans le fichier ``test.cpp'' et avec comme identifacteur la lettre i 
+    
+    \begin{minted}{cpp}
+      for( int i = 0; i < 42; i++ );
+    \end{minted}
+    Le programme produira la sortie suivante : 
+
+    i$\xrightarrow{}$test.cpp$\bullet$1$\bullet$1$\bullet$1$\downarrow$ \\
+    
+    Par defaut les identificateurs sont les mots clefs utilisés par le langage C++. Il est cependant possible de spécifier
+    un fichier en argument du programme pour définir précisement quelles seront les identifcateurs recherchés par la référence
+    croisée. Le fichier d'identifacteurs ne devra contenir qu'un seul identifacteur valide par ligne. Le programme présuposera que
+    le fichier fournit en argument respecte ce formalisme.
+    
+    Le programme disposera également de la fonctionnalité permettant d'exclure une liste d'identifacteurs.
+    
+  \end{subsection}
+
+  
+  \newpage
+  \begin{subsection}{Spécifications des options}
+    \begin{center}
+      \textbf{$tp\_stl\ [-e]\ [-k fichier\_mot\_clef]\ [nomfichier]+$}
+    \end{center}
+
+    \begin{itemize}
+      \item[] \textbf{-e} : Permet d'inverser le comportement par défaut du programme. Exclut de la référence croisée tous les mots clefs
+      
+      \item[] \textbf{-k fichier\_mot\_clef} : Permet de spécifier au programme une liste d'identifacateurs à rechercher par la référence croisée
+
+      \item[] \textbf{nomfichier} : Chemin vers un ou plusieurs fichiers où rechercher les identifacateurs
+    \end{itemize}
+
+  \end{subsection}
+
+\end{section}
 
 
-\paragraph{Analyse d'une table de hash :}
 
-\paragraph{}
- 
-\subsection{Plan des tests fonctionnels}
+%-----------------------------------------------------------------------------------------------------------------------------------%
+%	Tests fonctionnel
+%-----------------------------------------------------------------------------------------------------------------------------------%
+\begin{section}{Tests fonctionnel}
+
+
+  \begin{subsection}{Test \no 1}
+  \end{subsection}
+
+
+  \begin{subsection}{Test \no 2}
+  \end{subsection}
+
+\end{section}
 
 
 
 
+
+%-----------------------------------------------------------------------------------------------------------------------------------%
+%	Architecture générale
+%-----------------------------------------------------------------------------------------------------------------------------------%
+\begin{section}{Architecture générale}
+
+  \begin{subsection}{Diagramme de classe}
+  \end{subsection}
+
+  \begin{subsection}{Commentaires}
+  \end{subsection}
+
+\end{section}
+
+
+%-----------------------------------------------------------------------------------------------------------------------------------%
+%	Algorithmes principaux
+%-----------------------------------------------------------------------------------------------------------------------------------%
+\begin{section}{Algorithmes principaux}
+
+  \begin{subsection}{Parseur de ligne de commandes}
+  \end{subsection}
+
+  \begin{subsection}{Parseur des fichiers C++}
+  \end{subsection}
+
+\end{section}
+
+
+
+%-----------------------------------------------------------------------------------------------------------------------------------%
+%	Structures de données
+%-----------------------------------------------------------------------------------------------------------------------------------%
+\begin{section}{Analyse critique des structures de données}
+
+  \begin{subsection}{Structure des identificateurs}
+  \end{subsection}
+
+  \begin{subsection}{Structure des occurences}
+  \end{subsection}
+
+\end{section}
 
 \end{document}
