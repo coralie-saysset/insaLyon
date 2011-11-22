@@ -9,6 +9,7 @@
 \usepackage{graphicx}
 \usepackage{minted}
 
+
 \lhead{Coralie Saysset - Romain Gerard}
 \chead{}
 \rhead{B3301}
@@ -93,14 +94,356 @@
 %-----------------------------------------------------------------------------------------------------------------------------------%
 %	Tests fonctionnel
 %-----------------------------------------------------------------------------------------------------------------------------------%
-\begin{section}{Tests fonctionnel}
+\begin{section}{Tests fonctionnels}
+
+ \begin{subsection}{Méthodologie}
+  
+    Nous sommes parti du principe que le programme doit produire la même sortie écran (et donc par extension les mêmes données stockées en interne)
+    si il est lancé deux fois sur la même collection de fichiers et avec les mêmes arguments.
+
+    En partant de ce principe nous avons réaliser les tests de la façon suivante : 
+
+    \begin{enumerate}
+      \item Lancer le programme sur une collection de fichier
+      \item Verifier que la sortie est correcte et respecte les spécifications
+      \item Relancer le programme dans le même contexte qu'en 1, trier la sortie et rediriger le flux de sortie dans un fichier témoin
+    \end{enumerate}
+
+    Pour automatiser les tests nous avons écrit un script bash qui suit les étapes suivantes pour chaque test :
+  
+    \begin{enumerate}
+      \item Lancer le programme dans le même contexte que lors de la réalisation du fichier témoin, trier la sortie et rediriger la sortie vers un fichier résultat
+      \item Faire le hash md5 du fichier résultat et du fichier témoin
+      \item Comparer les deux hash md5
+      \item Si les hashs diffèrent c'est que le programme ne possède pas les mêmes données en interne et donc le test échoue
+      \item Si les hashs sont égaux c'est que le programme possède les mêmes données et donc le test réussi
+    \end{enumerate}
+
+ \end{subsection}
 
 
+
+
+ \begin{subsection}{Critique de la méthode}
+    \begin{paragraph}{Avantages :}
+      Avec cette méthode de réalisation des tests on s'abstrait de la représentation interne des données. On vérifie uniquement
+      que le programme délivre correctement à l'utilisateur les informations voulues. Ainsi tout changement dans la structure de
+      données interne n'affectera pas les tests tant que le programme délivre les memes informations à l'utilisateur.
+      
+      De plus la réalisation d'un test supplémentaire se fait facilement et ne prend pas beaucoup de temps par rapport à une analyse
+      compléte de la structure de données interne.
+      
+      Du fait que nous gardons une sauvegarde du flux de sortie lors d'un état fonctionnel de l'application, le développeur peut 
+      comparer visuellement les deux sorties pour trouver plus facilement les éléments divergeants. D'où un gain de temps lors du débuggage 
+    \end{paragraph}
+
+    \begin{paragraph}{Inconvénients :}
+      Avec cette méthode, la formatage des informations à l'utilisateur devient un élément critique. Tout changement dans l'affichage des résultats causera
+      inevitablement l'échec de tous les tests. Toutefois, il peut être facile de créer un script bash permettant de regénérer les fichiers témoins
+      si le développeur est sur des changements qu'il a effectués.
+      
+      Si un fichier témoin venait à être corrompu cela entrainerait l'échec du test le mettant en jeu.
+    \end{paragraph}
+ \end{subsection}
+
+  \newpage
+  
   \begin{subsection}{Test \no 1}
+    \begin{paragraph}{Descriptif :}
+      Le test \no 1 réalise le premier exemple donné par le sujet.\\ Les fichiers analysés sont : 
+      
+      \begin{listing}[h!]
+      \centering{file1.cpp}
+      \begin{minted}[linenos,
+		     gobble=2]{cpp}
+	  // affiche le message "Hello world"
+	  int main() {
+	      cout <<"Hello world"<<endl;
+	      cout<<endl;
+	      return 0;
+	  }
+      \end{minted}
+      \end{listing}
+      
+      \begin{listing}[h!]
+      \centering{file1.h}
+	\begin{minted}[linenos,gobble=2]{cpp}
+	   int main();
+	\end{minted}
+      \end{listing}
+      
+        \begin{listing}[h!]
+        \centering{key1.txt}
+	\begin{minted}[linenos,gobble=2]{cpp}
+	   int
+	   world
+	   template
+	\end{minted}
+      \end{listing}
+      
+    \end{paragraph}
+    
+    \begin{paragraph}{Résultat attendu :} 
+      Nous lançons le programme avec le contexte suivant :  
+       \begin{center}
+	\textbf{$tp\_stl\ -e\ -k\ key1.txt\ file1.cpp\ file1.h$}
+      \end{center}
+      
+      Nous devons obtenir le résultat ci-dessous après avoir trié la sortie : 
+      \begin{listing}[h!]
+          \centering{file1.res}
+      \begin{minted}[linenos,
+		     gobble=2]{pascal}
+	  cout	file1.cpp 3 4	
+	  endl	file1.cpp 3 4	
+	  main	file1.cpp 2	file1.h 1	
+	  return	file1.cpp 5	
+      \end{minted}
+  
+      \end{listing}
+    \end{paragraph}
+
+ \end{subsection}
+     
+   \newpage 
+       
+  \begin{subsection}{Test \no 2}
+  
+    \begin{paragraph}{Descriptif :}
+	Le test \no 2 réalise le deuxième exemple donné par le sujet.\\ Les fichiers analysés sont : 
+      
+      \begin{listing}[h!]
+      \centering{file2.cpp}
+      \begin{minted}[linenos,
+		     gobble=2]{cpp}
+	  // affiche le message "Hello world"
+	  int main() {
+	      cout <<"Hello world"<<endl;
+	      cout<<endl;
+	      return 0;
+	  }
+      \end{minted}
+      \end{listing}
+      
+      \begin{listing}[h!]
+      \centering{file2.h}
+	\begin{minted}[linenos,gobble=2]{cpp}
+	   int main();
+	\end{minted}
+      \end{listing}
+      
+        \begin{listing}[h!]
+        \centering{key2.txt}
+	\begin{minted}[linenos,gobble=2]{cpp}
+	   int
+	   world
+	   template
+	\end{minted}
+      \end{listing}
+      
+    \end{paragraph}
+	   
+    \begin{paragraph}{Résultat attendu :}
+       Nous lançons le programme avec le contexte suivant après avoir trié la sortie :  
+       \begin{center}
+	\textbf{$tp\_stl\ -k\ key2.txt\ file2.cpp\ file2.h$}
+      \end{center}
+      
+      Nous devons obtenir le résultat ci-dessous : 
+      \begin{listing}[h!]
+          \centering{file2.res}
+      \begin{minted}[linenos,
+		     gobble=2]{pascal}
+	  int	file2.cpp 2	file2.h 1	
+      \end{minted}
+  
+      \end{listing}
+    \end{paragraph}
+
   \end{subsection}
 
+   \newpage 
+  
+  \begin{subsection}{Test \no 3}
+    
+    \begin{paragraph}{Descriptif :}
+	Le test \no 3 réalise le test sur le fichier main de notre programme.\\ Les fichiers analysés sont : 
+      
+      \begin{minted}[linenos,
+		     gobble=2]{cpp}
+	    //============================================================================
+	    // Name        : Ref_croisee.cpp
+	    // Author      :
+	    // Version     :
+	    // Copyright   : Your copyright notice
+	    // Description : Hello World in C++, Ansi-style
+	    //============================================================================
 
-  \begin{subsection}{Test \no 2}
+	    #include <iostream>
+	    #include <vector>
+
+	    #include "CmdLine/cmdLine.hpp"
+	    #include "References/Referenceur.hpp"
+	    #include "References/References.hpp"
+
+	    using namespace std;
+	    using namespace Reference_croisee;
+
+	    int main( int argc, char** argv )
+	    {/*{{{*/
+
+		CmdLine::Arguments args;
+		CmdLine::Parser parser( "Permet de referencer des mots clefs a travers des fichiers" );
+		parser.addOption( "exclude,e",  "Inverse le fonctionnement du programme" );
+		parser.addOption( "keyword,k",  "Specifie la liste des mots clefs a utiliser", true );
+
+		try {
+		    parser.parse( argc, argv, args );
+
+		} catch( exception& e ) {
+		    cout << "Une erreur c'est produit durant la recuperation de la ligne de commande : "
+			 << endl << e.what() << endl;
+		}
+
+		//----------------------------------------------------------------------
+		//  On charge les fichiers a referencer
+		//----------------------------------------------------------------------
+		vector<string> ficsReferencer;
+
+		if( args.count( "__args__" ) ) {
+		    ficsReferencer = args.get<vector<string> >( "__args__" );
+
+		} else {
+		    cerr << "Aucun fichier a referencer !" << endl;
+		    return 1;
+		}
+
+		//----------------------------------------------------------------------
+		//  On charge les mots clefs si ils sont fournis
+		//----------------------------------------------------------------------
+		string fichierMotClef;
+
+		if( args.count( "keyword" ) ) {
+		    fichierMotClef = args.get<string>( "keyword" );
+		}
+
+		//----------------------------------------------------------------------
+		//  L'etat dans lequel mettre le programme
+		//----------------------------------------------------------------------
+		bool mode( args.count( "exclude" ) );
+
+
+		References refs;
+
+		//----------------------------------------------------------------------
+		//  On effectue la reference croisee
+		//----------------------------------------------------------------------
+		try {
+		    Referenceur referenceur( fichierMotClef, mode );
+		    referenceur.referencer( ficsReferencer, refs );
+
+		} catch( exception& e ) {
+		    cerr << "Une erreur est survenue durant la reference croisee : " << endl;
+		    cerr << e.what() << endl;
+		}
+
+
+		//----------------------------------------------------------------------
+		//  On affiche les resultats
+		//----------------------------------------------------------------------
+		refs.display( cout );
+
+		return 0;
+	    }/*}}}*/
+      \end{minted}
+      
+    \end{paragraph}
+    
+    \newpage 
+    
+    \begin{paragraph}{Résultat attendu :}
+       Nous lançons le programme avec le contexte suivant :  
+       \begin{center}
+	\textbf{$tp\_stl\ file3.cpp$}
+      \end{center}
+      
+      Nous devons obtenir le résultat ci-dessous après avoir trié la sortie: 
+      \begin{listing}[h!]
+          \centering{file3.res}
+      \begin{minted}[linenos,
+		     gobble=2]{pascal}
+	  bool	file3.cpp 60	
+	  catch	file3.cpp 30 72	
+	  char	file3.cpp 19	
+	  cout	file3.cpp 31 81	
+	  else	file3.cpp 43	
+	  if	file3.cpp 40 53	
+	  int	file3.cpp 19 19	
+	  namespace	file3.cpp 16 17	
+	  return	file3.cpp 45 83	
+	  true	file3.cpp 25	
+	  try	file3.cpp 27 68	
+	  using	file3.cpp 16 17		
+      \end{minted}
+  
+      \end{listing}
+    \end{paragraph}
+    
+    
+  \end{subsection}
+
+  \newpage
+
+  \begin{subsection}{Test \no 4}
+    \begin{paragraph}{Descriptif :}
+      Le fichier à analyser est le même que dans le test précédent, seul le contexte d'execution change.
+    \end{paragraph}
+    
+\begin{paragraph}{Résultat attendu :}
+       Nous lançons le programme avec le contexte suivant :  
+       \begin{center}
+	\textbf{$tp\_stl\ file4.cpp$}
+      \end{center}
+      
+      Nous devons obtenir le résultat ci-dessous après avoir trié la sortie: 
+      \begin{listing}[h!]
+          \centering{file4.res}
+      \begin{minted}[linenos,
+		     gobble=2]{cpp}
+	  addOption	file4.cpp 24 25	
+	  argc	file4.cpp 19 28	
+	  args	file4.cpp 22 28 40 41 53 54 60	
+	  Arguments	file4.cpp 22	
+	  argv	file4.cpp 19 28	
+	  cerr	file4.cpp 44 73 74	
+	  CmdLine	file4.cpp 22 23	
+	  count	file4.cpp 40 53 60	
+	  display	file4.cpp 81	
+	  e	file4.cpp 30 32 72 74	
+	  endl	file4.cpp 31 32 44 73 74	
+	  exception	file4.cpp 30 72	
+	  fichierMotClef	file4.cpp 51 54 69	
+	  ficsReferencer	file4.cpp 38 41 70	
+	  get	file4.cpp 41 54	
+	  main	file4.cpp 19	
+	  mode	file4.cpp 60 69	
+	  parse	file4.cpp 28	
+	  Parser	file4.cpp 23	
+	  parser	file4.cpp 23 24 25 28	
+	  Reference_croisee	file4.cpp 17	
+	  referencer	file4.cpp 70	
+	  References	file4.cpp 63	
+	  Referenceur	file4.cpp 69	
+	  referenceur	file4.cpp 69 70	
+	  refs	file4.cpp 63 70 81	
+	  std	file4.cpp 16	
+	  string	file4.cpp 38 41 51 54	
+	  vector	file4.cpp 38 41	
+	  what	file4.cpp 32 74	
+      \end{minted}
+  
+      \end{listing}
+    \end{paragraph}
   \end{subsection}
 
 \end{section}
@@ -128,10 +471,10 @@
 %-----------------------------------------------------------------------------------------------------------------------------------%
 \begin{section}{Algorithmes principaux}
 
-  \begin{subsection}{Parseur de ligne de commandes}
+  \begin{subsection}{Parseur pour la ligne de commandes}
   \end{subsection}
 
-  \begin{subsection}{Parseur des fichiers C++}
+  \begin{subsection}{Parseur pour les fichiers C++}
   \end{subsection}
 
 \end{section}
