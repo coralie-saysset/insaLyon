@@ -11,6 +11,9 @@ $(EXEC): $(OBJ)
 %.o: %.cpp %.hpp
 	$(CXX) $(INCLUDES) -c $< -o $@
 
+test: $(EXEC) 
+	@(cd Tests && ./launchTests.sh)
+
 clean: 
 	rm -f *.o $(OBJ) $(EXEC)
 
