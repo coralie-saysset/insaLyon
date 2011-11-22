@@ -196,12 +196,11 @@ inline bool Referenceur::estInserable( const string& mot ) const
 
     if( _mode == Normal ) {
         return _identificateurs ? _identificateurs->count( mot ) :
-               _motsClefsCpp.count( mot );
+                                  _motsClefsCpp.count( mot );
 
     } else if( _mode == Inverse ) {
-        return  _identificateurs ? ( !_identificateurs->count( mot )
-                                     && _motsClefsCpp.count( mot ) ) :
-                !_motsClefsCpp.count( mot );
+        return  _identificateurs ?  !_identificateurs->count( mot ) :
+                                    !_motsClefsCpp.count( mot );
 
     }
 
