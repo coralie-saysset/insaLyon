@@ -7,6 +7,7 @@
 \usepackage{fancyhdr}
 \pagestyle{fancy}
 \usepackage{graphicx}
+\usepackage{placeins}
 \usepackage{minted}
 
 
@@ -449,19 +450,55 @@
 \end{section}
 
 
-
-
-
 %-----------------------------------------------------------------------------------------------------------------------------------%
 %	Architecture générale
 %-----------------------------------------------------------------------------------------------------------------------------------%
 \begin{section}{Architecture générale}
 
-  \begin{subsection}{Diagramme de classe}
-  \end{subsection}
-
-  \begin{subsection}{Commentaires}
-  \end{subsection}
+  \begin{subsection}{Diagramme de classe du module CmdLine}
+    \begin{figure}[htp]
+      \begin{center}
+	\includegraphics[scale=0.5]{./diagrammeClasse_cmdLine.png}
+	% diagrammeClasse.png: 1690x684 pixel, 72dpi, 59.61x24.13 cm, bb=0 0 1690 684
+      \end{center}
+    \end{figure}
+    \FloatBarrier
+      Ce diagramme présente les différentes classes présentes pour extraire les informations de la ligne de commande de façon générique.
+      
+      La classe ``Parser'' s'occupe d'extraire les informations de la ligne de commande en vérifiant que les options entrées par l'utilisateur
+      respectent celles définies par le développeur du programme. Au fur et à mesure de l'extraction des données, la classe ``Parser'' remplit
+      un objet de la classe ``Arguments''. La classe ``Arguments'' sert de conteneur et permet de convertir les options vers des types déterminés
+      à la compilation. Ne sachant pas comment représenter des méthodes génériques en UML, j'ai défini le type de retour des fonctions membres
+      ``get'' comme étant T. Le module possède ses propres exceptions pour remonter les cas d'erreurs possibles.
+   \end{subsection}
+   
+   \begin{subsection}{Diagramme de classe du module Reference\_croisée}
+    \begin{figure}[!ht]
+      \begin{center}
+	\includegraphics[scale=0.5]{./diagrammeClasse_reference.png}
+	% diagrammeClasse.png: 1690x684 pixel, 72dpi, 59.61x24.13 cm, bb=0 0 1690 684
+      \end{center}
+    \end{figure}
+    \FloatBarrier
+     Ce diagramme présente les différentes classes utilisées pour extraire les identifacateurs d'un fichier source C++.
+      Un objet de la classe ``FichierLu'' permet de lire un fichier stocké sur le disque, tout en fournissant le nombre de lignes déjà 
+      lues ainsi que le nom du fichier ouvert. 
+      
+      Un ``Referenceur'' se sert d'un ``FichierLu'' pour lire les fichiers sources et en extraire les identifacateurs.
+      Une collection de ``References'' permet de stocker les identifacteurs qui sont des mots clefs.
+   \end{subsection}
+   
+   \newpage
+    \begin{subsection}{Diagramme de classe du module principal}
+    \begin{figure}[!ht]
+      \begin{center}
+	\includegraphics[scale=0.5]{./diagrammeClasse_main.png}
+	% diagrammeClasse.png: 1690x684 pixel, 72dpi, 59.61x24.13 cm, bb=0 0 1690 684
+      \end{center}
+    \end{figure}
+    \FloatBarrier
+    Le module principal permet d'orchestrer les deux modules précédents pour que le programme est le comportement attendu.
+   \end{subsection}
 
 \end{section}
 
@@ -472,9 +509,34 @@
 \begin{section}{Algorithmes principaux}
 
   \begin{subsection}{Parseur pour la ligne de commandes}
+  Pour extraire les informations de la ligne de commande nous utilisons un automate avec un nombre d'états fini.
+  
+  \begin{paragraph}{Description des états :}
+    \begin{itemize}
+      \item \textbf{Free} : Lorsque l'automate rencontre quelque chose qui n'est pas un argument ou une option \\Exemple: un caractère séparateur comme un espace
+      \item \textbf{ShortCondition} : Lorsque l'automate rencontre une option courte \\Exemple: -e ou -k
+      \item \textbf{LongCondition} : Lorsque l'automate rencontre une option longue \\Exemple: --exclude ou --keyword
+      \item \textbf{FreeArgument} : Lorsque l'automate rencontre un argument rataché à aucune option\\Exemple: le nom d'un fichier à analyser\\
+    \end{itemize}
+  \end{paragraph}
+  
+  Une action est déclenché en fonction de l'état de l'automate. L'action extrait, analyse et stocke l'argument de la ligne de commande s'il est valide, sinon une exception est levé.
   \end{subsection}
 
   \begin{subsection}{Parseur pour les fichiers C++}
+  Pour extraire les informations de la ligne de commande nous utilisons ici aussi un automate avec un nombre fini d'états.
+  
+  \begin{paragraph}{Description des états :}
+   \begin{itemize}
+    \item \textbf{Separateur} : Lorsque que l'automate rencontre un séparant deux identifacteur\\Exemple: Tout caractère non alphanumériques, le tiret du bas non inclus
+    \item \textbf{Commentaire} : Lorsque l'automate rencontre un commentaire sur une seule ligne ou multiligne \\Exemple: /* Ceci est un commentaire */
+    \item \textbf{MotClef} : Lorsque l'automate rencontre un identifacteur qui peut être un mot clef potentiel \\Exemple: cout
+    \item \textbf{Preprocesseur} : Lorsque l'automate rencontre une instruction preprocesseur \\Exemple: \#include $<$iostream$>$
+    \item \textbf{Literal} : Lorsque l'automate rencontre une chaine de caractères ou un caractère\\Exemple: ``Bonjour''\\
+   \end{itemize}
+  \end{paragraph}
+  
+  Chaque état déclenche une action propre qui a pour tâche d'avancer dans le fichier tout en extrayant les identifacteurs qui sont des mots clefs.
   \end{subsection}
 
 \end{section}
@@ -485,6 +547,8 @@
 %	Structures de données
 %-----------------------------------------------------------------------------------------------------------------------------------%
 \begin{section}{Analyse critique des structures de données}
+
+tsoin tsoin la cacahuète, à faire...
 
   \begin{subsection}{Structure des identificateurs}
   \end{subsection}
