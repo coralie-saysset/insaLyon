@@ -33,7 +33,10 @@
   \begin{subsection}{Définitions}
 
     \begin{itemize}
-      \item \textbf{ligne} : Une suite de caractères terminées par un retour chariot
+
+      \item \textbf{mot} : Suite de caractères se terminant par un délimiteur.
+
+      \item \textbf{ligne} : Suite de mots terminée par un retour chariot
 
       \item \textbf{Identificateur} : Mot sensible à la casse composé uniquement de caractères alphanumériques et du caractère `\_`. 
 				      Les commentaires ou chaines litérales ne peuvent contenir d'identifcateurs
@@ -48,10 +51,11 @@
 
   \begin{subsection}{Description du programme}
     Le but du programme est de permettre de retrouver rapidement l'emplacement d'identifcateurs dans une collection de fichiers.
-    On cherche à connaitre dans quel(s) fichier(s) et à quelle(s) lignes les identifcateurs apparaissent.
+    On cherche à connaitre dans quel(s) fichier(s) et à quelle(s) ligne(s) les identifcateurs apparaissent.
     
     Dans le cas où un identifacteur apparaitrait plusieurs fois sur une même ligne, nous avons pris la décision d'afficher
-    la ligne conserné autant de fois qu'il y a d'occurences. 
+    la ligne concernée autant de fois qu'il y a d'occurences. En effet, un identificateur est un mot clé significatif pour l'utilisateur.
+    Nous pouvons donc nous attendre à ce qu'il n'apparaisse que peu sur la même ligne.
     
     Ex: Pour le code ci-dessous présent dans le fichier ``test.cpp'' et avec comme identifacteur la lettre i 
     
@@ -64,8 +68,8 @@
     
     Par defaut les identificateurs sont les mots clefs utilisés par le langage C++. Il est cependant possible de spécifier
     un fichier en argument du programme pour définir précisement quelles seront les identifcateurs recherchés par la référence
-    croisée. Le fichier d'identifacteurs ne devra contenir qu'un seul identifacteur valide par ligne. Le programme présuposera que
-    le fichier fournit en argument respecte ce formalisme.
+    croisée. Le fichier d'identifacteurs ne devra contenir qu'un seul identifacteur valide par ligne, le premier mot de la ligne sera choisi comme tel. Le programme présuposera que
+    le fichier fourni en argument respecte ce formalisme.
     
     Le programme disposera également de la fonctionnalité permettant d'exclure une liste d'identifacteurs.
     
@@ -79,7 +83,7 @@
     \end{center}
 
     \begin{itemize}
-      \item[] \textbf{-e} : Permet d'inverser le comportement par défaut du programme. Exclut de la référence croisée tous les mots clefs
+      \item[] \textbf{-e} : Permet d'inverser le comportement par défaut du programme. Exclut de la référence croisée tous les mots clefs du C++
       
       \item[] \textbf{-k fichier\_mot\_clef} : Permet de spécifier au programme une liste d'identifacateurs à rechercher par la référence croisée
 
@@ -134,12 +138,12 @@
       De plus la réalisation d'un test supplémentaire se fait facilement et ne prend pas beaucoup de temps par rapport à une analyse
       compléte de la structure de données interne.
       
-      Du fait que nous gardons une sauvegarde du flux de sortie lors d'un état fonctionnel de l'application, le développeur peut 
+      Nous gardons une sauvegarde du flux de sortie lors d'un état fonctionnel de l'application, de ce fait, le développeur peut 
       comparer visuellement les deux sorties pour trouver plus facilement les éléments divergeants. D'où un gain de temps lors du débuggage 
     \end{paragraph}
 
     \begin{paragraph}{Inconvénients :}
-      Avec cette méthode, la formatage des informations à l'utilisateur devient un élément critique. Tout changement dans l'affichage des résultats causera
+      Avec cette méthode, le formatage des informations à l'utilisateur devient un élément critique. Tout changement dans l'affichage des résultats causera
       inevitablement l'échec de tous les tests. Toutefois, il peut être facile de créer un script bash permettant de regénérer les fichiers témoins
       si le développeur est sur des changements qu'il a effectués.
       
@@ -497,7 +501,7 @@
       \end{center}
     \end{figure}
     \FloatBarrier
-    Le module principal permet d'orchestrer les deux modules précédents pour que le programme est le comportement attendu.
+    Le module principal permet d'orchestrer les deux modules précédents pour que le programme ait le comportement attendu.
    \end{subsection}
 
 \end{section}
@@ -528,7 +532,7 @@
   
   \begin{paragraph}{Description des états :}
    \begin{itemize}
-    \item \textbf{Separateur} : Lorsque que l'automate rencontre un séparant deux identifacteur\\Exemple: Tout caractère non alphanumériques, le tiret du bas non inclus
+    \item \textbf{Separateur} : Lorsque que l'automate rencontre un caractère séparant deux identifacteur\\Exemple: Tout caractère non alphanumériques, le tiret du bas non inclus
     \item \textbf{Commentaire} : Lorsque l'automate rencontre un commentaire sur une seule ligne ou multiligne \\Exemple: /* Ceci est un commentaire */
     \item \textbf{MotClef} : Lorsque l'automate rencontre un identifacteur qui peut être un mot clef potentiel \\Exemple: cout
     \item \textbf{Preprocesseur} : Lorsque l'automate rencontre une instruction preprocesseur \\Exemple: \#include $<$iostream$>$
