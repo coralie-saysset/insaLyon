@@ -552,12 +552,40 @@
 %-----------------------------------------------------------------------------------------------------------------------------------%
 \begin{section}{Analyse critique des structures de données}
 
-tsoin tsoin la cacahuète, à faire...
 
   \begin{subsection}{Structure des identificateurs}
+\begin {paragraph}{Analyse des besoins}
+Les identificateurs sont lus dans un ou plusieurs fichiers passés en parametre. Il faut tout d'abord prendre en considération
+deux choses: d'abord la présence de doublon parmi les identificateurs, ce qui n'est pas interdit à l'utilisateur. Leur existence
+entraine un surcout d'opération soit lors de test à la création pour l'empecher soit plus tard au traitement. Ensuite l'option
+\textbf{-e} permet de soustraire à la liste d'identificateur passée en parametre la liste des mots clés du C++. La structure
+ de données choisie pour les identificateurs devra comparer ces deux listes de manière appropriée.
+
+
+\end paragraph
+\end {paragraph}
+
   \end{subsection}
 
   \begin{subsection}{Structure des occurences}
+\begin{paragraph}{Analyse des besoins}
+Si le choix d'une bonne structure pour les identifacateurs est important, pour les occurences il est essentiel pour le 
+fonctionnement du programme. En effet chaque idientificateurs peut être trouvés de nombreuses fois dans un documents. Il peut 
+y avoir de très grands nombres d'occurences provennant de plusieurs fichiers alors que les identificateurs ne seront contenus
+que dans un seul fichier passé en parametre. Par consequent le programme devra être optimisé avant tout pour la manipulation
+(acces, insertion, suppression) d'occurences que d'identifacateurs qu'il utilisera moins.
+\end{paragraph}
+
+\begin{paragraph}
+ Le programme va être amené à rencontrer et traîter de nombreuses occurences. Dans un soucis de réutilisabilité, on considère
+que l'utilisateur pourra en plus de voir apparaître les occurences sur la console, vouloir récupérer une structure de donnée
+localisant les occurences. Par conséquent nous avons choisi de séparer la fonction pemettant de trouver les occurences et de
+les enregistrer de celle permettant d'afficher celles trouvées. On choisira donc de favoriser l'insertion d'élément par
+rapport à l'acces, ce qui veut dire que nous favoriserons le traitement par rapport à l'affichage.
+
+\end{paragraph}
+
+
   \end{subsection}
 
 \end{section}
