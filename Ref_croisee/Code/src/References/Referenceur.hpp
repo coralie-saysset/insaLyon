@@ -18,8 +18,8 @@
 
 
 #include    <string>
-#include    <set>
 #include    <vector>
+#include    <tr1/unordered_set>
 #include    "FichierLu.hpp"
 #include    "References.hpp"
 
@@ -56,8 +56,8 @@ class Referenceur {
         Mode _mode;
         Etat _etat;
 
-        std::set<std::string> _motsClefsCpp;
-        std::set<std::string>* _identificateurs;
+        std::tr1::unordered_set<std::string> _motsClefsCpp;
+        std::tr1::unordered_set<std::string>* _identificateurs;
 
         //----------------------------------------------------------------------
         //  METHODES PROTEGES

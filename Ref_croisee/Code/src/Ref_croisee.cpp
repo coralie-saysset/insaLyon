@@ -20,18 +20,19 @@ int main( int argc, char** argv )
 {/*{{{*/
 
     CmdLine::Arguments args;
-    CmdLine::Parser parser( "Permet de référencer des mots clefs à travers des fichiers" );
-    parser.addOption( "exclude,e",  "Inverse le fonctionnement du programme" );
-    parser.addOption( "keyword,k",  "Spécifie la liste des mots clefs à utiliser", true );
+    {
+        CmdLine::Parser parser( "Permet de référencer des mots clefs à travers des fichiers" );
+        parser.addOption( "exclude,e",  "Inverse le fonctionnement du programme" );
+        parser.addOption( "keyword,k",  "Spécifie la liste des mots clefs à utiliser", true );
 
-    try {
-        parser.parse( argc, argv, args );
+        try {
+            parser.parse( argc, argv, args );
 
-    } catch( exception& e ) {
-        cout << "Une erreur c'est produit durant la récupération de la ligne de commande : " << endl;
-        cout << e.what() << endl;
+        } catch( exception& e ) {
+            cout << "Une erreur c'est produit durant la récupération de la ligne de commande : " << endl;
+            cout << e.what() << endl;
+        }
     }
-
     //----------------------------------------------------------------------
     //  On charge les fichiers à référencer
     //----------------------------------------------------------------------
@@ -61,7 +62,6 @@ int main( int argc, char** argv )
 
 
     References refs;
-
     //----------------------------------------------------------------------
     //  On effectue la référence croisée
     //----------------------------------------------------------------------

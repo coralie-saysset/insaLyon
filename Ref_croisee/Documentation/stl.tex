@@ -554,38 +554,79 @@
 
 
   \begin{subsection}{Structure des identificateurs}
-\begin {paragraph}{Analyse des besoins}
-Les identificateurs sont lus dans un ou plusieurs fichiers passés en parametre. Il faut tout d'abord prendre en considération
-deux choses: d'abord la présence de doublon parmi les identificateurs, ce qui n'est pas interdit à l'utilisateur. Leur existence
-entraine un surcout d'opération soit lors de test à la création pour l'empecher soit plus tard au traitement. Ensuite l'option
-\textbf{-e} permet de soustraire à la liste d'identificateur passée en parametre la liste des mots clés du C++. La structure
- de données choisie pour les identificateurs devra comparer ces deux listes de manière appropriée.
+    \begin {paragraph}{Analyse des besoins :}
+    Les identificateurs sont extraits d'un ou plusieurs fichiers passés en paramètres. À chaque mot clef rencontré durant l'analyse,
+    il faut vérifier s'il a déjà été référencé auparavant et si non créer son entrée dans la structure de données. Le programme devant
+    tester de nombreuses fois la présence d'un mot clef, nous souhaitons optimiser les accès. De plus chaque mot clef référencé 
+    possède une liste de fichiers où il apparait. Il faudra donc pouvoir associer des valeurs aux mots clefs.
+    \end{paragraph}
+    
+    \begin{paragraph}{Étude d'un arbre binaire :}
+     Nous cherchons à optimiser les accès dans la structure de données pour les identificateurs. Dans le pire des cas, si l'arbre
+     n'est pas isométrique il faut parcourir tous les noeuds pour savoir si la clef est présente (O(n)). En revanche, dans le cas d'un 
+     un arbre équilibré (Ex: un arbre rouge et noir) la recherche est de complexité O(log(n)).
+     Un autre avantage d'un arbre binaire est que les mots clefs seront triés.
+     
+    \begin{figure}[htp]
+    \centering
+    \includegraphics[scale=0.5]{images/arbre.png}
+    \caption{Arbre binaire}
+    \end{figure}
 
+    \end{paragraph}
+    
+    \begin{paragraph}{Étude d'une table de hashage :}
+     Dans le cas d'une table de hash l'accès aux données est divisé par une constante C qui est le temps de calcul de la fonction de hash.
+     Nous pouvons dire que l'accès est de compléxité O(1) dans le pire des cas. En contrepartie de cette vitesse d'accès, la table de hash
+     prend plus de place en mémoire que les autres structures de données et les clefs ne sont pas triés. De plus il faut que la fonction de
+     hashage soit bien choisi pour qu'il y ait peu de collisions.
+     
+    \begin{figure}[htp]
+    \centering
+    \includegraphics[scale=0.5]{images/hashtable.png}
+    \caption{Table de hashage}
+    \end{figure}
 
-\end paragraph
-\end {paragraph}
+    \end{paragraph}
+    
 
   \end{subsection}
 
-  \begin{subsection}{Structure des occurences}
-\begin{paragraph}{Analyse des besoins}
-Si le choix d'une bonne structure pour les identifacateurs est important, pour les occurences il est essentiel pour le 
-fonctionnement du programme. En effet chaque idientificateurs peut être trouvés de nombreuses fois dans un documents. Il peut 
-y avoir de très grands nombres d'occurences provennant de plusieurs fichiers alors que les identificateurs ne seront contenus
-que dans un seul fichier passé en parametre. Par consequent le programme devra être optimisé avant tout pour la manipulation
-(acces, insertion, suppression) d'occurences que d'identifacateurs qu'il utilisera moins.
-\end{paragraph}
+  \begin{subsection}{Structure des références d'occurences}
+    \begin{paragraph}{Analyse des besoins :}
+    A chaque occurence est associé une paire contenant le nom du fichier et le numéro de ligne où elle apprait, il nous faut donc une structure de données pouvant représenter
+    cette multiplicité. Si un mot clef apprait plusieurs fois sur une même ligne nous choisissons de référencer cette ligne autant de fois que le mot clef est présent.
+    La compléxité en lecture n'a que peu d'importance dans notre programme car nous devons faire un parcours complet pour afficher toutes les occurences.
+    
+    Dans un soucis de réutilisabilité, on considère que l'utilisateur pourra en plus de voir apparaître les occurences
+    sur la console, vouloir récupérer une structure de donnée représentant ces occurences.
+    \end{paragraph}
 
-\begin{paragraph}
- Le programme va être amené à rencontrer et traîter de nombreuses occurences. Dans un soucis de réutilisabilité, on considère
-que l'utilisateur pourra en plus de voir apparaître les occurences sur la console, vouloir récupérer une structure de donnée
-localisant les occurences. Par conséquent nous avons choisi de séparer la fonction pemettant de trouver les occurences et de
-les enregistrer de celle permettant d'afficher celles trouvées. On choisira donc de favoriser l'insertion d'élément par
-rapport à l'acces, ce qui veut dire que nous favoriserons le traitement par rapport à l'affichage.
+    \begin{paragraph}{Étude d'un arbre de liste :}
+    Nous pouvons utiliser un arbre de liste pour stocker les références des occurences de mot clef. Chaque noeud de l'arbre contiendrait en clef le nom d'un fichier source
+    et en valeur la liste des lignes dans lequel le mot clef est présent. L'avantage de cette méthode est que nous stockons juste ce qu'il faut, il n'y a pas de redondances
+    d'informations. En revanche chaque insertion de référence demandera une complexité moyenne en O(log(n)).
+  
+    \end{paragraph}
+    
+    \begin{paragraph}{Étude d'une liste de pair :}
+      Chaque référence d'une occurence étant une paire d'un nom de fichier et d'un numéro de ligne, nous pourrions utiliser une liste pour stocker chacunes de ces pairs.
+      L'avantage de cette méthode est qu'étant donné que nous lisons les fichiers séquentiellements, l'insertion des pairs se faira de manière ordonnée et donc sera de complexité O(1).
+      Le désavantage c'est que nous stockons des doublons, le nom des fichiers où apparaissent les mots clefs.
+  
+        \begin{figure}[htp]
+    \centering
+    \includegraphics[scale=0.5]{images/liste.jpg}
+    \caption{Liste chainée}
+    \end{figure}
+    \end{paragraph}
+      \FloatBarrier
 
-\end{paragraph}
-
-
+    \begin{paragraph}{Décision :}
+      Dans un but de réutilisabilité nous préférons utliser un arbre de liste pour stocker les références des occurences. Nous evitons la redondance d'informations
+      et ainsi il est sera plus facile de maintenir la cohérence des données si nous souhaitons appliquer des traitements dessus.
+    \end{paragraph}
+    
   \end{subsection}
 
 \end{section}

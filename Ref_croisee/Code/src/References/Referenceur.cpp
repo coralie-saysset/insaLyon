@@ -63,7 +63,7 @@ void Referenceur::chargerMotsClefs( const string& nomFichier )
         delete _identificateurs;
     }
 
-    _identificateurs = new set<string>();
+    _identificateurs = new tr1::unordered_set<string>();
 
     ifstream fichierMotClef;
 
