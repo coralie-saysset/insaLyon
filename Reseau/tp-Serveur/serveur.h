@@ -3,7 +3,7 @@
 
 #include <QTcpServer>
 #include <QString>
-#include "Client.h"
+#include "client.h"
 
 class Serveur : public QTcpServer
 {
