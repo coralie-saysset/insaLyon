@@ -1,16 +1,14 @@
 #include "serveur.h"
 #include <QTcpSocket>
 #include <QString>
-#include <QFile>
 #include <QDebug>
+#include <QFile>
 #include <client.h>
 
 Serveur::Serveur():
-    QTcpServer()
+    QTcpServer(), fichierPath("startup.txt")
 {
-        tailleMessage=0;
-    //charge le dossier catalogue
-    recupCatalogue();
+    chargerCatalogue();
     connect(this, SIGNAL(newConnection()),
             this, SLOT(connexionAuServeur()) );
 
@@ -20,62 +18,68 @@ Serveur::Serveur():
 
 }
 
-//ajoute un client Ã  la liste et attend une requete
+//ajoute un client Ã  la liste et attend une requete
 void Serveur::connexionAuServeur()
 {
        QTcpSocket* sock = nextPendingConnection();
-//        Client *monClient = qobject_cast<Client*> (nextPendingConnection());
-
-        connect(sock, SIGNAL(readyRead()),
-                this, SLOT(requeteRecu()));
+       Client *client = new Client(sock, catalogue);
+       clientsConnectes << client;
 
         qDebug() << "Nouvelle connection entrante !";
 }
 
-void Serveur::requeteRecu()
+void Serveur::chargerCatalogue()
 {
-    qDebug() << "On vient de recevoir un message !";
-//identification du client
-     QTcpSocket *monClient = qobject_cast<QTcpSocket *>(sender());
-// Bordel infame
-// probleme d'heritage entre QtcpSocket et client. A voir.
-     connect(this, SIGNAL(RequeteComplete(QByteArray)), monClient, SLOT (DemandeClient(QByteArray)));
-    static QByteArray RequeteHTTP;
-    QByteArray morceauMessage;
+    QFile fichier("startup.txt");
 
-    if (monClient->canReadLine())
+    if ( !fichier.open( QIODevice::ReadWrite))
     {
-        morceauMessage=monClient->readLine();
-        if (morceauMessage== "\r\n")
-        {
-            qDebug()<< QString(RequeteHTTP);
-
-            emit RequeteComplete(RequeteHTTP);
-        }
-        else
-        {
-            RequeteHTTP=RequeteHTTP.append(morceauMessage);
-        }
+        return;
     }
 
+     catalogue = fichier.readLine().trimmed();
+     catalogue += "\r\n";
+     catalogue += fichier.readLine().trimmed();
+     catalogue += "\r\n";
+
+
+     QString ficPath;
+     while( fichier.canReadLine() ){
+           ficPath = fichier.readLine().trimmed();
+           QFile flux( ficPath );
+
+
+           if( !flux.open( QIODevice::ReadOnly ) )
+           { continue;}
+
+           catalogue += "Object ID=";
+           catalogue += flux.readLine().split(' ')[1].trimmed();
+           catalogue += " name=";
+           catalogue += flux.readLine().split(' ')[1].trimmed();
+           catalogue += " type=";
+           catalogue += flux.readLine().split(' ')[1].trimmed();
+           catalogue += " address=";
+           catalogue += flux.readLine().split(' ')[1].trimmed();
+           catalogue += " port=";
+           catalogue += flux.readLine().split(' ')[1].trimmed();
+           catalogue += " protocol=";
+           catalogue += flux.readLine().split(' ')[1].trimmed();
+           catalogue += " ips=";
+           catalogue += flux.readLine().split(' ')[1].trimmed();
+           catalogue += "\r\n";
+
+     }
+     catalogue += "\r\n";
+
+     int size = catalogue.size();
+
+     catalogue.insert( 0, "\r\n\r\n" );
+     catalogue.insert( 0, QString::number( size) );
+     catalogue.insert( 0, "Content-Length: " );
+     catalogue.insert( 0, "Content-Type: text/txt\r\n" );
+     catalogue.insert( 0, "HTTP/1.1 200 OK\r\n" );
+
+
+
 }
 
-
-void Serveur::getCatalogue() {
-//a voir...
-
-
-}
-//titre explicite.
-//idee:Passer adresse du fichier en parametre?
-void Serveur::recupCatalogue()
-{
-    QString nomFichier("C:\\tp-serveur\\cata.txt");
-    QFile fichier(nomFichier);
-    if (fichier.open( QIODevice::ReadWrite))
-    {
-        catalogue = fichier.readAll();
-        fichier.close();
-    }
-
-}

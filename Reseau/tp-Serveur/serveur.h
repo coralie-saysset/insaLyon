@@ -3,6 +3,7 @@
 
 #include <QTcpServer>
 #include <QString>
+#include "Client.h"
 
 class Serveur : public QTcpServer
 {
@@ -11,21 +12,21 @@ class Serveur : public QTcpServer
 public:
     Serveur();
 
-signals:
-    void RequeteComplete(QByteArray);
+
 
 
 protected:
-    QList<QTcpSocket *> clientsConnectes;
+    QList<Client *> clientsConnectes;
     QByteArray catalogue;
+    QString fichierPath;
     quint16 tailleMessage;
-    void recupCatalogue();
+    void chargerCatalogue();
+
 
 
 protected slots:
     void connexionAuServeur();
-    void requeteRecu();
-    void getCatalogue();
+
 
 
 };
