@@ -34,7 +34,7 @@
 
     \begin{itemize}
 
-      \item \textbf{mot} : Suite de caractères se terminant par un délimiteur.
+      \item \textbf{mot} : Suite de caractères se terminant par un délimiteur
 
       \item \textbf{ligne} : Suite de mots terminée par un retour chariot
 
@@ -97,7 +97,7 @@
 
 
 %-----------------------------------------------------------------------------------------------------------------------------------%
-%	Tests fonctionnel
+%	Tests fonctionnels
 %-----------------------------------------------------------------------------------------------------------------------------------%
 \begin{section}{Tests fonctionnels}
 
@@ -532,7 +532,7 @@
   
   \begin{paragraph}{Description des états :}
    \begin{itemize}
-    \item \textbf{Separateur} : Lorsque que l'automate rencontre un caractère séparant deux identifacteur\\Exemple: Tout caractère non alphanumériques, le tiret du bas non inclus
+    \item \textbf{Separateur} : Lorsque que l'automate rencontre un caractère séparant deux identifacteurs\\Exemple: Tout caractère non alphanumérique, le tiret du bas non inclus
     \item \textbf{Commentaire} : Lorsque l'automate rencontre un commentaire sur une seule ligne ou multiligne \\Exemple: /* Ceci est un commentaire */
     \item \textbf{MotClef} : Lorsque l'automate rencontre un identifacteur qui peut être un mot clef potentiel \\Exemple: cout
     \item \textbf{Preprocesseur} : Lorsque l'automate rencontre une instruction preprocesseur \\Exemple: \#include $<$iostream$>$
@@ -588,14 +588,17 @@
     \end{figure}
 
     \end{paragraph}
-    
+    \begin{paragraph}{Decision :}
+	Le programme devra fréquement vérifier si un identificateur est un mot clé, donc la structure de donnée doit en priorité favoriser l'acces.
+	Notre cahier des charges n'indiquant rien sur une eventuelle limitation de mémoire, on preferera utiliser une table de hashage car elle possede la meilleure rapidité d'accès.
+
 
   \end{subsection}
 
-  \begin{subsection}{Structure des références d'occurences}
+  \begin{subsection}{Structure localisant les références croisées}
     \begin{paragraph}{Analyse des besoins :}
-    A chaque occurence est associé une paire contenant le nom du fichier et le numéro de ligne où elle apprait, il nous faut donc une structure de données pouvant représenter
-    cette multiplicité. Si un mot clef apprait plusieurs fois sur une même ligne nous choisissons de référencer cette ligne autant de fois que le mot clef est présent.
+    A chaque occurence est associée une paire contenant le nom du fichier et le numéro de ligne où elle apparait, il nous faut donc une structure de données pouvant représenter
+    cette multiplicité. Si un mot clef apparait plusieurs fois sur une même ligne nous choisissons de référencer cette ligne autant de fois que le mot clef est présent.
     La compléxité en lecture n'a que peu d'importance dans notre programme car nous devons faire un parcours complet pour afficher toutes les occurences.
     
     Dans un soucis de réutilisabilité, on considère que l'utilisateur pourra en plus de voir apparaître les occurences
@@ -604,14 +607,14 @@
 
     \begin{paragraph}{Étude d'un arbre de liste :}
     Nous pouvons utiliser un arbre de liste pour stocker les références des occurences de mot clef. Chaque noeud de l'arbre contiendrait en clef le nom d'un fichier source
-    et en valeur la liste des lignes dans lequel le mot clef est présent. L'avantage de cette méthode est que nous stockons juste ce qu'il faut, il n'y a pas de redondances
+    et en valeur la liste des lignes dans lesquelles le mot clef est présent. L'avantage de cette méthode est que nous stockons juste ce qu'il faut, il n'y a pas de redondances
     d'informations. En revanche chaque insertion de référence demandera une complexité moyenne en O(log(n)).
   
     \end{paragraph}
     
     \begin{paragraph}{Étude d'une liste de pair :}
       Chaque référence d'une occurence étant une paire d'un nom de fichier et d'un numéro de ligne, nous pourrions utiliser une liste pour stocker chacunes de ces pairs.
-      L'avantage de cette méthode est qu'étant donné que nous lisons les fichiers séquentiellements, l'insertion des pairs se faira de manière ordonnée et donc sera de complexité O(1).
+      L'avantage de cette méthode est qu'étant donné que nous lisons les fichiers séquentiellements, l'insertion des pairs se fera de manière ordonnée et donc sera de complexité O(1).
       Le désavantage c'est que nous stockons des doublons, le nom des fichiers où apparaissent les mots clefs.
   
         \begin{figure}[htp]
