@@ -36,12 +36,15 @@
 
       \item \textbf{mot} : Suite de caractères se terminant par un délimiteur
 
+      \item \textbf{Délimiteur} : Un caractère représentant une séparation entre deux mots (Ex: une virgule, un espace, un point, ...) 
+
       \item \textbf{ligne} : Suite de mots terminée par un retour chariot
 
       \item \textbf{Identificateur} : Mot sensible à la casse composé uniquement de caractères alphanumériques et du caractère `\_`. 
+				      Un identifacteur commence par une lettre ou par le caractère `\_`.
 				      Les commentaires ou chaines litérales ne peuvent contenir d'identifcateurs
-
-      \item \textbf{Délimiteur} : Un caractère représentant une séparation entre deux mots (Ex: une virgule, un espace, un point, ...) 
+				     
+      \item \textbf{Mot Clef} : Identificateurs que l'utilisateur souhaite rechercher dans un ou plusieur fichier. Par défaut il s'agit de ceux de ceux du C++
 
       \item \textbf{Référence croisée} : Fait de rechercher un identificateur dans un ou plusieurs fichiers sources pour déterminer sa localisation
     \end{itemize}
@@ -51,7 +54,8 @@
 
   \begin{subsection}{Description du programme}
     Le but du programme est de permettre de retrouver rapidement l'emplacement d'identifcateurs dans une collection de fichiers.
-    On cherche à connaitre dans quel(s) fichier(s) et à quelle(s) ligne(s) les identifcateurs apparaissent.
+    L'utilisateur peut choisir de rechercher les identifacateurs étant des mots cléfs, ou ceux qui n'en sont pas.
+    On cherche à connaitre dans quel(s) fichier(s) et à quelle(s) ligne(s) ces identifcateurs apparaissent.
     
     Dans le cas où un identifacteur apparaitrait plusieurs fois sur une même ligne, nous avons pris la décision d'afficher
     la ligne concernée autant de fois qu'il y a d'occurences. En effet, un identificateur est un mot clé significatif pour l'utilisateur.
@@ -66,12 +70,11 @@
 
     i$\xrightarrow{}$test.cpp$\bullet$1$\bullet$1$\bullet$1$\downarrow$ \\
     
-    Par defaut les identificateurs sont les mots clefs utilisés par le langage C++. Il est cependant possible de spécifier
+    Par defaut les mots clefs sont ceux utilisés par le langage C++. Il est cependant possible de spécifier
     un fichier en argument du programme pour définir précisement quelles seront les identifcateurs recherchés par la référence
     croisée. Le fichier d'identifacteurs ne devra contenir qu'un seul identifacteur valide par ligne, le premier mot de la ligne sera choisi comme tel. Le programme présuposera que
     le fichier fourni en argument respecte ce formalisme.
     
-    Le programme disposera également de la fonctionnalité permettant d'exclure une liste d'identifacteurs.
     
   \end{subsection}
 
@@ -83,9 +86,13 @@
     \end{center}
 
     \begin{itemize}
-      \item[] \textbf{-e} : Permet d'inverser le comportement par défaut du programme. Exclut de la référence croisée tous les mots clefs du C++
+      \item[] \textbf{-e} : Permet d'inverser le comportement par défaut du programme.
+			    Au lieu de rechercher les identificateurs faisant parti du fichier de mot clé, le programme recheche
+			    les identificateurs n'étant pas des mots clefs.
+
       
-      \item[] \textbf{-k fichier\_mot\_clef} : Permet de spécifier au programme une liste d'identifacateurs à rechercher par la référence croisée
+      \item[] \textbf{-k fichier\_mot\_clef} : Permet de spécifier au programme une liste de mot clé à rechercher par la référence croisée.
+					       Par défaut il s'agirat des mots-clefs du langage C++ 
 
       \item[] \textbf{nomfichier} : Chemin vers un ou plusieurs fichiers où rechercher les identifacateurs
     \end{itemize}
@@ -540,7 +547,8 @@
    \end{itemize}
   \end{paragraph}
   
-  Chaque état déclenche une action propre qui a pour tâche d'avancer dans le fichier tout en extrayant les identifacteurs qui sont des mots clefs.
+  Chaque état déclenche une action propre qui a pour tâche d'avancer dans le fichier tout en extrayant les identifacteurs recherchés
+(ceux qui sont des mots clefs, ou ceux qui n'en sont pas selon l'option choisie).
   \end{subsection}
 
 \end{section}
@@ -553,19 +561,19 @@
 \begin{section}{Analyse critique des structures de données}
 
 
-  \begin{subsection}{Structure des identificateurs}
+  \begin{subsection}{Structure des mots-clefs}
     \begin {paragraph}{Analyse des besoins :}
-    Les identificateurs sont extraits d'un ou plusieurs fichiers passés en paramètres. À chaque mot clef rencontré durant l'analyse,
+    Les mots-clefs sont extraits d'un ou plusieurs fichiers passés en paramètres. À chaque Identificateur rencontré durant l'analyse,
     il faut vérifier s'il a déjà été référencé auparavant et si non créer son entrée dans la structure de données. Le programme devant
-    tester de nombreuses fois la présence d'un mot clef, nous souhaitons optimiser les accès. De plus chaque mot clef référencé 
-    possède une liste de fichiers où il apparait. Il faudra donc pouvoir associer des valeurs aux mots clefs.
+    tester de nombreuses fois l'égalité avec un mot clef, nous souhaitons optimiser les accès. De plus chaque mot clef référencé 
+    possède une liste de fichiers où il apparait. Il faudra donc pouvoir associer des valeurs aux mots-clefs.
     \end{paragraph}
     
     \begin{paragraph}{Étude d'un arbre binaire :}
      Nous cherchons à optimiser les accès dans la structure de données pour les identificateurs. Dans le pire des cas, si l'arbre
      n'est pas isométrique il faut parcourir tous les noeuds pour savoir si la clef est présente (O(n)). En revanche, dans le cas d'un 
      un arbre équilibré (Ex: un arbre rouge et noir) la recherche est de complexité O(log(n)).
-     Un autre avantage d'un arbre binaire est que les mots clefs seront triés.
+     Un autre avantage d'un arbre binaire est que les mots-clefs seront triés.
      
     \begin{figure}[htp]
     \centering
@@ -595,7 +603,7 @@
 
   \end{subsection}
 
-  \begin{subsection}{Structure localisant les références croisées}
+  \begin{subsection}{Structure localisant les Identificateurs}
     \begin{paragraph}{Analyse des besoins :}
     A chaque occurence est associée une paire contenant le nom du fichier et le numéro de ligne où elle apparait, il nous faut donc une structure de données pouvant représenter
     cette multiplicité. Si un mot clef apparait plusieurs fois sur une même ligne nous choisissons de référencer cette ligne autant de fois que le mot clef est présent.
@@ -606,14 +614,14 @@
     \end{paragraph}
 
     \begin{paragraph}{Étude d'un arbre de liste :}
-    Nous pouvons utiliser un arbre de liste pour stocker les références des occurences de mot clef. Chaque noeud de l'arbre contiendrait en clef le nom d'un fichier source
+    Nous pouvons utiliser un arbre de liste pour stocker les occurences des Identificateurs. Chaque noeud de l'arbre contiendrait en clef le nom d'un fichier source
     et en valeur la liste des lignes dans lesquelles le mot clef est présent. L'avantage de cette méthode est que nous stockons juste ce qu'il faut, il n'y a pas de redondances
     d'informations. En revanche chaque insertion de référence demandera une complexité moyenne en O(log(n)).
   
     \end{paragraph}
     
     \begin{paragraph}{Étude d'une liste de pair :}
-      Chaque référence d'une occurence étant une paire d'un nom de fichier et d'un numéro de ligne, nous pourrions utiliser une liste pour stocker chacunes de ces pairs.
+      Chaque occurence étant une paire d'un nom de fichier et d'un numéro de ligne, nous pourrions utiliser une liste pour stocker chacunes de ces pairs.
       L'avantage de cette méthode est qu'étant donné que nous lisons les fichiers séquentiellements, l'insertion des pairs se fera de manière ordonnée et donc sera de complexité O(1).
       Le désavantage c'est que nous stockons des doublons, le nom des fichiers où apparaissent les mots clefs.
   
