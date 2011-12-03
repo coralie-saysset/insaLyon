@@ -16,7 +16,6 @@ using namespace std;
 
 #include    <iostream>
 #include    <limits>
-#include    <fstream>
 
 #include    "Referenceur.hpp"
 
@@ -247,7 +246,7 @@ void Referenceur::lireFlux( FichierLu& fic, References& refs )
             break;
 
         case MotClef:
-            lireMotClef( fic, refs );
+            lireIdentificateur( fic, refs );
             break;
 
         case Literal:
@@ -293,7 +292,7 @@ void Referenceur::lireCommentaire( FichierLu& fic, References& refs )
 
 }/*}}}*/
 
-void Referenceur::lireMotClef( FichierLu& fic, References& refs )
+void Referenceur::lireIdentificateur( FichierLu& fic, References& refs )
 {/*{{{*/
 
     string mot;

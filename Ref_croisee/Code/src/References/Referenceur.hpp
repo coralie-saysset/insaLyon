@@ -35,45 +35,119 @@ using namespace Reference_croisee;
 class Referenceur {
 
     public:
+//----------------------------------------------------------------------
+//  CONSTRUCTEURS
+//----------------------------------------------------------------------
         Referenceur( const std::string fichierMotClef = std::string(),
                      const bool modeInverse = false );
 
-        //----------------------------------------------------------------------
-        //  METHODES PUBLIQUES
-        //----------------------------------------------------------------------
+//----------------------------------------------------------------------
+//  METHODES PUBLIQUES
+//----------------------------------------------------------------------
+
+        // ===  FUNCTION  ======================================================================
+        //         Name:  chargerMotsClefs
+        //  Description:  Permet de charger des mots clefs à partir d'un fichier
+        // =====================================================================================
         void chargerMotsClefs( const std::string& nomFichier );
+        
+        // ===  FUNCTION  ======================================================================
+        //         Name:  chargerMotsClefsCpp
+        //  Description:  Permet de définir les mots clefs C++ standard comme des mots clefs
+        // =====================================================================================
+        void chargerMotsClefsCpp();
+        
+        // ===  FUNCTION  ======================================================================
+        //         Name:  setModeInverse
+        //  Description:  Permet de passer le parseur en mode inverse
+        // =====================================================================================
         inline void setModeInverse( const bool mode );
+
+        // ===  FUNCTION  ======================================================================
+        //         Name:  referencer
+        //  Description:  Permet de chercher les mots clefs une collection de fichier
+        //                Les résultats sont stockés dans refs
+        // =====================================================================================
         void referencer( const std::vector<std::string>& fic, References& refs );
 
     protected:
-        enum Mode { Normal, Inverse };
-        enum Etat { Separateur, Commentaire, MotClef, Preprocesseur, Literal };
+        enum Mode { Normal, Inverse };          // Les différents mode du parseur
+        enum Etat { Separateur, Commentaire, MotClef, Preprocesseur, Literal }; // Les états interne de l'automate
 
-        //----------------------------------------------------------------------
-        //  ATTRIBUTS MEMBRES
-        //----------------------------------------------------------------------
+
+
+//----------------------------------------------------------------------
+//  ATTRIBUTS MEMBRES
+//----------------------------------------------------------------------
         Mode _mode;
         Etat _etat;
 
-        std::tr1::unordered_set<std::string> _motsClefs;
+        std::tr1::unordered_set<std::string> _motsClefs; // le conteneur des mots clefs
 
-        //----------------------------------------------------------------------
-        //  METHODES PROTEGES
-        //----------------------------------------------------------------------
+
+
+//----------------------------------------------------------------------
+//  METHODES PROTEGES
+//----------------------------------------------------------------------
+
+        // ===  FUNCTION  ======================================================================
+        //         Name:  estInserable
+        //  Description:  retourne vrai si l'identificateur est un mot clef
+        // =====================================================================================
         inline bool estInserable( const std::string& mot ) const;
-        void chargerMotsClefsCpp();
+
+        // ===  FUNCTION  ======================================================================
+        //         Name:  isSeparateur
+        //  Description:  Retourne vrai si le caractère est un séparateur
+        // =====================================================================================
         bool isSeparateur( const char c ) const;
+
+        // ===  FUNCTION  ======================================================================
+        //         Name:  changerEtat
+        //  Description:  Définit le nouvel état de l'automate
+        // =====================================================================================
         void changerEtat( FichierLu& fic );
+
+        // ===  FUNCTION  ======================================================================
+        //         Name:  lireFlux
+        //  Description:  Avance dans le flux de données en fonction de l'état de l'automate
+        // =====================================================================================
         void lireFlux( FichierLu& fic, References& refs );
 
 
-        //----------------------------------------------------------------------
-        //  METHODES ETATS
-        //----------------------------------------------------------------------
+
+//----------------------------------------------------------------------
+//  METHODES ETATS
+//----------------------------------------------------------------------
+
+        // ===  FUNCTION  ======================================================================
+        //         Name:  lirePreprocesseur
+        //  Description:  Traite les instructions préprocesseurs
+        // =====================================================================================
         void lirePreprocesseur( FichierLu& fic, References& refs );
+
+        // ===  FUNCTION  ======================================================================
+        //         Name:  lireSeparateur
+        //  Description:  Traite les séparateurs
+        // =====================================================================================
         void lireSeparateur( FichierLu& fic, References& refs );
-        void lireMotClef( FichierLu& fic, References& refs );
+
+        // ===  FUNCTION  ======================================================================
+        //         Name:  lireIdentificateur
+        //  Description:  Traite les identificateurs
+        // =====================================================================================
+        void lireIdentificateur( FichierLu& fic, References& refs );
+
+        // ===  FUNCTION  ======================================================================
+        //         Name:  lireCommentaire
+        //  Description:  Traite les commentaires
+        // =====================================================================================
         void lireCommentaire( FichierLu& fic, References& refs );
+
+        // ===  FUNCTION  ======================================================================
+        //         Name:  lireLiteral
+        //  Description:  Traire les chaines de caractères
+        // =====================================================================================
         void lireLiteral( FichierLu& fic, References& refs );
 
 
