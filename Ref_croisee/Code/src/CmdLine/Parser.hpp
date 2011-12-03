@@ -52,7 +52,9 @@ class Parser {
            *         Name:  addOption
            *  Description:  Ajoute une option que doit gérer le programme
            * =====================================================================================*/
-          void addOption( std::string optionName, std::string description, bool hasArgument = false );
+          void addOption( std::string optionName, 
+			  std::string description, 
+			  bool hasArgument = false );
           
           /* ===  FUNCTION  ======================================================================
            *         Name:  parse

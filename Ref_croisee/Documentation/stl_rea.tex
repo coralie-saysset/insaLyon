@@ -1,0 +1,2230 @@
+\documentclass{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[francais]{babel}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\usepackage{graphicx}
+\usepackage{placeins}
+\usepackage{minted}
+
+
+
+
+\lhead{Coralie Saysset - Romain Gerard}
+\chead{}
+\rhead{B3301}
+
+
+\begin{document}
+
+\fancyfoot[]{}
+\fancyfoot[R]{\ \\Insa de Lyon\\Dpt. Informatique}
+\fancyfoot[C]{\ \\\ \\ 2011}
+\fancyfoot[L]{Tuteurs :\\\ Nabila Benharkat\\\ Eric Guerin}
+\begin{center}
+\Huge{\ \\[6em]Références croisées \\ Document de réalisation}
+\end{center}
+
+\newpage
+
+\fancyfoot[]{}
+\setcounter{tocdepth}{4}
+\tableofcontents
+
+\newpage
+
+\fancyfoot[C]{\thepage}
+
+\begin{section}{Structure de données de la STL}
+
+  \begin{subsection}{Choix pour les identificateurs}
+  Les tables de hashages n'existant pas dans le standard C++03 nous avons décidé d'utiliser la classe \textbf{unordered\_map} présente 
+  dans le standard C++ (C++1x). Cette classe est présente dans le namespace tr1 (ToRealease) et implémente les tables de hashages
+  pour les classes standards de la STL (comme string).
+
+  \begin{center}
+	\textbf{$tr1::std::unordered\_map<std::string, \{Occurences\}>$}
+      \end{center}
+  \end{subsection}
+
+  \begin{subsection}{Choix pour les références d'occurences}
+  Nous avons décidé d'utiliser une \textbf{map} de \textbf{list} pour stocker les occurences des mots clefs.
+  La clef de la structure map est le nom du fichier où apparait l'occurence et la valeur est une liste d'entier indiquant
+  le numéro des lignes où l'on trouve le mot clef.
+
+  \begin{center}
+	\textbf{$std::map<std::string, list<int>>$}
+      \end{center}
+  \end{subsection}
+
+\end{section}
+
+
+\newpage 
+\begin{section}{Réalisation des tests}
+
+ \begin{subsection}{Test \no 1}
+    \begin{paragraph}{Descriptif :}
+      Le test \no 1 réalise le premier exemple donné par le sujet.\\ Les fichiers analysés sont : 
+      
+      \begin{listing}[h!]
+      \centering{file1.cpp}
+      \begin{minted}[linenos,
+		     gobble=2]{cpp}
+	  // affiche le message "Hello world"
+	  int main() {
+	      cout <<"Hello world"<<endl;
+	      cout<<endl;
+	      return 0;
+	  }
+      \end{minted}
+      \end{listing}
+      
+      \begin{listing}[h!]
+      \centering{file1.h}
+	\begin{minted}[linenos,gobble=2]{cpp}
+	   int main();
+	\end{minted}
+      \end{listing}
+      
+        \begin{listing}[h!]
+        \centering{key1.txt}
+	\begin{minted}[linenos,gobble=2]{cpp}
+	   int
+	   world
+	   template
+	\end{minted}
+      \end{listing}
+      
+    \end{paragraph}
+    
+    \begin{paragraph}{Résultat attendu :} 
+      Nous lançons le programme avec le contexte suivant :  
+       \begin{center}
+	\textbf{$tp\_stl\ -e\ -k\ key1.txt\ file1.cpp\ file1.h$}
+      \end{center}
+      
+      Nous devons obtenir le résultat ci-dessous après avoir trié la sortie : 
+      \begin{listing}[h!]
+          \centering{file1.res}
+      \begin{minted}[linenos,
+		     gobble=2]{pascal}
+	  cout	file1.cpp 3 4	
+	  endl	file1.cpp 3 4	
+	  main	file1.cpp 2	file1.h 1	
+	  return	file1.cpp 5	
+      \end{minted}
+  
+      \end{listing}
+    \end{paragraph}
+
+ \end{subsection}
+     
+   \newpage 
+       
+  \begin{subsection}{Test \no 2}
+  
+    \begin{paragraph}{Descriptif :}
+	Le test \no 2 réalise le deuxième exemple donné par le sujet.\\ Les fichiers analysés sont : 
+      
+      \begin{listing}[h!]
+      \centering{file2.cpp}
+      \begin{minted}[linenos,
+		     gobble=2]{cpp}
+	  // affiche le message "Hello world"
+	  int main() {
+	      cout <<"Hello world"<<endl;
+	      cout<<endl;
+	      return 0;
+	  }
+      \end{minted}
+      \end{listing}
+      
+      \begin{listing}[h!]
+      \centering{file2.h}
+	\begin{minted}[linenos,gobble=2]{cpp}
+	   int main();
+	\end{minted}
+      \end{listing}
+      
+        \begin{listing}[h!]
+        \centering{key2.txt}
+	\begin{minted}[linenos,gobble=2]{cpp}
+	   int
+	   world
+	   template
+	\end{minted}
+      \end{listing}
+      
+    \end{paragraph}
+	   
+    \begin{paragraph}{Résultat attendu :}
+       Nous lançons le programme avec le contexte suivant après avoir trié la sortie :  
+       \begin{center}
+	\textbf{$tp\_stl\ -k\ key2.txt\ file2.cpp\ file2.h$}
+      \end{center}
+      
+      Nous devons obtenir le résultat ci-dessous : 
+      \begin{listing}[h!]
+          \centering{file2.res}
+      \begin{minted}[linenos,
+		     gobble=2]{pascal}
+	  int	file2.cpp 2	file2.h 1	
+      \end{minted}
+  
+      \end{listing}
+    \end{paragraph}
+
+  \end{subsection}
+
+   \newpage 
+  
+  \begin{subsection}{Test \no 3}
+    
+    \begin{paragraph}{Descriptif :}
+	Le test \no 3 réalise le test sur le fichier main de notre programme.\\ Les fichiers analysés sont : 
+      
+      \begin{minted}[linenos,
+		     gobble=2]{cpp}
+	    //============================================================================
+	    // Name        : Ref_croisee.cpp
+	    // Author      :
+	    // Version     :
+	    // Copyright   : Your copyright notice
+	    // Description : Hello World in C++, Ansi-style
+	    //============================================================================
+
+	    #include <iostream>
+	    #include <vector>
+
+	    #include "CmdLine/cmdLine.hpp"
+	    #include "References/Referenceur.hpp"
+	    #include "References/References.hpp"
+
+	    using namespace std;
+	    using namespace Reference_croisee;
+
+	    int main( int argc, char** argv )
+	    {/*{{{*/
+
+		CmdLine::Arguments args;
+		CmdLine::Parser parser( "Permet de referencer des mots clefs a travers des fichiers" );
+		parser.addOption( "exclude,e",  "Inverse le fonctionnement du programme" );
+		parser.addOption( "keyword,k",  "Specifie la liste des mots clefs a utiliser", true );
+
+		try {
+		    parser.parse( argc, argv, args );
+
+		} catch( exception& e ) {
+		    cout << "Une erreur c'est produit durant la recuperation de la ligne de commande : "
+			 << endl << e.what() << endl;
+		}
+
+		//----------------------------------------------------------------------
+		//  On charge les fichiers a referencer
+		//----------------------------------------------------------------------
+		vector<string> ficsReferencer;
+
+		if( args.count( "__args__" ) ) {
+		    ficsReferencer = args.get<vector<string> >( "__args__" );
+
+		} else {
+		    cerr << "Aucun fichier a referencer !" << endl;
+		    return 1;
+		}
+
+		//----------------------------------------------------------------------
+		//  On charge les mots clefs si ils sont fournis
+		//----------------------------------------------------------------------
+		string fichierMotClef;
+
+		if( args.count( "keyword" ) ) {
+		    fichierMotClef = args.get<string>( "keyword" );
+		}
+
+		//----------------------------------------------------------------------
+		//  L'etat dans lequel mettre le programme
+		//----------------------------------------------------------------------
+		bool mode( args.count( "exclude" ) );
+
+
+		References refs;
+
+		//----------------------------------------------------------------------
+		//  On effectue la reference croisee
+		//----------------------------------------------------------------------
+		try {
+		    Referenceur referenceur( fichierMotClef, mode );
+		    referenceur.referencer( ficsReferencer, refs );
+
+		} catch( exception& e ) {
+		    cerr << "Une erreur est survenue durant la reference croisee : " << endl;
+		    cerr << e.what() << endl;
+		}
+
+
+		//----------------------------------------------------------------------
+		//  On affiche les resultats
+		//----------------------------------------------------------------------
+		cout << refs;
+
+		return 0;
+	    }/*}}}*/
+      \end{minted}
+      
+    \end{paragraph}
+    
+    \newpage 
+    
+    \begin{paragraph}{Résultat attendu :}
+       Nous lançons le programme avec le contexte suivant :  
+       \begin{center}
+	\textbf{$tp\_stl\ file3.cpp$}
+      \end{center}
+      
+      Nous devons obtenir le résultat ci-dessous après avoir trié la sortie: 
+      \begin{listing}[h!]
+          \centering{file3.res}
+      \begin{minted}[linenos,
+		     gobble=2]{pascal}
+	  bool	file3.cpp 60	
+	  catch	file3.cpp 30 72	
+	  char	file3.cpp 19	
+	  cout	file3.cpp 31 81	
+	  else	file3.cpp 43	
+	  if	file3.cpp 40 53	
+	  int	file3.cpp 19 19	
+	  namespace	file3.cpp 16 17	
+	  return	file3.cpp 45 83	
+	  true	file3.cpp 25	
+	  try	file3.cpp 27 68	
+	  using	file3.cpp 16 17		
+      \end{minted}
+  
+      \end{listing}
+    \end{paragraph}
+    
+    
+  \end{subsection}
+
+  \newpage
+
+  \begin{subsection}{Test \no 4}
+    \begin{paragraph}{Descriptif :}
+      Le fichier à analyser est le même que dans le test précédent, seul le contexte d'execution change.
+    \end{paragraph}
+    
+\begin{paragraph}{Résultat attendu :}
+       Nous lançons le programme avec le contexte suivant :  
+       \begin{center}
+	\textbf{$tp\_stl\ file4.cpp$}
+      \end{center}
+      
+      Nous devons obtenir le résultat ci-dessous après avoir trié la sortie: 
+      \begin{listing}[h!]
+          \centering{file4.res}
+      \begin{minted}[linenos,
+		     gobble=2]{cpp}
+	  addOption	file4.cpp 24 25	
+	  argc	file4.cpp 19 28	
+	  args	file4.cpp 22 28 40 41 53 54 60	
+	  Arguments	file4.cpp 22	
+	  argv	file4.cpp 19 28	
+	  cerr	file4.cpp 44 73 74	
+	  CmdLine	file4.cpp 22 23	
+	  count	file4.cpp 40 53 60	
+	  display	file4.cpp 81	
+	  e	file4.cpp 30 32 72 74	
+	  endl	file4.cpp 31 32 44 73 74	
+	  exception	file4.cpp 30 72	
+	  fichierMotClef	file4.cpp 51 54 69	
+	  ficsReferencer	file4.cpp 38 41 70	
+	  get	file4.cpp 41 54	
+	  main	file4.cpp 19	
+	  mode	file4.cpp 60 69	
+	  parse	file4.cpp 28	
+	  Parser	file4.cpp 23	
+	  parser	file4.cpp 23 24 25 28	
+	  Reference_croisee	file4.cpp 17	
+	  referencer	file4.cpp 70	
+	  References	file4.cpp 63	
+	  Referenceur	file4.cpp 69	
+	  referenceur	file4.cpp 69 70	
+	  refs	file4.cpp 63 70 81	
+	  std	file4.cpp 16	
+	  string	file4.cpp 38 41 51 54	
+	  vector	file4.cpp 38 41	
+	  what	file4.cpp 32 74	
+      \end{minted}
+  
+      \end{listing}
+    \end{paragraph}
+  \end{subsection}
+ 
+\end{section}
+
+\begin{section}{Sources de l'application}
+
+  \begin{subsection}{Module CmdLine}
+  \begin{paragraph}{Parser.hpp}
+      \begin{minted}[linenos]{cpp}
+// NO_FORMAT ===========================================================================
+//
+//       Filename:  commandLineParser.hpp
+//
+//    Description:  Classe permettant d'extraire les informations de la ligne de commande
+//        Created:  06/11/2011 00:50:26
+//       Compiler:  g++
+//
+//         Author:  Romain GERARD, romain.gerard@insa-lyon.fr
+//
+// =====================================================================================
+
+
+#ifndef CmdLineParser_HPP
+#define CmdLineParser_HPP
+
+#include    <iostream>
+#include    <string>
+#include    <map>
+#include    <list>
+#include    <utility>
+
+namespace CmdLine {
+
+using namespace CmdLine;
+class Arguments;
+
+
+/* =====================================================================================
+ *        Class:  Parser
+ *  Description:  Permet d'extraire et de decouper les arguments de la ligne de commande
+ * =====================================================================================*/
+class Parser {
+
+     public:
+/*-----------------------------------------------------------------------------
+ *  Constructeur
+ *-----------------------------------------------------------------------------*/
+          Parser( std::string = "" );
+
+/*-----------------------------------------------------------------------------
+ *  Methodes Publiques
+ *-----------------------------------------------------------------------------*/
+
+          /* ===  FUNCTION  ======================================================================
+           *         Name:  addDescription
+           *  Description:  Ajoute une description au programme
+           * =====================================================================================*/
+          void addDescription( std::string );
+
+          /* ===  FUNCTION  ======================================================================
+           *         Name:  addOption
+           *  Description:  Ajoute une option que doit gerer le programme
+           * =====================================================================================*/
+          void addOption( std::string optionName, std::string description, bool hasArgument = false );
+          
+          /* ===  FUNCTION  ======================================================================
+           *         Name:  parse
+           *  Description:  Extrait et stocke les informations de la ligne de commande
+           * =====================================================================================*/
+          void parse( int argc, char** argv, Arguments& args );
+
+          /* ===  FUNCTION  ======================================================================
+           *         Name:  display
+           *  Description:  Affiche la description ainsi que les arguments accepte par le programme
+           *                dans le flux specifie
+           * =====================================================================================*/
+          void display( std::ostream& flux ) const;
+
+
+     private:
+/*-----------------------------------------------------------------------------
+ *  Les etats que peut prendre l'objet
+ *-----------------------------------------------------------------------------*/
+          enum State { Free, ShortCondition, LongCondition, FreeArgument };
+          State _state;
+
+          
+/*-----------------------------------------------------------------------------
+ *  Les structures de donnees pour stocker les arguments
+ *-----------------------------------------------------------------------------*/
+          struct optValue;
+          typedef std::pair<const std::string, optValue*> lItem;
+          typedef std::pair<const char, optValue*> sItem;
+
+          struct optValue {
+               std::string description;
+               bool hasArgument;
+               lItem* lOption;
+               sItem* sOption;
+          };
+
+          std::map< const std::string, optValue* > _lOptions;
+          std::map< const char, optValue* > _sOptions;
+          std::list<optValue> _options; // pas de vector car la zone memoire bouge
+          std::string _description;
+          std::string _freeArgs;
+
+/*-----------------------------------------------------------------------------
+ *  Methodes privees
+ *-----------------------------------------------------------------------------*/
+
+          /* ===  FUNCTION  ======================================================================
+           *         Name:  processInput
+           *  Description:  Traite la ligne de commande
+           * =====================================================================================*/
+          void processInput( std::string::iterator& it, Arguments& args );
+
+          /* ===  FUNCTION  ======================================================================
+           *         Name:  ChangeState
+           *  Description:  Determine l'etat de l'objet
+           * =====================================================================================*/
+          void changeState( std::string::iterator& it );
+
+
+
+
+};
+
+//Surcharge de l'operateur de flux
+std::ostream& operator<<( std::ostream& flux,  const Parser& parser );
+
+}/*}}}*/
+#endif
+
+      \end{minted}
+      \end{paragraph}
+   
+
+\newpage
+  \begin{paragraph}{Parser.cpp}
+      \begin{minted}[linenos]{cpp}
+// =====================================================================================
+//
+//       Filename:  Parser.cpp
+//
+//    Description:  Permet d'extraire les informations de la ligne de commande
+//        Created:  06/11/2011 01:43:35
+//       Compiler:  g++
+//
+//         Author:  Romain GERARD, romain.gerard@insa-lyon.fr
+//
+// =====================================================================================
+
+#include    "Parser.hpp"
+#include    "Arguments.hpp"
+#include    <string>
+#include    <map>
+#include    <utility>
+
+namespace CmdLine {
+
+using namespace CmdLine;
+using namespace std;
+
+/*-----------------------------------------------------------------------------
+ *  Constructeurs
+ *-----------------------------------------------------------------------------*/
+Parser::Parser( string description ):
+     _state( Free ), _description( description )
+{}
+
+
+/*-----------------------------------------------------------------------------
+ *  Methode Publiques
+ *-----------------------------------------------------------------------------*/
+void Parser::addDescription( string description )
+{/*{{{*/
+     _description = description;
+}/*}}}*/
+
+void Parser::addOption( string optionName, string description, bool hasArgument )
+{/*{{{*/
+
+     string lOption, sOption;
+
+     size_t pos = optionName.find_first_of( ',' );
+
+     lOption = optionName.substr( 0,  pos );
+     sOption = optionName.substr( ( pos == string::npos ) ? optionName.size() : ++pos );
+
+     lItem* lIt = &( *( _lOptions.insert( make_pair( lOption, ( optValue* )0 ) ).first ) );
+     sItem* sIt = 0;
+
+     if( !sOption.empty() ) {
+          sIt = &( *( _sOptions.insert( make_pair( sOption.at( 0 ), ( optValue* )0 ) ).first ) );
+     }
+
+     optValue value = { description, hasArgument, lIt, sIt };
+     _options.push_back( value );
+
+     lIt->second = &( _options.back() );
+
+     if ( sIt ) {
+          sIt->second = lIt->second;
+     }
+}/*}}}*/
+
+void Parser::display( ostream& flux ) const
+{/*{{{*/
+
+     string option;
+     flux << _description << endl << endl;
+
+     flux << "Liste des arguments : " << endl;
+
+     for( list<optValue>::const_iterator it = _options.begin(); it != _options.end(); it++ ) {
+
+          flux << "\t";
+
+          if( it->sOption ) {
+               option += "-";
+               option += it->sOption->first;
+               option += ", ";
+          }
+
+          option += "--";
+          flux.width( 18 );
+          flux << left << option + it->lOption->first;
+
+          flux.width( 5 );
+
+          if ( it->hasArgument ) {
+               flux << left << "arg";
+
+          } else {
+               flux << "";
+          }
+
+          flux << it->description << endl;
+
+          option.clear();
+     }
+
+}/*}}}*/
+
+void Parser::parse( int argc, char** argv, Arguments& args )
+{/*{{{*/
+
+     string cmdLine;
+
+     for ( char** it = argv + 1; it < argv + argc; it++ ) {
+          cmdLine += *it;
+          cmdLine += " ";
+     }
+
+     cmdLine += "  ";
+
+     string::iterator it = cmdLine.begin();
+
+     while( it != cmdLine.end() ) {
+
+          changeState( it );
+          processInput( it, args );
+     }
+
+     if( !_freeArgs.empty() ) {
+         args._arguments.insert( make_pair( "__args__", _freeArgs ) );
+     }
+     //    for( map<string, string>::iterator it = args._arguments.begin();
+     //         it != args._arguments.end(); it++ ) {
+     //        cout << it->first << " : " << it->second << endl;
+     //    }
+
+
+}/*}}}*/
+
+
+/*-----------------------------------------------------------------------------
+ *  Methodes Privees
+ *-----------------------------------------------------------------------------*/
+void Parser::changeState( string::iterator& it )
+{/*{{{*/
+
+     if( *it == '-' ) {
+          _state = ( _state == ShortCondition ) ? LongCondition : ShortCondition;
+
+     } else if( *it == ' ' ) {
+          _state = Free;
+
+     } else if( _state == ShortCondition ) {
+          _state = ShortCondition;
+
+     } else {
+          _state = FreeArgument;
+     }
+
+}/*}}}*/
+
+void Parser::processInput( string::iterator& it, Arguments& args )
+{/*{{{*/
+
+
+     if( _state == Free ) {
+          it++;
+
+     } else if( _state == FreeArgument ) {
+
+          while( *it != ' ' ) {
+               _freeArgs += *it;
+               it++;
+          }
+
+          _freeArgs += ',';
+
+     } else if ( _state == LongCondition ) {
+          string key;
+          it++;
+
+          while( *it != '=' && *it != ' ' ) {
+               key += *it;
+               it++;
+          }
+
+          if( !_lOptions.count( key ) ) {
+               throw UnknownOption( key );
+          }
+
+          lItem& item = *( _lOptions.find( key ) );
+
+          if( ( item.second->hasArgument && *it == ' ' )
+              || ( !item.second->hasArgument && *it == '=' ) ) {
+               throw ArgumentBadFormatted();
+          }
+
+          string value;
+
+          if( !item.second->hasArgument ) {
+               value = "42";
+
+          } else {
+               it++;
+
+               while( *it != ' ' ) {
+                    value += *it;
+                    it++;
+               }
+          }
+
+          if( value.empty() ) {
+               throw ArgumentBadFormatted();
+          }
+
+          args._arguments.insert( make_pair( key, value ) );
+
+     } else if ( _state == ShortCondition ) {
+
+          if ( *it == '-' ) {
+               it++;
+
+          } else {
+
+               string key;
+               key += *it;
+
+               if ( !_sOptions.count( *it ) ) {
+                    throw UnknownOption( key );
+               }
+
+               sItem& item = *( _sOptions.find( *it ) );
+               key = item.second->lOption->first;
+
+               it++;
+
+               if ( !item.second->hasArgument ) {
+                    args._arguments.insert( make_pair( key, "42" ) );
+
+               } else {
+
+                    if ( *it != ' ' ) {
+                         throw ArgumentBadFormatted();
+                    }
+
+                    ++it;
+                    string value;
+
+                    while( *it != ' ' ) {
+                         value += *it;
+                         it++;
+                    }
+
+                    if( value.empty() ) {
+                         throw  ArgumentBadFormatted();
+                    }
+
+                    args._arguments.insert( make_pair( key, value ) );
+               }
+
+          }
+     }
+
+
+
+}/*}}}*/
+
+
+/*-----------------------------------------------------------------------------
+ *  Surcharge Operateur
+ *-----------------------------------------------------------------------------*/
+ostream& operator<<( ostream& flux, const Parser& parser )
+{/*{{{*/
+
+     parser.display( flux );
+
+     return flux;
+}/*}}}*/
+
+}/*}}}*/
+      \end{minted}
+      \end{paragraph}
+
+\newpage
+  \begin{paragraph}{Arguments.hpp}
+   \begin{minted}[linenos]{cpp}
+// NO_FORMAT ============================================================================
+//
+//       Filename:  cmdLineArgument.hpp
+//
+//    Description:  Permet de stocker les arguments passe en parametre du programme
+//        Created:  06/11/2011 21:35:00
+//       Compiler:  g++
+//
+//         Author:  Romain GERARD, romain.gerard@insa-lyon.fr
+//
+// =====================================================================================
+
+
+#ifndef CmdLineArgument_HPP
+#define CmdLineArgument_HPP
+
+#include    <string>
+#include    <map>
+
+#include	"Exceptions.hpp"
+#include    "StringTo.hpp"
+
+namespace CmdLine {
+
+using namespace CmdLine;
+
+/* =====================================================================================
+ *        Class:  Argument
+ *  Description:  Permet de gerer les options de la ligne de commande
+ * =====================================================================================*/
+class Arguments {
+
+     public:
+         /* ===  FUNCTION  ======================================================================
+          *         Name:  count
+          *  Description:  Permet de savoir si une option est presente
+          *                Il faut donner le nom long de l'option
+          * =====================================================================================*/
+          bool count( std::string arg ) const {
+               return _arguments.count( arg );
+          }
+
+          /* ===  FUNCTION  ======================================================================
+           *         Name:  get
+           *  Description:  Permet de recuperer une option 
+           * =====================================================================================*/
+          template<typename T>
+          T get( const char* arg ) {
+
+               if ( !_arguments.count( arg ) )
+                    {   throw InvalidKey(); }
+
+               return stringTo<T>( _arguments[arg] );
+          }
+
+          /* ===  FUNCTION  ======================================================================
+           *         Name:  get
+           *  Description:  Permet de recuperer une option 
+           * =====================================================================================*/
+          template<typename T>
+          T get( std::string& arg ) {
+
+               if ( !_arguments.count( arg ) )
+                    {   throw InvalidKey(); }
+
+               return stringTo<T>( _arguments[arg] );
+          }
+
+
+     private:
+          /*-----------------------------------------------------------------------------
+           *  Structures de donnees
+           *-----------------------------------------------------------------------------*/
+          std::map<std::string, std::string> _arguments;
+
+          /*-----------------------------------------------------------------------------
+           *  Classe friend
+           *-----------------------------------------------------------------------------*/
+          friend class Parser;
+};
+
+}/*}}}*/
+
+#endif
+
+
+  \end{minted}
+  \end{paragraph}
+
+
+
+
+\newpage
+  \begin{paragraph}{StringTo.hpp}
+   \begin{minted}[linenos]{cpp}
+// =====================================================================================
+// 
+//       Filename:  StringTo.hpp
+// 
+//    Description:  Templates pour convertir les chaines de caracteres
+//        Created:  09/11/2011 01:00:03
+//       Compiler:  g++
+// 
+//         Author:  Romain GERARD, romain.gerard@insa-lyon.fr
+// 
+// =====================================================================================
+
+#ifndef CmdLineStringTo_HPP
+#define CmdLineStringTo_HPP
+
+#include	<string>
+#include	<vector>
+#include	<sstream>
+#include	"Exceptions.hpp"
+
+
+namespace CmdLine {
+
+using namespace CmdLine;
+
+#define STATIC_ASSERT( x , MSG ) typedef char __STATIC_ASSERT__##MSG[( x )?1:-1]
+
+    template<typename T>
+        T stringTo( const std::string& arg )
+    {/*{{{*/
+       
+         STATIC_ASSERT( sizeof(T) != sizeof(T),  Impossible_de_convertir_l_argument_vers_ce_type );
+         return T();
+    }/*}}}*/
+
+/*-----------------------------------------------------------------------------
+ *  Types simples
+ *-----------------------------------------------------------------------------*/
+    template<>
+        inline int stringTo<int>( const std::string& arg )
+    {/*{{{*/
+         std::stringstream s( arg );
+         int value = 0;
+
+         s >> value;
+
+         if ( s.fail() )
+              { throw BadConvertion(); }
+
+         return value;
+    }/*}}}*/
+
+    template<>
+        inline float stringTo<float>( const std::string& arg )
+    {/*{{{*/
+         std::stringstream s( arg );
+         float value = 0;
+
+         s >> value;
+
+         if ( s.fail() )
+              { throw BadConvertion(); }
+
+         return value;
+    }/*}}}*/
+
+    template<>
+        inline double stringTo<double>( const std::string& arg )
+    {/*{{{*/
+         std::stringstream s( arg );
+         double value = 0;
+
+         s >> value;
+
+         if ( s.fail() )
+              { throw BadConvertion(); }
+
+         return value;
+    }/*}}}*/
+
+    template<>
+        inline bool stringTo<bool>( const std::string& arg )
+    {/*{{{*/
+         std::stringstream s( arg );
+         int value = 0;
+
+         s >> value;
+
+         if ( s.fail() )
+              { throw BadConvertion(); }
+
+         return ( value );
+    }/*}}}*/
+
+    template<>
+        inline std::string stringTo<std::string>( const std::string& arg )
+    {/*{{{*/
+         return arg;
+    }/*}}}*/
+
+
+/*-----------------------------------------------------------------------------
+ *  Types composes
+ *-----------------------------------------------------------------------------*/
+    template<>
+        inline std::vector<std::string> stringTo<std::vector< std::string> >( const std::string& cpArg )
+    {/*{{{*/
+
+         std::string arg = cpArg;
+         std::vector<std::string> conteneur;
+         const char separator = ',';
+
+         int found = arg.find_first_of( separator );
+
+         while( found != ( ( int ) std::string::npos ) ) {
+              if( found > 0 ) {
+                   conteneur.push_back( arg.substr( 0, found ) );
+              }
+
+              arg = arg.substr( found + 1 );
+              found = arg.find_first_of( separator );
+         }
+
+         if ( arg.length() > 0 ) {
+              conteneur.push_back( arg );
+         }
+
+         return conteneur;
+    }/*}}}*/
+    
+    template<>
+        inline std::vector<int> stringTo<std::vector<int> >( const std::string& arg )
+    {/*{{{*/
+
+         std::vector<int> conteneur;
+         const char separator = ',';
+         std::stringstream buffer;
+         std::string cpArg = arg;
+
+         int found = cpArg.find_first_of( separator );
+         int val = 0;
+
+         while( found != ( ( int ) std::string::npos ) ) {
+
+              if( found > 0 ) {
+                   buffer << cpArg.substr( 0, found );
+                   buffer >> val;
+                   
+                   if ( buffer.fail() )
+                   { throw BadConvertion(); }
+
+                   conteneur.push_back( val );
+              }
+
+              cpArg = cpArg.substr( found + 1 );
+              found = cpArg.find_first_of( separator );
+              buffer.clear();
+         }
+
+         if ( arg.length() > 0 ) {
+           buffer << cpArg.substr( 0, found );
+           buffer >> val;
+           if ( buffer.fail() )
+           { throw BadConvertion(); }
+           conteneur.push_back( val );
+         }
+
+         return conteneur;
+    }/*}}}*/
+
+    template<>
+        inline std::vector<double> stringTo<std::vector<double> >( const std::string& arg )
+    {/*{{{*/
+
+         std::vector<double> conteneur;
+         const char separator = ',';
+         std::stringstream buffer;
+         std::string cpArg = arg;
+
+         int found = cpArg.find_first_of( separator );
+         double val = 0;
+
+         while( found != ( ( int ) std::string::npos ) ) {
+
+              if( found > 0 ) {
+                   buffer << cpArg.substr( 0, found );
+                   buffer >> val;
+                   
+                   if ( buffer.fail() )
+                   { throw BadConvertion(); }
+
+                   conteneur.push_back( val );
+              }
+
+              cpArg = cpArg.substr( found + 1 );
+              found = cpArg.find_first_of( separator );
+              buffer.clear();
+         }
+
+         if ( arg.length() > 0 ) {
+           buffer << cpArg.substr( 0, found );
+           buffer >> val;
+
+           if ( buffer.fail() )
+           { throw BadConvertion(); }
+           
+           conteneur.push_back( val );
+         }
+
+         return conteneur;
+    }/*}}}*/
+    
+    template<>
+        inline std::vector<float> stringTo<std::vector<float> >( const std::string& arg )
+    {/*{{{*/
+
+         std::vector<float> conteneur;
+         const char separator = ',';
+         std::stringstream buffer;
+         std::string cpArg = arg;
+
+         int found = cpArg.find_first_of( separator );
+         double val = 0;
+
+         while( found != ( ( int ) std::string::npos ) ) {
+
+              if( found > 0 ) {
+                   buffer << cpArg.substr( 0, found );
+                   buffer >> val;
+                   
+                   if ( buffer.fail() )
+                   { throw BadConvertion(); }
+
+                   conteneur.push_back( val );
+              }
+
+              cpArg = cpArg.substr( found + 1 );
+              found = cpArg.find_first_of( separator );
+              buffer.clear();
+         }
+
+         if ( arg.length() > 0 ) {
+           buffer << cpArg.substr( 0, found );
+           buffer >> val;
+
+           if ( buffer.fail() )
+           { throw BadConvertion(); }
+           
+           conteneur.push_back( val );
+         }
+
+         return conteneur;
+    }/*}}}*/
+}
+
+#endif
+  \end{minted}
+  \end{paragraph}
+
+
+\newpage
+  \begin{paragraph}{Exceptions.hpp}
+   \begin{minted}[linenos]{cpp}
+// NO_FORMAT ===========================================================================
+// 
+//       Filename:  Exceptions.hpp
+// 
+//    Description:  Les exceptions pouvant etre lancees
+//        Created:  09/11/2011 01:07:40
+//       Compiler:  g++
+// 
+//         Author:  Romain GERARD, romain.gerard@insa-lyon.fr
+// 
+// =====================================================================================
+
+#ifndef CmdLineExceptions_HPP
+#define CmdLineExceptions_HPP
+
+#include	<exception>
+
+/*-----------------------------------------------------------------------------
+ *  Exceptions
+ *-----------------------------------------------------------------------------*/
+
+namespace CmdLine {
+
+using namespace CmdLine;
+
+
+    /* =====================================================================================
+     *        Class:  UnknownCnvertion
+     *  Description:  Exception lance si on ne sait pas convertir la chaine vers le format
+     * =====================================================================================*/
+    class UnknownConvertion : public std::exception {
+         public:
+              virtual const char* what() const throw()
+              { return "Don't know how to convert the argument to this type !"; }
+    };
+
+
+    /* =====================================================================================
+     *        Class:  BadConvertion
+     *  Description:  Exception lance si la convertion a echoue
+     * =====================================================================================*/
+    class BadConvertion : public std::exception {
+         public:
+              virtual const char* what() const throw()
+              { return "The convertion of the argument to this type failed !"; }
+    };
+
+
+    /* =====================================================================================
+     *        Class:  InvalidKey
+     *  Description:  Exception lance si l'option ne correspond a aucune clef
+     * =====================================================================================*/
+    class InvalidKey : public std::exception {
+         public:
+              virtual const char* what() const throw()
+              { return "The key specified don't exist ! Check first with count()"; }
+    };
+
+
+    /* =====================================================================================
+     *        Class:  ArgumentBadFormatted
+     *  Description:  Exception lance lorsque la ligne de commande n'est pas bien formate
+     * =====================================================================================*/
+    class ArgumentBadFormatted : public std::exception {
+         public:
+              const char* what() const throw()
+              { return "Arguments are not well formatted !"; }
+    };
+
+
+    /* =====================================================================================
+     *        Class:  UnknownOption
+     *  Description:  Exception lance lorsqu'une option n'existe pas
+     * =====================================================================================*/
+    class UnknownOption : public std::exception {
+         public:
+              UnknownOption( std::string& option ): _option( option ) {}
+              virtual ~UnknownOption() throw() {}
+
+              const char* what() const throw()
+              { return std::string( "Option not recognized \"" + _option + "\"" ).c_str(); }
+
+         private:
+              std::string _option;
+    };
+
+}
+#endif
+  \end{minted}
+  \end{paragraph}
+
+  \end{subsection}
+
+
+
+
+
+
+
+
+  \begin{subsection}{Module References}
+   
+  \begin{paragraph}{References.hpp}
+   \begin{minted}[linenos]{cpp}
+// =====================================================================================
+//
+//       Filename:  References.hpp
+//
+//    Description:  Permet de stocker les resultats des references croisees
+//        Created:  18/11/2011 22:29:34
+//       Compiler:  g++
+//
+//         Author:  Romain GERARD, romain.gerard@insa-lyon.fr
+//
+// =====================================================================================
+
+
+#ifndef References_HPP
+#define References_HPP
+
+
+#include    <map>
+#include    <list>
+#include    <tr1/unordered_map>
+
+namespace Reference_croisee {
+
+using namespace Reference_croisee;
+
+//------------------------------------------------------------------------
+// Role de la classe References
+// Description : Permet de stocker les occurences des references croisees
+//
+//------------------------------------------------------------------------
+class References {
+
+    public:
+//----------------------------------------------------------------------
+//  METHODES PUBLIQUES
+//----------------------------------------------------------------------
+
+        // ===  FUNCTION  ======================================================================
+        //         Name:  add
+        //  Description:  Permet d'ajouter une reference croisee au conteneur
+        // =====================================================================================
+        void add( const std::string& motClef, const std::string& nomFichier, int ligne );
+
+        // ===  FUNCTION  ======================================================================
+        //         Name:  display
+        //  Description:  Permet d'afficher toutes les references dans le flux fournit en entree
+        // =====================================================================================
+        void display( std::ostream& flux ) const;
+
+
+    protected:
+//----------------------------------------------------------------------
+//  ATTRIBUTS MEMBRES
+//----------------------------------------------------------------------
+
+        // Structure interne du conteneur
+        std::tr1::unordered_map<std::string, std::map<std::string, std::list<int> > > _references;
+
+};
+
+std::ostream& operator<<( std::ostream& flux,  const References& ref );
+
+}/*}}}*/
+
+#endif
+
+  \end{minted}
+  \end{paragraph}
+
+
+
+\newpage
+  \begin{paragraph}{References.cpp}
+   \begin{minted}[linenos]{cpp}
+// =====================================================================================
+//
+//       Filename:  References.cpp
+//
+//    Description:
+//        Created:  18/11/2011 22:50:44
+//       Compiler:  g++
+//
+//         Author:  Romain GERARD, romain.gerard@insa-lyon.fr
+//
+// =====================================================================================
+
+
+
+#include <iostream>
+#include "References.hpp"
+
+namespace Reference_croisee {
+
+using namespace std;
+using namespace Reference_croisee;
+
+
+//----------------------------------------------------------------------
+//  METHODES PUBLIQUES
+//----------------------------------------------------------------------
+void References::add( const string& motClef, const string& nomFichier, const int ligne )
+{/*{{{*/
+
+
+    if( !_references.count( motClef ) ) {
+        _references.insert( make_pair( motClef, map<string, list<int> >() ) );
+        _references[motClef].insert( make_pair( nomFichier, list<int>( 1, ligne ) ) );
+
+    } else if( !_references[motClef].count( nomFichier ) ) {
+        _references[motClef].insert( make_pair( nomFichier, list<int>( 1, ligne ) ) );
+
+    } else {
+        _references[motClef][nomFichier].push_back( ligne );
+    }
+
+
+}/*}}}*/
+
+void References::display( ostream& flux ) const
+{/*{{{*/
+
+    tr1::unordered_map<string, map<string, list<int> > >::const_iterator itClef;
+    map<string, list<int> >::const_iterator itFic;
+    list<int>::const_iterator itLigne;
+
+
+    for( itClef = _references.begin(); itClef != _references.end(); itClef++ ) {
+        //flux.width(15);
+        //flux << left;
+        flux << itClef->first << "\t";
+
+        for( itFic = itClef->second.begin(); itFic != itClef->second.end(); itFic++ ) {
+            flux << itFic->first;
+
+            for( itLigne = itFic->second.begin(); itLigne != itFic->second.end(); itLigne++ ) {
+                flux << ' ' << *itLigne;
+
+            }
+
+            flux << '\t';
+        }
+
+        flux << endl;
+    }
+
+}/*}}}*/
+
+
+
+//----------------------------------------------------------------------
+//  SURCHARGES OPERATEURS
+//----------------------------------------------------------------------
+ostream& operator<<( ostream& flux,  const References& ref ) {
+
+    ref.display( flux );
+
+    return flux;
+
+}
+
+}
+  \end{minted}
+
+  \end{paragraph}
+  \end{subsection}
+
+
+
+
+\newpage
+  \begin{paragraph}{Referenceur.hpp}
+   \begin{minted}[linenos]{cpp}
+// =====================================================================================
+//
+//       Filename:  References.hpp
+//
+//    Description:  Interface de la classe References
+//                  Permet de visualiser la repartition de mots clefs dans une
+//                  collection de fichiers
+//        Created:  15/11/2011 23:30:30
+//       Compiler:  g++
+//
+//         Author:  Romain GERARD, romain.gerard@insa-lyon.fr
+//
+// =====================================================================================
+
+
+#ifndef Referenceur_HPP
+#define Referenceur_HPP
+
+
+#include    <string>
+#include    <vector>
+#include    <tr1/unordered_set>
+#include    "FichierLu.hpp"
+#include    "References.hpp"
+
+namespace Reference_croisee {
+
+using namespace Reference_croisee;
+
+//------------------------------------------------------------------------
+// Role de la classe Referenceur
+// Description : Permet d'extraire les mots clefs dans une
+//               collection de fichiers
+//------------------------------------------------------------------------
+class Referenceur {
+
+    public:
+//----------------------------------------------------------------------
+//  CONSTRUCTEURS
+//----------------------------------------------------------------------
+        Referenceur( const std::string fichierMotClef = std::string(),
+                     const bool modeInverse = false );
+
+//----------------------------------------------------------------------
+//  METHODES PUBLIQUES
+//----------------------------------------------------------------------
+
+        // ===  FUNCTION  ======================================================================
+        //         Name:  chargerMotsClefs
+        //  Description:  Permet de charger des mots clefs a partir d'un fichier
+        // =====================================================================================
+        void chargerMotsClefs( const std::string& nomFichier );
+        
+        // ===  FUNCTION  ======================================================================
+        //         Name:  chargerMotsClefsCpp
+        //  Description:  Permet de definir les mots clefs C++ standard comme des mots clefs
+        // =====================================================================================
+        void chargerMotsClefsCpp();
+        
+        // ===  FUNCTION  ======================================================================
+        //         Name:  setModeInverse
+        //  Description:  Permet de passer le parseur en mode inverse
+        // =====================================================================================
+        inline void setModeInverse( const bool mode );
+
+        // ===  FUNCTION  ======================================================================
+        //         Name:  referencer
+        //  Description:  Permet de chercher les mots clefs une collection de fichier
+        //                Les resultats sont stockes dans refs
+        // =====================================================================================
+        void referencer( const std::vector<std::string>& fic, References& refs );
+
+    protected:
+        enum Mode { Normal, Inverse };          // Les differents mode du parseur
+        enum Etat { Separateur, Commentaire, MotClef, Preprocesseur, Literal }; // Les etats interne de l'automate
+
+
+
+//----------------------------------------------------------------------
+//  ATTRIBUTS MEMBRES
+//----------------------------------------------------------------------
+        Mode _mode;
+        Etat _etat;
+
+        std::tr1::unordered_set<std::string> _motsClefs; // le conteneur des mots clefs
+
+
+
+//----------------------------------------------------------------------
+//  METHODES PROTEGES
+//----------------------------------------------------------------------
+
+        // ===  FUNCTION  ======================================================================
+        //         Name:  estInserable
+        //  Description:  retourne vrai si l'identificateur est un mot clef
+        // =====================================================================================
+        inline bool estInserable( const std::string& mot ) const;
+
+        // ===  FUNCTION  ======================================================================
+        //         Name:  isSeparateur
+        //  Description:  Retourne vrai si le caractere est un separateur
+        // =====================================================================================
+        bool isSeparateur( const char c ) const;
+
+        // ===  FUNCTION  ======================================================================
+        //         Name:  changerEtat
+        //  Description:  Definit le nouvel etat de l'automate
+        // =====================================================================================
+        void changerEtat( FichierLu& fic );
+
+        // ===  FUNCTION  ======================================================================
+        //         Name:  lireFlux
+        //  Description:  Avance dans le flux de donnees en fonction de l'etat de l'automate
+        // =====================================================================================
+        void lireFlux( FichierLu& fic, References& refs );
+
+
+
+//----------------------------------------------------------------------
+//  METHODES ETATS
+//----------------------------------------------------------------------
+
+        // ===  FUNCTION  ======================================================================
+        //         Name:  lirePreprocesseur
+        //  Description:  Traite les instructions preprocesseurs
+        // =====================================================================================
+        void lirePreprocesseur( FichierLu& fic, References& refs );
+
+        // ===  FUNCTION  ======================================================================
+        //         Name:  lireSeparateur
+        //  Description:  Traite les separateurs
+        // =====================================================================================
+        void lireSeparateur( FichierLu& fic, References& refs );
+
+        // ===  FUNCTION  ======================================================================
+        //         Name:  lireIdentificateur
+        //  Description:  Traite les identificateurs
+        // =====================================================================================
+        void lireIdentificateur( FichierLu& fic, References& refs );
+
+        // ===  FUNCTION  ======================================================================
+        //         Name:  lireCommentaire
+        //  Description:  Traite les commentaires
+        // =====================================================================================
+        void lireCommentaire( FichierLu& fic, References& refs );
+
+        // ===  FUNCTION  ======================================================================
+        //         Name:  lireLiteral
+        //  Description:  Traire les chaines de caracteres
+        // =====================================================================================
+        void lireLiteral( FichierLu& fic, References& refs );
+
+
+};
+
+}/*}}}*/
+#endif
+
+  \end{minted}
+  \end{paragraph}
+
+
+
+\newpage
+  \begin{paragraph}{Referenceur.cpp}
+   \begin{minted}[linenos]{cpp}
+// =====================================================================================
+//
+//       Filename:  Referenceur.cpp
+//
+//    Description:  Implementation de la classe Referenceur
+//                  Permet de visualiser l'aparition de mots clefs dans une collection
+//                  de fichiers
+//        Created:  15/11/2011 23:37:07
+//       Compiler:  g++
+//
+//         Author:  Romain GERARD, romain.gerard@insa-lyon.fr
+//
+// =====================================================================================
+
+using namespace std;
+
+#include    <iostream>
+#include    <limits>
+
+#include    "Referenceur.hpp"
+
+namespace Reference_croisee {
+
+using namespace Reference_croisee;
+
+
+
+//----------------------------------------------------------------------
+//  CONSTRUCTEURS
+//----------------------------------------------------------------------
+Referenceur::Referenceur ( const string fichierMotClef, const bool modeInverse ):
+    _mode( modeInverse ? Inverse : Normal ), _etat( Separateur )
+{/*{{{*/
+
+#ifdef MAP
+    cout << "Appel au constructeur de <Referenceur>" << endl;
+#endif
+
+    chargerMotsClefsCpp();
+
+    if( !fichierMotClef.empty() ) {
+        chargerMotsClefs( fichierMotClef );
+    }
+
+}/*}}}*/
+
+//----------------------------------------------------------------------
+//  METHODES PUBLIQUES
+//----------------------------------------------------------------------
+void Referenceur::chargerMotsClefs( const string& nomFichier )
+{/*{{{*/
+
+
+    ifstream fichierMotClef;
+
+    //----------------------------------------------------------------------
+    //  Si le fichier ne peut etre ouvert ou si la lecture echoue
+    //  une exception sera lance
+    //----------------------------------------------------------------------
+    fichierMotClef.exceptions( ifstream::failbit );
+    fichierMotClef.open( nomFichier.c_str(), ios::in );
+    fichierMotClef.exceptions( ifstream::badbit );
+
+    //----------------------------------------------------------------------
+    //  On extrait la liste de mot clef
+    //----------------------------------------------------------------------
+    _motsClefs.clear();
+    string motRecupere;
+
+    while ( fichierMotClef >> motRecupere ) {
+        _motsClefs.insert( motRecupere );
+        fichierMotClef.ignore( numeric_limits<int>::max(), '\n' );
+        // ignore le nombre de caractere "valeur max d'un entier" jusqu'a rencontrer \n
+    }
+
+    fichierMotClef.close( );
+
+}/*}}}*/
+
+void Referenceur::chargerMotsClefsCpp()
+{/*{{{*/
+
+    _motsClefs.clear();
+    _motsClefs.insert( "asm" );
+    _motsClefs.insert( "auto" );
+    _motsClefs.insert( "break" );
+    _motsClefs.insert( "bool" );
+    _motsClefs.insert( "case" );
+    _motsClefs.insert( "catch" );
+    _motsClefs.insert( "cout" );
+    _motsClefs.insert( "char" );
+    _motsClefs.insert( "class" );
+    _motsClefs.insert( "const" );
+    _motsClefs.insert( "const_cast" );
+    _motsClefs.insert( "continue" );
+    _motsClefs.insert( "default" );
+    _motsClefs.insert( "delete" );
+    _motsClefs.insert( "do" );
+    _motsClefs.insert( "double" );
+    _motsClefs.insert( "dynamic_cast" );
+    _motsClefs.insert( "else" );
+    _motsClefs.insert( "enum" );
+    _motsClefs.insert( "extern" );
+    _motsClefs.insert( "export" );
+    _motsClefs.insert( "explicit" );
+    _motsClefs.insert( "false" );
+    _motsClefs.insert( "float" );
+    _motsClefs.insert( "for" );
+    _motsClefs.insert( "friend" );
+    _motsClefs.insert( "goto" );
+    _motsClefs.insert( "if" );
+    _motsClefs.insert( "inline" );
+    _motsClefs.insert( "int" );
+    _motsClefs.insert( "long" );
+    _motsClefs.insert( "mutable" );
+    _motsClefs.insert( "namespace" );
+    _motsClefs.insert( "new" );
+    _motsClefs.insert( "operator" );
+    _motsClefs.insert( "private" );
+    _motsClefs.insert( "protected" );
+    _motsClefs.insert( "public" );
+    _motsClefs.insert( "register" );
+    _motsClefs.insert( "reinterpret_cast" );
+    _motsClefs.insert( "return" );
+    _motsClefs.insert( "short" );
+    _motsClefs.insert( "signed" );
+    _motsClefs.insert( "sizeof" );
+    _motsClefs.insert( "static" );
+    _motsClefs.insert( "static_cast" );
+    _motsClefs.insert( "struct" );
+    _motsClefs.insert( "switch" );
+    _motsClefs.insert( "template" );
+    _motsClefs.insert( "this" );
+    _motsClefs.insert( "throw" );
+    _motsClefs.insert( "try" );
+    _motsClefs.insert( "true" );
+    _motsClefs.insert( "typedef" );
+    _motsClefs.insert( "typeid" );
+    _motsClefs.insert( "typename" );
+    _motsClefs.insert( "unsigned" );
+    _motsClefs.insert( "union" );
+    _motsClefs.insert( "using" );
+    _motsClefs.insert( "virtual" );
+    _motsClefs.insert( "void" );
+    _motsClefs.insert( "volatile" );
+    _motsClefs.insert( "while" );
+    _motsClefs.insert( "wchar_t" );
+}/*}}}*/
+
+void Referenceur::referencer( const vector<string>& fichiers, References& refs )
+{/*{{{*/
+
+    vector<string>::const_iterator it;
+    FichierLu fichier;
+
+    for( it = fichiers.begin(); it != fichiers.end(); it++ ) {
+
+        fichier.open( it->c_str() );
+
+        while( !fichier.eof() ) {
+
+            changerEtat( fichier );
+            lireFlux( fichier, refs );
+
+        }
+
+        fichier.close();
+    }
+
+}/*}}}*/
+
+inline void Referenceur::setModeInverse( const bool mode )
+{/*{{{*/
+    _mode = ( mode ) ? Inverse : Normal;
+}/*}}}*/
+
+
+
+//----------------------------------------------------------------------
+//  METHODES PROTEGES
+//----------------------------------------------------------------------
+inline bool Referenceur::estInserable( const string& mot ) const
+{/*{{{*/
+
+    const char c = mot.at( 0 );
+
+    if( c >= '0' && c <= '9' ) {
+        return false;
+    }
+
+    return  ( _mode == Normal ) ? _motsClefs.count( mot ) :
+            !_motsClefs.count( mot );
+
+
+}/*}}}*/
+
+inline bool Referenceur::isSeparateur( const char c ) const
+{/*{{{*/
+
+    // Je me suis base sur la table ASCII
+    return ( c >= -1 && c <= '/' ) ||
+           ( c >= ':' && c <= '@' ) ||
+           ( c >= '[' && c <= '^' ) ||
+           ( c >= '{' && c <= '~' ) ||
+           ( c == '`' );
+
+}/*}}}*/
+
+void Referenceur::changerEtat( FichierLu& fic )
+{/*{{{*/
+
+    const char c = fic.peek();
+
+    if( c == '#' ) {
+        _etat = Preprocesseur;
+
+    } else if(  c == '/' ) {
+        _etat = Commentaire;
+
+    } else if(  c == '"' || c == '\'' ) {
+        _etat = Literal;
+
+    } else if( isSeparateur( c ) ) {
+        _etat = Separateur;
+
+    } else {
+        _etat = MotClef;
+    }
+}/*}}}*/
+
+void Referenceur::lireFlux( FichierLu& fic, References& refs )
+{/*{{{*/
+
+    switch( _etat ) {
+
+        case Preprocesseur:
+            lirePreprocesseur( fic, refs );
+            break;
+
+        case Separateur:
+            lireSeparateur( fic, refs );
+            break;
+
+        case Commentaire:
+            lireCommentaire( fic, refs );
+            break;
+
+        case MotClef:
+            lireIdentificateur( fic, refs );
+            break;
+
+        case Literal:
+            lireLiteral( fic, refs );
+            break;
+    }
+
+}/*}}}*/
+
+
+
+
+//----------------------------------------------------------------------
+//  METHODES ETATS
+//----------------------------------------------------------------------
+void Referenceur::lirePreprocesseur( FichierLu& fic, References& refs )
+{/*{{{*/
+
+    char last = fic.get();
+
+    while( fic.peek() != '\n' || last == '\\' ) {
+        last = fic.get();
+    }
+
+    fic.get();
+
+
+}/*}}}*/
+
+void Referenceur::lireCommentaire( FichierLu& fic, References& refs )
+{/*{{{*/
+
+    fic.get();
+
+    if( fic.peek() == '/' ) {
+        while ( !fic.eof() && fic.get() != '\n' );
+
+    } else if( fic.peek() == '*' ) {
+        while ( !fic.eof() && ( fic.get() != '*' || fic.peek() != '/' ) );
+
+        fic.get();
+    }
+
+}/*}}}*/
+
+void Referenceur::lireIdentificateur( FichierLu& fic, References& refs )
+{/*{{{*/
+
+    string mot;
+    mot.append( 1, fic.get() );
+
+    while( !fic.eof() && !isSeparateur( fic.peek() ) ) {
+        mot.append( 1, fic.get() );
+    }
+
+    if( estInserable( mot ) ) {
+        refs.add( mot, fic.getNomFichier(), fic.getNbLignesLues() );
+    }
+
+}/*}}}*/
+
+void Referenceur::lireSeparateur( FichierLu& fic, References& refs )
+{/*{{{*/
+
+    fic.get();
+}/*}}}*/
+
+void Referenceur::lireLiteral( FichierLu& fic, References& refs )
+{/*{{{*/
+
+    char last = fic.get();
+
+    if( last == '"' ) {
+        while( fic.peek() != '"' || last == '\\' ) {
+            last = fic.get();
+        }
+
+        fic.get();
+
+    } else if( last == '\'' ) {
+        while( fic.peek() != '\'' || last == '\\' ) {
+            last = fic.get();
+        }
+
+        fic.get();
+
+    }
+
+}/*}}}*/
+
+}/*}}}*/
+  \end{minted}
+  \end{paragraph}
+
+
+
+
+
+\newpage
+  \begin{paragraph}{FichierLu.hpp}
+   \begin{minted}[linenos]{cpp}
+/*************************************************************************
+                           FichierLu  -  description
+                             -------------------
+    debut                : 18 nov. 2011
+    copyright            : (C) 2011 par csaysset
+*************************************************************************/
+
+#ifndef FICHIERLU_HPP_
+#define FICHIERLU_HPP_
+
+#include    <fstream>
+#include    <string>
+
+
+namespace Reference_croisee {
+
+using namespace Reference_croisee;
+
+/* =====================================================================================
+ *        Class:  FichierLu
+ *  Description:  Permet de lire un fichier en concervant son nom et le nombre de ligne
+ *                deja parcourue
+ * =====================================================================================*/
+class FichierLu : private std::ifstream {
+
+    public:
+        // ===  FUNCTION  ======================================================================
+        //         Name:  FichierLu
+        //  Description:  Constructeur de la classe, prend en argument un chemin vers un fichier
+        // =====================================================================================
+        FichierLu ( const std::string& nomFichier = "" );
+
+
+
+
+
+//----------------------------------------------------------------------
+//  METHODES MASQUEES
+//----------------------------------------------------------------------
+
+        // ===  FUNCTION  ======================================================================
+        //         Name:  Close
+        //  Description:  Ferme le fichier
+        // =====================================================================================
+        void close();
+
+        // ===  FUNCTION  ======================================================================
+        //         Name:  open
+        //  Description:  Ouvre un fichier
+        // =====================================================================================
+        void open( const char* filename,  ios_base::openmode mode = ios_base::in );
+
+
+        // ===  FUNCTION  ======================================================================
+        //         Name:  get
+        //  Description:  Permet de recuperer un caractere 
+        // =====================================================================================
+        int get();
+
+        int peek() { return std::ifstream::peek(); }
+        bool eof() { return std::ifstream::eof(); }
+
+
+
+
+//----------------------------------------------------------------------
+//  METHODES PUBLIQUES
+//----------------------------------------------------------------------
+
+        // ===  FUNCTION  ======================================================================
+        //         Name:  getNbLignesLues
+        //  Description:  Retourne le nombre de lignes deja lues dans le fichier
+        // =====================================================================================
+        int getNbLignesLues() const;
+
+        // ===  FUNCTION  ======================================================================
+        //         Name:  getNbLignesLues
+        //  Description:  Retourne le nom du fichier passe lors de la construction de l'objet 
+        // =====================================================================================
+        std::string getNomFichier() const;
+
+
+    protected:
+        int _nbLignesLues;                      // contient le nombre de lignes lues
+        std::string _nomFichier;                // contient le nom du fichier
+};
+
+}/*}}}*/
+
+#endif  
+\end{minted}
+  \end{paragraph}
+
+
+
+\newpage
+  \begin{paragraph}{FichierLu.cpp}
+   \begin{minted}[linenos]{cpp}
+/*************************************************************************
+                           FichierLu  -  description
+                             -------------------
+    debut                : 18 nov. 2011
+    copyright            : (C) 2011 par csaysset
+*************************************************************************/
+
+#include <fstream>
+#include "FichierLu.hpp"
+
+
+namespace Reference_croisee {
+
+using namespace std;
+using namespace Reference_croisee;
+
+
+
+
+//----------------------------------------------------------------------
+//  CONSTRUCTEURS
+//----------------------------------------------------------------------
+FichierLu::FichierLu ( const string& nomFichier ):
+    _nbLignesLues( 1 )
+{/*{{{*/
+
+    if( !nomFichier.empty() ) {
+        open( nomFichier.c_str() );
+    }
+}/*}}}*/
+
+
+
+
+//----------------------------------------------------------------------
+//  METHODES MASQUEES
+//----------------------------------------------------------------------
+void FichierLu::close()
+{/*{{{*/
+
+    ifstream::close();
+    ifstream::clear();
+
+    _nbLignesLues = 1;
+    _nomFichier.clear();
+}/*}}}*/
+
+void FichierLu::open( const char* filename,  ios_base::openmode mode )
+{/*{{{*/
+
+    exceptions( ifstream::failbit );
+    ifstream::open( filename, mode );
+    exceptions( ifstream::badbit );
+    _nomFichier = filename;
+}/*}}}*/
+
+int FichierLu::get()
+{/*{{{*/
+
+    int charactere = ifstream::get();
+
+    if ( charactere == '\n' ) {
+        _nbLignesLues++;
+    }
+
+    return charactere;
+}/*}}}*/
+
+
+
+//----------------------------------------------------------------------
+// METHODES PUBLIQUES
+//----------------------------------------------------------------------
+int FichierLu::getNbLignesLues() const
+{/*{{{*/
+
+    return _nbLignesLues;
+}/*}}}*/
+
+string FichierLu::getNomFichier() const
+{/*{{{*/
+
+    return _nomFichier;
+}/*}}}*/
+
+}/*}}}*/
+  \end{minted}
+  \end{paragraph}
+
+
+
+
+
+
+
+  \begin{subsection}{Module Main}
+   
+
+\newpage
+  \begin{paragraph}{Referenceur.cpp}
+   \begin{minted}[linenos]{cpp}
+//============================================================================
+// Name        : Ref_croisee.cpp
+// Author      :
+// Version     :
+// Copyright   : Your copyright notice
+// Description : Hello World in C++, Ansi-style
+//============================================================================
+
+#include <iostream>
+#include <vector>
+
+#include "CmdLine/cmdLine.hpp"
+#include "References/Referenceur.hpp"
+#include "References/References.hpp"
+
+using namespace std;
+using namespace Reference_croisee;
+
+int main( int argc, char** argv )
+{/*{{{*/
+
+    CmdLine::Arguments args;
+    {
+        CmdLine::Parser parser( "Permet de referencer des mots clefs a travers des fichiers" );
+        parser.addOption( "exclude,e",  "Inverse le fonctionnement du programme" );
+        parser.addOption( "keyword,k",  "Specifie la liste des mots clefs a utiliser", true );
+
+        try {
+            parser.parse( argc, argv, args );
+
+        } catch( exception& e ) {
+            cout << "Une erreur c'est produit durant la recuperation de la ligne de commande : " << endl;
+            cout << e.what() << endl;
+        }
+    }
+    //----------------------------------------------------------------------
+    //  On charge les fichiers a referencer
+    //----------------------------------------------------------------------
+    vector<string> ficsReferencer;
+
+    if( args.count( "__args__" ) ) {
+        ficsReferencer = args.get<vector<string> >( "__args__" );
+
+    } else {
+        cerr << "Aucun fichier a referencer !" << endl;
+        return 1;
+    }
+
+    //----------------------------------------------------------------------
+    //  On charge les mots clefs si ils sont fournis
+    //----------------------------------------------------------------------
+    string fichierMotClef;
+
+    if( args.count( "keyword" ) ) {
+        fichierMotClef = args.get<string>( "keyword" );
+    }
+
+    //----------------------------------------------------------------------
+    //  L'etat dans lequel mettre le programme
+    //----------------------------------------------------------------------
+    bool mode( args.count( "exclude" ) );
+
+
+    References refs;
+    //----------------------------------------------------------------------
+    //  On effectue la reference croisee
+    //----------------------------------------------------------------------
+    try {
+        Referenceur referenceur( fichierMotClef, mode );
+        referenceur.referencer( ficsReferencer, refs );
+
+    } catch( exception& e ) {
+        cerr << "Une erreur est survenue durant la referance croisee : " << endl;
+        cerr << e.what() << endl;
+    }
+
+
+    //----------------------------------------------------------------------
+    //  On affiche les resultats
+    //----------------------------------------------------------------------
+    cout << refs; 
+
+    return 0;
+}/*}}}*/
+  \end{minted}
+  \end{paragraph}
+
+  \end{subsection}
+
+\end{section}
+
+
+
+\end{document}
