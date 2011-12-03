@@ -71,4 +71,17 @@ void References::display( ostream& flux ) const
 
 }/*}}}*/
 
-}/*}}}*/
+
+
+//----------------------------------------------------------------------
+//  SURCHARGES OPERATEURS
+//----------------------------------------------------------------------
+ostream& operator<<( ostream& flux,  const References& ref ) {
+
+    ref.display( flux );
+
+    return flux;
+
+}
+
+}

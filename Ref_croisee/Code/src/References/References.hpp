@@ -31,19 +31,34 @@ using namespace Reference_croisee;
 class References {
 
     public:
-        //----------------------------------------------------------------------
-        //  METHODES PUBLIQUES
-        //----------------------------------------------------------------------
+//----------------------------------------------------------------------
+//  METHODES PUBLIQUES
+//----------------------------------------------------------------------
+
+        // ===  FUNCTION  ======================================================================
+        //         Name:  add
+        //  Description:  Permet d'ajouter une reference croisée au conteneur
+        // =====================================================================================
         void add( const std::string& motClef, const std::string& nomFichier, int ligne );
+
+        // ===  FUNCTION  ======================================================================
+        //         Name:  display
+        //  Description:  Permet d'afficher toutes les références dans le flux fournit en entrée
+        // =====================================================================================
         void display( std::ostream& flux ) const;
 
+
     protected:
-        //----------------------------------------------------------------------
-        //  ATTRIBUTS MEMBRES
-        //----------------------------------------------------------------------
+//----------------------------------------------------------------------
+//  ATTRIBUTS MEMBRES
+//----------------------------------------------------------------------
+
+        // Structure interne du conteneur
         std::tr1::unordered_map<std::string, std::map<std::string, std::list<int> > > _references;
 
 };
+
+std::ostream& operator<<( std::ostream& flux,  const References& ref );
 
 }/*}}}*/
 
