@@ -21,28 +21,68 @@ using namespace Reference_croisee;
  *  Description:  Permet de lire un fichier en concervant son nom et le nombre de ligne
  *                déjà parcourue
  * =====================================================================================*/
-class FichierLu : public std::ifstream {
+class FichierLu : private std::ifstream {
 
     public:
+        // ===  FUNCTION  ======================================================================
+        //         Name:  FichierLu
+        //  Description:  Constructeur de la classe, prend en argument un chemin vers un fichier
+        // =====================================================================================
         FichierLu ( const std::string& nomFichier = "" );
 
-        //----------------------------------------------------------------------
-        //  METHODES MASQUEES
-        //----------------------------------------------------------------------
+
+
+
+
+//----------------------------------------------------------------------
+//  METHODES MASQUEES
+//----------------------------------------------------------------------
+
+        // ===  FUNCTION  ======================================================================
+        //         Name:  Close
+        //  Description:  Ferme le fichier
+        // =====================================================================================
         void close();
+
+        // ===  FUNCTION  ======================================================================
+        //         Name:  open
+        //  Description:  Ouvre un fichier
+        // =====================================================================================
         void open( const char* filename,  ios_base::openmode mode = ios_base::in );
+
+
+        // ===  FUNCTION  ======================================================================
+        //         Name:  get
+        //  Description:  Permet de récupérer un caractère 
+        // =====================================================================================
         int get();
 
-        //----------------------------------------------------------------------
-        //  METHODES PUBLIQUES
-        //----------------------------------------------------------------------
-        int getNbLignesLues();
-        std::string getNomFichier();
+        int peek() { return std::ifstream::peek(); }
+        bool eof() { return std::ifstream::eof(); }
+
+
+
+
+//----------------------------------------------------------------------
+//  METHODES PUBLIQUES
+//----------------------------------------------------------------------
+
+        // ===  FUNCTION  ======================================================================
+        //         Name:  getNbLignesLues
+        //  Description:  Retourne le nombre de lignes déjà lues dans le fichier
+        // =====================================================================================
+        int getNbLignesLues() const;
+
+        // ===  FUNCTION  ======================================================================
+        //         Name:  getNbLignesLues
+        //  Description:  Retourne le nom du fichier passé lors de la construction de l'objet 
+        // =====================================================================================
+        std::string getNomFichier() const;
 
 
     protected:
-        int _nbLignesLues;
-        std::string _nomFichier;
+        int _nbLignesLues;                      // contient le nombre de lignes lues
+        std::string _nomFichier;                // contient le nom du fichier
 };
 
 }/*}}}*/

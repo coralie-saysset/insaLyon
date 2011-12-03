@@ -182,14 +182,15 @@ inline void Referenceur::setModeInverse( const bool mode )
 //----------------------------------------------------------------------
 inline bool Referenceur::estInserable( const string& mot ) const
 {/*{{{*/
-    
-    const char c = mot.at(0);
+
+    const char c = mot.at( 0 );
+
     if( c >= '0' && c <= '9' ) {
         return false;
     }
 
-        return  ( _mode == Normal ) ? _motsClefs.count( mot ) : 
-                                      !_motsClefs.count( mot );
+    return  ( _mode == Normal ) ? _motsClefs.count( mot ) :
+            !_motsClefs.count( mot );
 
 
 }/*}}}*/
@@ -223,7 +224,7 @@ void Referenceur::changerEtat( FichierLu& fic )
     } else if( isSeparateur( c ) ) {
         _etat = Separateur;
 
-    }else {
+    } else {
         _etat = MotClef;
     }
 }/*}}}*/

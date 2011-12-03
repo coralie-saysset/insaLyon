@@ -14,6 +14,9 @@ namespace Reference_croisee {
 using namespace std;
 using namespace Reference_croisee;
 
+
+
+
 //----------------------------------------------------------------------
 //  CONSTRUCTEURS
 //----------------------------------------------------------------------
@@ -25,6 +28,8 @@ FichierLu::FichierLu ( const string& nomFichier ):
         open( nomFichier.c_str() );
     }
 }/*}}}*/
+
+
 
 
 //----------------------------------------------------------------------
@@ -61,16 +66,18 @@ int FichierLu::get()
     return charactere;
 }/*}}}*/
 
+
+
 //----------------------------------------------------------------------
-// METHODES NON HERITÉES
+// METHODES PUBLIQUES
 //----------------------------------------------------------------------
-int FichierLu::getNbLignesLues()
+int FichierLu::getNbLignesLues() const
 {/*{{{*/
 
     return _nbLignesLues;
 }/*}}}*/
 
-string FichierLu::getNomFichier()
+string FichierLu::getNomFichier() const
 {/*{{{*/
 
     return _nomFichier;
