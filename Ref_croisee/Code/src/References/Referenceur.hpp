@@ -37,7 +37,6 @@ class Referenceur {
     public:
         Referenceur( const std::string fichierMotClef = std::string(),
                      const bool modeInverse = false );
-        ~Referenceur();
 
         //----------------------------------------------------------------------
         //  METHODES PUBLIQUES
@@ -56,8 +55,7 @@ class Referenceur {
         Mode _mode;
         Etat _etat;
 
-        std::tr1::unordered_set<std::string> _motsClefsCpp;
-        std::tr1::unordered_set<std::string>* _identificateurs;
+        std::tr1::unordered_set<std::string> _motsClefs;
 
         //----------------------------------------------------------------------
         //  METHODES PROTEGES
