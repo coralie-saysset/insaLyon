@@ -39,7 +39,7 @@ int main( int argc, char** argv )
     vector<string> ficsReferencer;
 
     if( args.Count( "__args__" ) ) {
-        ficsReferencer = args.get<vector<string> >( "__args__" );
+        ficsReferencer = args.Get<vector<string> >( "__args__" );
 
     } else {
         cerr << "Aucun fichier à reférencer !" << endl;
@@ -66,7 +66,7 @@ int main( int argc, char** argv )
     //  On effectue la référence croisée
     //----------------------------------------------------------------------
     try {
-        referenceur Referenceur( fichierMotClef, mode );
+        Referenceur referenceur( fichierMotClef, mode );
         referenceur.Referencer( ficsReferencer, refs );
 
     } catch( exception& e ) {
