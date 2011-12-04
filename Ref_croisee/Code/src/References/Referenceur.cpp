@@ -14,9 +14,11 @@
 
 using namespace std;
 
+//------------------------------------------------------------------------Include Systeme
 #include    <iostream>
 #include    <limits>
 
+//------------------------------------------------------------------------Include Personnel
 #include    "Referenceur.hpp"
 
 namespace Reference_croisee {
@@ -36,10 +38,10 @@ Referenceur::Referenceur ( const string fichierMotClef, const bool modeInverse )
     cout << "Appel au constructeur de <Referenceur>" << endl;
 #endif
 
-    chargerMotsClefsCpp();
+    ChargerMotsClefsCpp();
 
-    if( !fichierMotClef.empty() ) {
-        chargerMotsClefs( fichierMotClef );
+    if ( !fichierMotClef.empty() ) 
+    {    ChargerMotsClefs( fichierMotClef );
     }
 
 }/*}}}*/
@@ -47,7 +49,7 @@ Referenceur::Referenceur ( const string fichierMotClef, const bool modeInverse )
 //----------------------------------------------------------------------
 //  METHODES PUBLIQUES
 //----------------------------------------------------------------------
-void Referenceur::chargerMotsClefs( const string& nomFichier )
+void Referenceur::ChargerMotsClefs( const string& nomFichier )
 {/*{{{*/
 
 
@@ -67,8 +69,8 @@ void Referenceur::chargerMotsClefs( const string& nomFichier )
     _motsClefs.clear();
     string motRecupere;
 
-    while ( fichierMotClef >> motRecupere ) {
-        _motsClefs.insert( motRecupere );
+    while ( fichierMotClef >> motRecupere ) 
+    {    _motsClefs.insert( motRecupere );
         fichierMotClef.ignore( numeric_limits<int>::max(), '\n' );
         // ignore le nombre de caractere "valeur max d'un entier" jusqu'à rencontrer \n
     }
@@ -77,7 +79,7 @@ void Referenceur::chargerMotsClefs( const string& nomFichier )
 
 }/*}}}*/
 
-void Referenceur::chargerMotsClefsCpp()
+void Referenceur::ChargerMotsClefsCpp()
 {/*{{{*/
 
     _motsClefs.clear();
@@ -147,21 +149,18 @@ void Referenceur::chargerMotsClefsCpp()
     _motsClefs.insert( "wchar_t" );
 }/*}}}*/
 
-void Referenceur::referencer( const vector<string>& fichiers, References& refs )
+void Referenceur::Referencer( const vector<string>& fichiers, References& refs )
 {/*{{{*/
 
     vector<string>::const_iterator it;
     FichierLu fichier;
 
-    for( it = fichiers.begin(); it != fichiers.end(); it++ ) {
+    for ( it = fichiers.begin(); it != fichiers.end(); it++ ) 
+    {    fichier.open( it->c_str() );
 
-        fichier.open( it->c_str() );
-
-        while( !fichier.eof() ) {
-
-            changerEtat( fichier );
+        while( !fichier.eof() ) 
+        {    changerEtat( fichier );
             lireFlux( fichier, refs );
-
         }
 
         fichier.close();
@@ -169,7 +168,7 @@ void Referenceur::referencer( const vector<string>& fichiers, References& refs )
 
 }/*}}}*/
 
-inline void Referenceur::setModeInverse( const bool mode )
+inline void Referenceur::SetModeInverse( const bool mode )
 {/*{{{*/
     _mode = ( mode ) ? Inverse : Normal;
 }/*}}}*/
@@ -184,8 +183,8 @@ inline bool Referenceur::estInserable( const string& mot ) const
 
     const char c = mot.at( 0 );
 
-    if( c >= '0' && c <= '9' ) {
-        return false;
+    if ( c >= '0' && c <= '9' ) 
+    {    return false;
     }
 
     return  ( _mode == Normal ) ? _motsClefs.count( mot ) :
@@ -211,27 +210,28 @@ void Referenceur::changerEtat( FichierLu& fic )
 
     const char c = fic.peek();
 
-    if( c == '#' ) {
-        _etat = Preprocesseur;
-
-    } else if(  c == '/' ) {
-        _etat = Commentaire;
-
-    } else if(  c == '"' || c == '\'' ) {
-        _etat = Literal;
-
-    } else if( isSeparateur( c ) ) {
-        _etat = Separateur;
-
-    } else {
-        _etat = MotClef;
+    if ( c == '#' ) 
+    {    _etat = Preprocesseur;
+    }
+    else if (  c == '/' ) 
+    {    _etat = Commentaire;
+    }
+    else if (  c == '"' || c == '\'' ) 
+    {    _etat = Literal;
+    }
+    else if ( isSeparateur( c ) )
+    {	_etat = Separateur;
+    }
+    else 
+    {    _etat = MotClef;
     }
 }/*}}}*/
 
 void Referenceur::lireFlux( FichierLu& fic, References& refs )
 {/*{{{*/
 
-    switch( _etat ) {
+    switch( _etat )
+    {
 
         case Preprocesseur:
             lirePreprocesseur( fic, refs );
@@ -267,12 +267,11 @@ void Referenceur::lirePreprocesseur( FichierLu& fic, References& refs )
 
     char last = fic.get();
 
-    while( fic.peek() != '\n' || last == '\\' ) {
-        last = fic.get();
+    while ( fic.peek() != '\n' || last == '\\' )
+    {    last = fic.get();
     }
 
     fic.get();
-
 
 }/*}}}*/
 
@@ -281,11 +280,14 @@ void Referenceur::lireCommentaire( FichierLu& fic, References& refs )
 
     fic.get();
 
-    if( fic.peek() == '/' ) {
-        while ( !fic.eof() && fic.get() != '\n' );
+    if( fic.peek() == '/' ) 
+    {    while ( !fic.eof() && fic.get() != '\n' )
+	 {}// bloc vide
 
-    } else if( fic.peek() == '*' ) {
-        while ( !fic.eof() && ( fic.get() != '*' || fic.peek() != '/' ) );
+    }
+    else if( fic.peek() == '*' ) 
+    {    while ( !fic.eof() && ( fic.get() != '*' || fic.peek() != '/' ) )
+	 {} // bloc vide
 
         fic.get();
     }
@@ -298,19 +300,18 @@ void Referenceur::lireIdentificateur( FichierLu& fic, References& refs )
     string mot;
     mot.append( 1, fic.get() );
 
-    while( !fic.eof() && !isSeparateur( fic.peek() ) ) {
-        mot.append( 1, fic.get() );
+    while( !fic.eof() && !isSeparateur( fic.peek() ) ) 
+    {    mot.append( 1, fic.get() );
     }
 
-    if( estInserable( mot ) ) {
-        refs.add( mot, fic.getNomFichier(), fic.getNbLignesLues() );
+    if( estInserable( mot ) ) 
+    {    refs.Add( mot, fic.getNomFichier(), fic.getNbLignesLues() );
     }
 
 }/*}}}*/
 
 void Referenceur::lireSeparateur( FichierLu& fic, References& refs )
 {/*{{{*/
-
     fic.get();
 }/*}}}*/
 
@@ -319,20 +320,20 @@ void Referenceur::lireLiteral( FichierLu& fic, References& refs )
 
     char last = fic.get();
 
-    if( last == '"' ) {
-        while( fic.peek() != '"' || last == '\\' ) {
-            last = fic.get();
+    if( last == '"' ) 
+    {    while( fic.peek() != '"' || last == '\\' ) 
+        {    last = fic.get();
         }
 
         fic.get();
 
-    } else if( last == '\'' ) {
-        while( fic.peek() != '\'' || last == '\\' ) {
-            last = fic.get();
-        }
+    }
+    else if( last == '\'' ) 
+    {    while( fic.peek() != '\'' || last == '\\' ) 
+         {    last = fic.get();
+         }
 
         fic.get();
-
     }
 
 }/*}}}*/

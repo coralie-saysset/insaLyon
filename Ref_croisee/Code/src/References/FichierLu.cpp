@@ -1,11 +1,14 @@
 /*************************************************************************
                            FichierLu  -  description
                              -------------------
-    d�but                : 18 nov. 2011
+    debut                : 18 nov. 2011
     copyright            : (C) 2011 par csaysset
 *************************************************************************/
 
+//------------------------------------------------------------------------Include Systeme
 #include <fstream>
+
+//------------------------------------------------------------------------Include Personnel
 #include "FichierLu.hpp"
 
 
@@ -24,8 +27,8 @@ FichierLu::FichierLu ( const string& nomFichier ):
     _nbLignesLues( 1 )
 {/*{{{*/
 
-    if( !nomFichier.empty() ) {
-        open( nomFichier.c_str() );
+    if ( !nomFichier.empty() ) 
+    {    open( nomFichier.c_str() );
     }
 }/*}}}*/
 
@@ -59,8 +62,8 @@ int FichierLu::get()
 
     int charactere = ifstream::get();
 
-    if ( charactere == '\n' ) {
-        _nbLignesLues++;
+    if ( charactere == '\n' ) 
+    {	_nbLignesLues++;
     }
 
     return charactere;
@@ -71,15 +74,13 @@ int FichierLu::get()
 //----------------------------------------------------------------------
 // METHODES PUBLIQUES
 //----------------------------------------------------------------------
-int FichierLu::getNbLignesLues() const
+int FichierLu::GetNbLignesLues() const
 {/*{{{*/
-
     return _nbLignesLues;
 }/*}}}*/
 
-string FichierLu::getNomFichier() const
+string FichierLu::GetNomFichier() const
 {/*{{{*/
-
     return _nomFichier;
 }/*}}}*/
 

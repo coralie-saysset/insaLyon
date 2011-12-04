@@ -16,10 +16,12 @@
 #ifndef Referenceur_HPP
 #define Referenceur_HPP
 
-
+//------------------------------------------------------------------------Include Systeme
 #include    <string>
 #include    <vector>
 #include    <tr1/unordered_set>
+
+//------------------------------------------------------------------------Include Personnels
 #include    "FichierLu.hpp"
 #include    "References.hpp"
 
@@ -46,29 +48,29 @@ class Referenceur {
 //----------------------------------------------------------------------
 
         // ===  FUNCTION  ======================================================================
-        //         Name:  chargerMotsClefs
-        //  Description:  Permet de charger des mots clefs à partir d'un fichier
+        //         Name:  ChargerMotsClefs
+        //  Description:  Permet de charger des mots clefs à partir d'un fichier "nomFichier" 
         // =====================================================================================
-        void chargerMotsClefs( const std::string& nomFichier );
+        void ChargerMotsClefs( const std::string& nomFichier );
         
         // ===  FUNCTION  ======================================================================
-        //         Name:  chargerMotsClefsCpp
+        //         Name:  ChargerMotsClefsCpp
         //  Description:  Permet de définir les mots clefs C++ standard comme des mots clefs
         // =====================================================================================
-        void chargerMotsClefsCpp();
+        void ChargerMotsClefsCpp();
         
         // ===  FUNCTION  ======================================================================
-        //         Name:  setModeInverse
+        //         Name:  SetModeInverse
         //  Description:  Permet de passer le parseur en mode inverse
         // =====================================================================================
-        inline void setModeInverse( const bool mode );
+        inline void SetModeInverse( const bool mode );
 
         // ===  FUNCTION  ======================================================================
-        //         Name:  referencer
+        //         Name:  Referencer
         //  Description:  Permet de chercher les mots clefs une collection de fichier
         //                Les résultats sont stockés dans refs
         // =====================================================================================
-        void referencer( const std::vector<std::string>& fic, References& refs );
+        void Referencer( const std::vector<std::string>& fic, References& refs );
 
     protected:
         enum Mode { Normal, Inverse };          // Les différents mode du parseur
@@ -92,13 +94,13 @@ class Referenceur {
 
         // ===  FUNCTION  ======================================================================
         //         Name:  estInserable
-        //  Description:  retourne vrai si l'identificateur est un mot clef
+        //  Description:  retourne vrai si l'identificateur passé en parametre est un mot clef
         // =====================================================================================
         inline bool estInserable( const std::string& mot ) const;
 
         // ===  FUNCTION  ======================================================================
         //         Name:  isSeparateur
-        //  Description:  Retourne vrai si le caractère est un séparateur
+        //  Description:  Retourne vrai si le caractère c est un séparateur
         // =====================================================================================
         bool isSeparateur( const char c ) const;
 

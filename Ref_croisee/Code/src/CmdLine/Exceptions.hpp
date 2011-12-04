@@ -13,6 +13,7 @@
 #ifndef CmdLineExceptions_HPP
 #define CmdLineExceptions_HPP
 
+//------------------------------------------------------------------------Include personnel
 #include	<exception>
 
 /*-----------------------------------------------------------------------------

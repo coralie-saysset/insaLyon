@@ -22,11 +22,11 @@ int main( int argc, char** argv )
     CmdLine::Arguments args;
     {
         CmdLine::Parser parser( "Permet de référencer des mots clefs à travers des fichiers" );
-        parser.addOption( "exclude,e",  "Inverse le fonctionnement du programme" );
-        parser.addOption( "keyword,k",  "Spécifie la liste des mots clefs à utiliser", true );
+        parser.AddOption( "exclude,e",  "Inverse le fonctionnement du programme" );
+        parser.AddOption( "keyword,k",  "Spécifie la liste des mots clefs à utiliser", true );
 
         try {
-            parser.parse( argc, argv, args );
+            parser.Parse( argc, argv, args );
 
         } catch( exception& e ) {
             cout << "Une erreur c'est produit durant la récupération de la ligne de commande : " << endl;
@@ -38,7 +38,7 @@ int main( int argc, char** argv )
     //----------------------------------------------------------------------
     vector<string> ficsReferencer;
 
-    if( args.count( "__args__" ) ) {
+    if( args.Count( "__args__" ) ) {
         ficsReferencer = args.get<vector<string> >( "__args__" );
 
     } else {
@@ -51,14 +51,14 @@ int main( int argc, char** argv )
     //----------------------------------------------------------------------
     string fichierMotClef;
 
-    if( args.count( "keyword" ) ) {
-        fichierMotClef = args.get<string>( "keyword" );
+    if( args.Count( "keyword" ) ) {
+        fichierMotClef = args.Get<string>( "keyword" );
     }
 
     //----------------------------------------------------------------------
     //  L'etat dans lequel mettre le programme
     //----------------------------------------------------------------------
-    bool mode( args.count( "exclude" ) );
+    bool mode( args.Count( "exclude" ) );
 
 
     References refs;
@@ -66,8 +66,8 @@ int main( int argc, char** argv )
     //  On effectue la référence croisée
     //----------------------------------------------------------------------
     try {
-        Referenceur referenceur( fichierMotClef, mode );
-        referenceur.referencer( ficsReferencer, refs );
+        referenceur Referenceur( fichierMotClef, mode );
+        referenceur.Referencer( ficsReferencer, refs );
 
     } catch( exception& e ) {
         cerr << "Une erreur est survenue durant la référance croisée : " << endl;
