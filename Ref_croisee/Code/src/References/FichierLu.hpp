@@ -8,6 +8,7 @@
 #ifndef FICHIERLU_HPP_
 #define FICHIERLU_HPP_
 
+//------------------------------------------------------------------------Include Systeme
 #include    <fstream>
 #include    <string>
 
@@ -68,16 +69,16 @@ class FichierLu : private std::ifstream {
 //----------------------------------------------------------------------
 
         // ===  FUNCTION  ======================================================================
-        //         Name:  getNbLignesLues
+        //         Name:  GetNbLignesLues
         //  Description:  Retourne le nombre de lignes déjà lues dans le fichier
         // =====================================================================================
-        int getNbLignesLues() const;
+        int GetNbLignesLues() const;
 
         // ===  FUNCTION  ======================================================================
-        //         Name:  getNbLignesLues
+        //         Name:  GetNomFichier
         //  Description:  Retourne le nom du fichier passé lors de la construction de l'objet 
         // =====================================================================================
-        std::string getNomFichier() const;
+        std::string GetNomFichier() const;
 
 
     protected:

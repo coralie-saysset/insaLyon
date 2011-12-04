@@ -13,9 +13,12 @@
 #ifndef CmdLineStringTo_HPP
 #define CmdLineStringTo_HPP
 
+//------------------------------------------------------------------------Include Systeme
 #include	<string>
 #include	<vector>
 #include	<sstream>
+
+//------------------------------------------------------------------------Include Personnel
 #include	"Exceptions.hpp"
 
 
@@ -27,8 +30,7 @@ using namespace CmdLine;
 
     template<typename T>
         T stringTo( const std::string& arg )
-    {/*{{{*/
-       
+    {/*{{{*/       
          STATIC_ASSERT( sizeof(T) != sizeof(T),  Impossible_de_convertir_l_argument_vers_ce_type );
          return T();
     }/*}}}*/
@@ -45,7 +47,8 @@ using namespace CmdLine;
          s >> value;
 
          if ( s.fail() )
-              { throw BadConvertion(); }
+         {	throw BadConvertion();
+	 }
 
          return value;
     }/*}}}*/
@@ -59,7 +62,8 @@ using namespace CmdLine;
          s >> value;
 
          if ( s.fail() )
-              { throw BadConvertion(); }
+         {	throw BadConvertion();
+	 }
 
          return value;
     }/*}}}*/
@@ -73,7 +77,8 @@ using namespace CmdLine;
          s >> value;
 
          if ( s.fail() )
-              { throw BadConvertion(); }
+         {	throw BadConvertion();
+	 }
 
          return value;
     }/*}}}*/
@@ -87,7 +92,8 @@ using namespace CmdLine;
          s >> value;
 
          if ( s.fail() )
-              { throw BadConvertion(); }
+         {	throw BadConvertion();
+	 }
 
          return ( value );
     }/*}}}*/
@@ -112,17 +118,17 @@ using namespace CmdLine;
 
          int found = arg.find_first_of( separator );
 
-         while( found != ( ( int ) std::string::npos ) ) {
-              if( found > 0 ) {
-                   conteneur.push_back( arg.substr( 0, found ) );
-              }
+         while ( found != ( ( int ) std::string::npos ) ) 
+         {	if( found > 0 ) 
+                {	conteneur.push_back( arg.substr( 0, found ) );
+                }
 
               arg = arg.substr( found + 1 );
               found = arg.find_first_of( separator );
          }
 
-         if ( arg.length() > 0 ) {
-              conteneur.push_back( arg );
+         if ( arg.length() > 0 ) 
+         {     conteneur.push_back( arg );
          }
 
          return conteneur;
@@ -140,29 +146,32 @@ using namespace CmdLine;
          int found = cpArg.find_first_of( separator );
          int val = 0;
 
-         while( found != ( ( int ) std::string::npos ) ) {
-
-              if( found > 0 ) {
-                   buffer << cpArg.substr( 0, found );
-                   buffer >> val;
+         while( found != ( ( int ) std::string::npos ) ) 
+	 {	if( found > 0 ) 
+                {	buffer << cpArg.substr( 0, found );
+                   	buffer >> val;
                    
-                   if ( buffer.fail() )
-                   { throw BadConvertion(); }
+                   	if ( buffer.fail() )
+                   	{	throw BadConvertion();
+			}
 
-                   conteneur.push_back( val );
-              }
+                   	conteneur.push_back( val );
+              	}
 
-              cpArg = cpArg.substr( found + 1 );
-              found = cpArg.find_first_of( separator );
-              buffer.clear();
+              	cpArg = cpArg.substr( found + 1 );
+              	found = cpArg.find_first_of( separator );
+           	buffer.clear();
          }
 
-         if ( arg.length() > 0 ) {
-           buffer << cpArg.substr( 0, found );
-           buffer >> val;
-           if ( buffer.fail() )
-           { throw BadConvertion(); }
-           conteneur.push_back( val );
+         if ( arg.length() > 0 ) 
+         {	buffer << cpArg.substr( 0, found );
+           	buffer >> val;
+           	
+		if ( buffer.fail() )
+           	{	throw BadConvertion();
+		}
+           	
+		conteneur.push_back( val );
          }
 
          return conteneur;
@@ -180,34 +189,35 @@ using namespace CmdLine;
          int found = cpArg.find_first_of( separator );
          double val = 0;
 
-         while( found != ( ( int ) std::string::npos ) ) {
-
-              if( found > 0 ) {
-                   buffer << cpArg.substr( 0, found );
-                   buffer >> val;
+         while ( found != ( ( int ) std::string::npos ) )
+	 {	if ( found > 0 )
+                {	buffer << cpArg.substr( 0, found );
+                 	buffer >> val;
                    
-                   if ( buffer.fail() )
-                   { throw BadConvertion(); }
+                   	if ( buffer.fail() )
+                   	{	throw BadConvertion(); 
+			}
 
                    conteneur.push_back( val );
-              }
+    	         }
 
-              cpArg = cpArg.substr( found + 1 );
-              found = cpArg.find_first_of( separator );
-              buffer.clear();
+              	 cpArg = cpArg.substr( found + 1 );
+              	 found = cpArg.find_first_of( separator );
+              	 buffer.clear();
          }
 
-         if ( arg.length() > 0 ) {
-           buffer << cpArg.substr( 0, found );
-           buffer >> val;
+         if ( arg.length() > 0 ) 
+         {	buffer << cpArg.substr( 0, found );
+           	buffer >> val;
 
-           if ( buffer.fail() )
-           { throw BadConvertion(); }
+         	if ( buffer.fail() )
+           	{	throw BadConvertion();
+		}
            
-           conteneur.push_back( val );
-         }
+           	conteneur.push_back( val );
+          }
 
-         return conteneur;
+          return conteneur;
     }/*}}}*/
     
     template<>
@@ -222,31 +232,32 @@ using namespace CmdLine;
          int found = cpArg.find_first_of( separator );
          double val = 0;
 
-         while( found != ( ( int ) std::string::npos ) ) {
-
-              if( found > 0 ) {
-                   buffer << cpArg.substr( 0, found );
-                   buffer >> val;
+         while ( found != ( ( int ) std::string::npos ) ) 
+	 {	if ( found > 0 ) 
+                {	buffer << cpArg.substr( 0, found );
+                   	buffer >> val;
                    
-                   if ( buffer.fail() )
-                   { throw BadConvertion(); }
+                   	if ( buffer.fail() )
+                   	{	throw BadConvertion();
+			}
 
-                   conteneur.push_back( val );
-              }
+                   	conteneur.push_back( val );
+              	}
 
-              cpArg = cpArg.substr( found + 1 );
-              found = cpArg.find_first_of( separator );
-              buffer.clear();
+              	cpArg = cpArg.substr( found + 1 );
+              	found = cpArg.find_first_of( separator );
+              	buffer.clear();
          }
 
-         if ( arg.length() > 0 ) {
-           buffer << cpArg.substr( 0, found );
-           buffer >> val;
+         if ( arg.length() > 0 )
+         {	buffer << cpArg.substr( 0, found );
+           	buffer >> val;
 
-           if ( buffer.fail() )
-           { throw BadConvertion(); }
+           	if ( buffer.fail() )
+           	{	throw BadConvertion();
+		}
            
-           conteneur.push_back( val );
+           	conteneur.push_back( val );
          }
 
          return conteneur;

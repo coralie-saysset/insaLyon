@@ -10,11 +10,15 @@
 //
 // =====================================================================================
 
-#include    "Parser.hpp"
-#include    "Arguments.hpp"
+
+//------------------------------------------------------------------------Include Systeme
 #include    <string>
 #include    <map>
 #include    <utility>
+
+//------------------------------------------------------------------------Include Personnel
+#include    "Parser.hpp"
+#include    "Arguments.hpp"
 
 namespace CmdLine {
 
@@ -32,12 +36,12 @@ Parser::Parser( string description ):
 /*-----------------------------------------------------------------------------
  *  Méthode Publiques
  *-----------------------------------------------------------------------------*/
-void Parser::addDescription( string description )
+void Parser::AddDescription( string description )
 {/*{{{*/
      _description = description;
 }/*}}}*/
 
-void Parser::addOption( string optionName, string description, bool hasArgument )
+void Parser::AddOption( string optionName, string description, bool hasArgument )
 {/*{{{*/
 
      string lOption, sOption;
@@ -50,8 +54,8 @@ void Parser::addOption( string optionName, string description, bool hasArgument 
      lItem* lIt = &( *( _lOptions.insert( make_pair( lOption, ( optValue* )0 ) ).first ) );
      sItem* sIt = 0;
 
-     if( !sOption.empty() ) {
-          sIt = &( *( _sOptions.insert( make_pair( sOption.at( 0 ), ( optValue* )0 ) ).first ) );
+     if ( !sOption.empty() ) 
+     {	   sIt = &( *( _sOptions.insert( make_pair( sOption.at( 0 ), ( optValue* )0 ) ).first ) );
      }
 
      optValue value = { description, hasArgument, lIt, sIt };
@@ -59,12 +63,12 @@ void Parser::addOption( string optionName, string description, bool hasArgument 
 
      lIt->second = &( _options.back() );
 
-     if ( sIt ) {
-          sIt->second = lIt->second;
+     if ( sIt ) 
+     {     sIt->second = lIt->second;
      }
 }/*}}}*/
 
-void Parser::display( ostream& flux ) const
+void Parser::Display( ostream& flux ) const
 {/*{{{*/
 
      string option;
@@ -72,14 +76,13 @@ void Parser::display( ostream& flux ) const
 
      flux << "Liste des arguments : " << endl;
 
-     for( list<optValue>::const_iterator it = _options.begin(); it != _options.end(); it++ ) {
+     for ( list<optValue>::const_iterator it = _options.begin(); it != _options.end(); it++ ) 
+     {    flux << "\t";
 
-          flux << "\t";
-
-          if( it->sOption ) {
-               option += "-";
-               option += it->sOption->first;
-               option += ", ";
+          if( it->sOption ) 
+          {     option += "-";
+                option += it->sOption->first;
+                option += ", ";
           }
 
           option += "--";
@@ -88,11 +91,12 @@ void Parser::display( ostream& flux ) const
 
           flux.width( 5 );
 
-          if ( it->hasArgument ) {
-               flux << left << "arg";
+          if ( it->hasArgument ) 
+          {     flux << left << "arg";
 
-          } else {
-               flux << "";
+          }
+	  else 
+          {     flux << "";
           }
 
           flux << it->description << endl;
@@ -102,13 +106,13 @@ void Parser::display( ostream& flux ) const
 
 }/*}}}*/
 
-void Parser::parse( int argc, char** argv, Arguments& args )
+void Parser::Parse( int argc, char** argv, Arguments& args )
 {/*{{{*/
 
      string cmdLine;
 
-     for ( char** it = argv + 1; it < argv + argc; it++ ) {
-          cmdLine += *it;
+     for ( char** it = argv + 1; it < argv + argc; it++ ) 
+     {	  cmdLine += *it;
           cmdLine += " ";
      }
 
@@ -116,14 +120,13 @@ void Parser::parse( int argc, char** argv, Arguments& args )
 
      string::iterator it = cmdLine.begin();
 
-     while( it != cmdLine.end() ) {
-
-          changeState( it );
+     while ( it != cmdLine.end() ) 
+     {    changeState( it );
           processInput( it, args );
      }
 
-     if( !_freeArgs.empty() ) {
-         args._arguments.insert( make_pair( "__args__", _freeArgs ) );
+     if( !_freeArgs.empty() ) 
+     {    args._arguments.insert( make_pair( "__args__", _freeArgs ) );
      }
      //    for( map<string, string>::iterator it = args._arguments.begin();
      //         it != args._arguments.end(); it++ ) {
@@ -140,17 +143,17 @@ void Parser::parse( int argc, char** argv, Arguments& args )
 void Parser::changeState( string::iterator& it )
 {/*{{{*/
 
-     if( *it == '-' ) {
-          _state = ( _state == ShortCondition ) ? LongCondition : ShortCondition;
-
-     } else if( *it == ' ' ) {
-          _state = Free;
-
-     } else if( _state == ShortCondition ) {
-          _state = ShortCondition;
-
-     } else {
-          _state = FreeArgument;
+     if ( *it == '-' ) 
+     {     _state = ( _state == ShortCondition ) ? LongCondition : ShortCondition;
+     }
+     else if ( *it == ' ' ) 
+     {     _state = Free;
+     }
+     else if ( _state == ShortCondition )
+     {     _state = ShortCondition;
+     }
+     else
+     {     _state = FreeArgument;
      }
 
 }/*}}}*/
@@ -159,102 +162,104 @@ void Parser::processInput( string::iterator& it, Arguments& args )
 {/*{{{*/
 
 
-     if( _state == Free ) {
-          it++;
+     if ( _state == Free ) 
+     {	it++;
+     }
+     else if ( _state == FreeArgument )
 
-     } else if( _state == FreeArgument ) {
+     {	while ( *it != ' ' ) 
+        {	_freeArgs += *it;
+               	it++;
+        }
 
-          while( *it != ' ' ) {
-               _freeArgs += *it;
+        _freeArgs += ',';
+
+     } 
+     else if ( _state == LongCondition ) 
+     {	string key;
+        it++;
+
+        while ( *it != '=' && *it != ' ' ) 
+        {      key += *it;
                it++;
-          }
+         }
 
-          _freeArgs += ',';
+         if ( !_lOptions.Count( key ) ) 
+         (      throw UnknownOption( key );
+         }
 
-     } else if ( _state == LongCondition ) {
-          string key;
-          it++;
+         lItem& item = *( _lOptions.find( key ) );
 
-          while( *it != '=' && *it != ' ' ) {
-               key += *it;
-               it++;
-          }
+         if ( ( item.second->hasArgument && *it == ' ' )
+              || ( !item.second->hasArgument && *it == '=' ) ) 
+         {     throw ArgumentBadFormatted();
+         }
 
-          if( !_lOptions.count( key ) ) {
-               throw UnknownOption( key );
-          }
+         string value;
 
-          lItem& item = *( _lOptions.find( key ) );
+         if ( !item.second->hasArgument ) 
+         {      value = "42";
 
-          if( ( item.second->hasArgument && *it == ' ' )
-              || ( !item.second->hasArgument && *it == '=' ) ) {
-               throw ArgumentBadFormatted();
-          }
+         }
+	 else 
+         {      it++;
 
-          string value;
-
-          if( !item.second->hasArgument ) {
-               value = "42";
-
-          } else {
-               it++;
-
-               while( *it != ' ' ) {
-                    value += *it;
+               while( *it != ' ' )
+               {     value += *it;
                     it++;
                }
           }
 
-          if( value.empty() ) {
-               throw ArgumentBadFormatted();
+          if( value.empty() ) 
+          {     throw ArgumentBadFormatted();
           }
 
           args._arguments.insert( make_pair( key, value ) );
 
-     } else if ( _state == ShortCondition ) {
+     }
+     else if ( _state == ShortCondition ) 
 
-          if ( *it == '-' ) {
-               it++;
+     {     if ( *it == '-' ) 
+           {    it++;
+	   }
+     
+     	   else 
+     	   {	string key;
+           	key += *it;
 
-          } else {
+           	if ( !_sOptions.Count( *it ) ) 
+           	{	throw UnknownOption( key );
+           	}
 
-               string key;
-               key += *it;
+           	sItem& item = *( _sOptions.find( *it ) );
+           	key = item.second->lOption->first;
+	
+           	it++;
+	
+           	if ( !item.second->hasArgument ) 
+           	{	args._arguments.insert( make_pair( key, "42" ) );
+           	}
+	   	else
+	   	{	if ( *it != ' ' ) 
+                	{	throw ArgumentBadFormatted();
+                	}
+	
+                	++it;
+                	string value;
+	
+                	while( *it != ' ' ) 
+                	{	value += *it;
+                	        it++;
+                	}
+	
+                	if( value.empty() ) 
+                	{	throw  ArgumentBadFormatted();
+                	}
+	
+                	args._arguments.insert( make_pair( key, value ) );
+     	    	}
 
-               if ( !_sOptions.count( *it ) ) {
-                    throw UnknownOption( key );
-               }
-
-               sItem& item = *( _sOptions.find( *it ) );
-               key = item.second->lOption->first;
-
-               it++;
-
-               if ( !item.second->hasArgument ) {
-                    args._arguments.insert( make_pair( key, "42" ) );
-
-               } else {
-
-                    if ( *it != ' ' ) {
-                         throw ArgumentBadFormatted();
-                    }
-
-                    ++it;
-                    string value;
-
-                    while( *it != ' ' ) {
-                         value += *it;
-                         it++;
-                    }
-
-                    if( value.empty() ) {
-                         throw  ArgumentBadFormatted();
-                    }
-
-                    args._arguments.insert( make_pair( key, value ) );
-               }
-
-          }
+     	}
      }
 
 
@@ -268,7 +273,7 @@ void Parser::processInput( string::iterator& it, Arguments& args )
 ostream& operator<<( ostream& flux, const Parser& parser )
 {/*{{{*/
 
-     parser.display( flux );
+     parser.Display( flux );
 
      return flux;
 }/*}}}*/

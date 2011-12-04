@@ -14,7 +14,7 @@
 #ifndef References_HPP
 #define References_HPP
 
-
+//------------------------------------------------------------------------Include Systeme
 #include    <map>
 #include    <list>
 #include    <tr1/unordered_map>
@@ -36,16 +36,17 @@ class References {
 //----------------------------------------------------------------------
 
         // ===  FUNCTION  ======================================================================
-        //         Name:  add
-        //  Description:  Permet d'ajouter une reference croisée au conteneur
+        //         Name:  Add
+        //  Description:  Permet d'ajouter un motClef passé en parametre rencontré dans le fichier
+	//		  nomFichier et à la ligne au conteneur
         // =====================================================================================
-        void add( const std::string& motClef, const std::string& nomFichier, int ligne );
+        void Add( const std::string& motClef, const std::string& nomFichier, int ligne );
 
         // ===  FUNCTION  ======================================================================
-        //         Name:  display
+        //         Name:  Display
         //  Description:  Permet d'afficher toutes les références dans le flux fournit en entrée
         // =====================================================================================
-        void display( std::ostream& flux ) const;
+        void Display( std::ostream& flux ) const;
 
 
     protected:
@@ -57,6 +58,10 @@ class References {
         std::tr1::unordered_map<std::string, std::map<std::string, std::list<int> > > _references;
 
 };
+
+//----------------------------------------------------------------------
+//  SURCHARGES OPERATEURS
+//----------------------------------------------------------------------
 
 std::ostream& operator<<( std::ostream& flux,  const References& ref );
 

@@ -14,6 +14,7 @@
 #ifndef CmdLineParser_HPP
 #define CmdLineParser_HPP
 
+//------------------------------------------------------------------------Include Systeme
 #include    <iostream>
 #include    <string>
 #include    <map>
@@ -43,31 +44,31 @@ class Parser {
  *-----------------------------------------------------------------------------*/
 
           /* ===  FUNCTION  ======================================================================
-           *         Name:  addDescription
+           *         Name:  AddDescription
            *  Description:  Ajoute une description au programme
            * =====================================================================================*/
-          void addDescription( std::string );
+          void AddDescription( std::string );
 
           /* ===  FUNCTION  ======================================================================
-           *         Name:  addOption
+           *         Name:  AddOption
            *  Description:  Ajoute une option que doit gérer le programme
            * =====================================================================================*/
-          void addOption( std::string optionName, 
+          void AddOption( std::string optionName, 
 			  std::string description, 
 			  bool hasArgument = false );
           
           /* ===  FUNCTION  ======================================================================
-           *         Name:  parse
+           *         Name:  Parse
            *  Description:  Extrait et stocke les informations de la ligne de commande
            * =====================================================================================*/
-          void parse( int argc, char** argv, Arguments& args );
+          void Parse( int argc, char** argv, Arguments& args );
 
           /* ===  FUNCTION  ======================================================================
-           *         Name:  display
+           *         Name:  Display
            *  Description:  Affiche la description ainsi que les arguments accepté par le programme
            *                dans le flux spécifié
            * =====================================================================================*/
-          void display( std::ostream& flux ) const;
+          void Display( std::ostream& flux ) const;
 
 
      private:
@@ -109,7 +110,7 @@ class Parser {
           void processInput( std::string::iterator& it, Arguments& args );
 
           /* ===  FUNCTION  ======================================================================
-           *         Name:  ChangeState
+           *         Name:  changeState
            *  Description:  Détermine l'état de l'objet
            * =====================================================================================*/
           void changeState( std::string::iterator& it );

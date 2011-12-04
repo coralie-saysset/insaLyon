@@ -14,10 +14,12 @@
 #ifndef CmdLineArgument_HPP
 #define CmdLineArgument_HPP
 
+//------------------------------------------------------------------------Include Systeme
 #include    <string>
 #include    <map>
 
-#include	"Exceptions.hpp"
+//------------------------------------------------------------------------Include Personnel
+#include    "Exceptions.hpp"
 #include    "StringTo.hpp"
 
 namespace CmdLine {
@@ -32,20 +34,20 @@ class Arguments {
 
      public:
          /* ===  FUNCTION  ======================================================================
-          *         Name:  count
+          *         Name:  Count
           *  Description:  Permet de savoir si une option est présente
           *                Il faut donner le nom long de l'option
           * =====================================================================================*/
-          bool count( std::string arg ) const {
+          bool Count( std::string arg ) const {
                return _arguments.count( arg );
           }
 
           /* ===  FUNCTION  ======================================================================
-           *         Name:  get
+           *         Name:  Get
            *  Description:  Permet de récupérer une option 
            * =====================================================================================*/
           template<typename T>
-          T get( const char* arg ) {
+          T Get( const char* arg ) {
 
                if ( !_arguments.count( arg ) )
                     {   throw InvalidKey(); }
@@ -54,11 +56,11 @@ class Arguments {
           }
 
           /* ===  FUNCTION  ======================================================================
-           *         Name:  get
+           *         Name:  Get
            *  Description:  Permet de récupérer une option 
            * =====================================================================================*/
           template<typename T>
-          T get( std::string& arg ) {
+          T Get( std::string& arg ) {
 
                if ( !_arguments.count( arg ) )
                     {   throw InvalidKey(); }
