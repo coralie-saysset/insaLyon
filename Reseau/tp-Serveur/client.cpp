@@ -26,10 +26,10 @@ void Client::requeteRecu()
 
 {
         requeteClient.append(sockControle->readAll());
-            qDebug()<< requeteClient.toHex();
+
         if ( requeteClient.endsWith("\r\n\r\n") )
         {
-            qDebug()<< requeteClient;
+
             emit requeteComplete();
         }
 

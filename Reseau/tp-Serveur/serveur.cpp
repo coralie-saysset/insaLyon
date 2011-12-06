@@ -8,6 +8,7 @@
 Serveur::Serveur():
     QTcpServer(), fichierPath("startup.txt")
 {
+
     chargerCatalogue();
     connect(this, SIGNAL(newConnection()),
             this, SLOT(connexionAuServeur()) );
@@ -25,7 +26,7 @@ void Serveur::connexionAuServeur()
        Client *client = new Client(sock, catalogue);
        clientsConnectes << client;
 
-        qDebug() << "Nouvelle connection entrante !";
+    //    qDebug() << "Nouvelle connection entrante !";
 }
 
 void Serveur::chargerCatalogue()
@@ -82,4 +83,3 @@ void Serveur::chargerCatalogue()
 
 
 }
-
