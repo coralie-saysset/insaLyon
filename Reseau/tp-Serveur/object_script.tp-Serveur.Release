@@ -1,0 +1,13 @@
+INPUT(
+./release/main.o
+./release/mainwindow.o
+./release/serveur.o
+./release/client.o
+./release/demandetcppull.o
+./release/serveurtcppull.o
+./release/moc_mainwindow.o
+./release/moc_serveur.o
+./release/moc_client.o
+./release/moc_demandetcppull.o
+./release/moc_serveurtcppull.o
+);
