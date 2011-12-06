@@ -13,7 +13,7 @@ public:
 signals:
     void requeteComplete();
 
-private:
+protected:
     QByteArray requeteClient;
     QTcpSocket * sockControle;
     const QByteArray& catalogue;

@@ -19,7 +19,6 @@ protected:
     QList<Client *> clientsConnectes;
     QByteArray catalogue;
     QString fichierPath;
-    quint16 tailleMessage;
     void chargerCatalogue();
 
 

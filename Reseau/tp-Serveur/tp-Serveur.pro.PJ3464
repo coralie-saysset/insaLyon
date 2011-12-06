@@ -14,18 +14,12 @@ TEMPLATE = app
 SOURCES += main.cpp\
         mainwindow.cpp \
     serveur.cpp \
-    client.cpp \
-    demandetcppull.cpp \
-    serveurtcppull.cpp
+    client.cpp
 
 HEADERS  += mainwindow.h \
     serveur.h \
     client.h \
-    demandetcppull.h \
-    serveurtcppull.h
+    demande_tcp_pull.h
 
 FORMS    += mainwindow.ui
-
-
-
 
