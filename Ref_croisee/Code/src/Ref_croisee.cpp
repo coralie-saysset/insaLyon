@@ -21,7 +21,8 @@ int main( int argc, char** argv )
 
     CmdLine::Arguments args;
     {
-        CmdLine::Parser parser( "Permet de référencer des mots clefs à travers des fichiers" );
+        CmdLine::Parser parser( "Permet de référencer des mots clefs à travers des fichiers\n\t" + string(argv[0]) + " [options] fichier+" );
+        parser.AddOption( "help,h",  "Affiche ce message" );
         parser.AddOption( "exclude,e",  "Inverse le fonctionnement du programme" );
         parser.AddOption( "keyword,k",  "Spécifie la liste des mots clefs à utiliser", true );
 
@@ -29,22 +30,23 @@ int main( int argc, char** argv )
             parser.Parse( argc, argv, args );
 
         } catch( exception& e ) {
-            cout << "Une erreur c'est produit durant la récupération de la ligne de commande : " << endl;
             cout << e.what() << endl;
+            cout << parser << endl;
+            return 1;
+        }
+
+        if( !args.Count( "__args__" ) || args.Count( "help" ) ) {
+
+            cout << parser << endl;
+            return 1;
         }
     }
+
     //----------------------------------------------------------------------
     //  On charge les fichiers à référencer
     //----------------------------------------------------------------------
     vector<string> ficsReferencer;
-
-    if( args.Count( "__args__" ) ) {
-        ficsReferencer = args.get<vector<string> >( "__args__" );
-
-    } else {
-        cerr << "Aucun fichier à reférencer !" << endl;
-        return 1;
-    }
+    ficsReferencer = args.Get<vector<string> >( "__args__" );
 
     //----------------------------------------------------------------------
     //  On charge les mots clefs si ils sont fournis
@@ -61,12 +63,12 @@ int main( int argc, char** argv )
     bool mode( args.Count( "exclude" ) );
 
 
-    References refs;
     //----------------------------------------------------------------------
     //  On effectue la référence croisée
     //----------------------------------------------------------------------
+    References refs;
     try {
-        referenceur Referenceur( fichierMotClef, mode );
+        Referenceur referenceur( fichierMotClef, mode );
         referenceur.Referencer( ficsReferencer, refs );
 
     } catch( exception& e ) {

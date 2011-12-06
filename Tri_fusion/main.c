@@ -14,63 +14,69 @@
 
 #include	<stdio.h>
 #include	<stdlib.h>
+#include	<time.h>
 #include	"triFusion.h"
 
-int main( ){
+
+liste* initialiser( double r,  liste* l );
+void afficher( liste* l );
+void supprimer_liste( liste* l );
+
+int main() {
 
     
-    liste* l1;
-    liste* last;
+    int nb_maillon;
+    printf("Veuillez saisir le nombre d'élément de la liste : ");
+    scanf("%d", &nb_maillon );
 
-    l1 = (liste*) malloc( sizeof(liste) );
-    l1->valeur = 51;
-    last = l1;
+
+    liste* l = initialiser( nb_maillon, NULL );
+    printf("Allocation terminé\n");
 
     
-
-    //----------------------------------------------------------------------
-    //  On remplit la liste
-    //----------------------------------------------------------------------
-    unsigned int i;
-    for( i = 50000; i > 0; i-- ) {
-
-        last->suivant = (liste*) malloc( sizeof(liste) );
-        last = last->suivant;
-        last->valeur = i;
-    }
-    last->suivant = 0;
+    srand(time(NULL));
+    clock_t depart = clock();
+    l = triFusion( l );
+    double temps = (double) ( clock() - depart ) / CLOCKS_PER_SEC;
+    printf("%f\n", temps);
 
 
-
-    //----------------------------------------------------------------------
-    //  On trie
-    //----------------------------------------------------------------------
-    l1 = triFusion( l1 );
-
-
-    //----------------------------------------------------------------------
-    //  On affiche la liste triée
-    //----------------------------------------------------------------------
-    last = l1;
-    while( last ) {
-
-        printf("%d ", last->valeur );
-        last = last->suivant;
-    }
+    afficher(l);
     printf("\n");
-
-
-    //----------------------------------------------------------------------
-    //  On libère la mémoire
-    //----------------------------------------------------------------------
-    last = l1;
-    while( last ) {
-
-        last = l1->suivant;
-        free( l1 );
-        l1 = last;
-    }
+    supprimer_liste(l);
 
 
     return 0;
+}
+
+
+liste *initialiser( double r,  liste *l)
+{
+    static int i = 1;
+
+    if( i > r ) return l;
+
+    liste* tmp = malloc(sizeof(liste));
+    tmp->valeur = i++;
+    tmp->suivant = l;
+
+    return initialiser( r,  tmp );
+
+}
+
+void afficher(liste *l)
+{
+   if( !l ) return;
+
+   printf("%d ", l->valeur );
+   afficher( l->suivant );
+
+}
+
+void supprimer_liste(liste *l)
+{
+    if( !l ) return;
+
+    supprimer_liste( l->suivant );
+    free(l);
 }

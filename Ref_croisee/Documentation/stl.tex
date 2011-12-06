@@ -44,7 +44,7 @@
 				      Un identifacteur commence par une lettre ou par le caractère `\_`.
 				      Les commentaires ou chaines litérales ne peuvent contenir d'identifcateurs
 				     
-      \item \textbf{Mot Clef} : Identificateurs que l'utilisateur souhaite rechercher dans un ou plusieur fichier. Par défaut il s'agit de ceux de ceux du C++
+      \item \textbf{Mot Clef} : Identificateur que l'utilisateur souhaite rechercher dans un ou plusieurs fichiers. Par défaut il s'agit de ceux du C++
 
       \item \textbf{Référence croisée} : Fait de rechercher un identificateur dans un ou plusieurs fichiers sources pour déterminer sa localisation
     \end{itemize}
@@ -59,7 +59,7 @@
     
     Dans le cas où un identifacteur apparaitrait plusieurs fois sur une même ligne, nous avons pris la décision d'afficher
     la ligne concernée autant de fois qu'il y a d'occurences. En effet, un identificateur est un mot clé significatif pour l'utilisateur.
-    Nous pouvons donc nous attendre à ce qu'il n'apparaisse que peu sur la même ligne.
+    Nous pouvons donc nous attendre à ce qu'il n'apparaisse que peu de fois sur la même ligne.
     
     Ex: Pour le code ci-dessous présent dans le fichier ``test.cpp'' et avec comme identifacteur la lettre i 
     
@@ -71,7 +71,7 @@
     i$\xrightarrow{}$test.cpp$\bullet$1$\bullet$1$\bullet$1$\downarrow$ \\
     
     Par defaut les mots clefs sont ceux utilisés par le langage C++. Il est cependant possible de spécifier
-    un fichier en argument du programme pour définir précisement quelles seront les identifcateurs recherchés par la référence
+    un fichier en argument du programme pour définir précisement quels seront les mots clefs recherchés par la référence
     croisée. Le fichier d'identifacteurs ne devra contenir qu'un seul identifacteur valide par ligne, le premier mot de la ligne sera choisi comme tel. Le programme présuposera que
     le fichier fourni en argument respecte ce formalisme.
     
@@ -91,7 +91,7 @@
 
       
       \item[] \textbf{-k fichier\_mot\_clef} : Permet de spécifier au programme une liste de mot clé à rechercher par la référence croisée.
-					       Par défaut il s'agirat des mots-clefs du langage C++ 
+					       Par défaut il s'agira des mots-clefs du langage C++ 
 
       \item[] \textbf{nomfichier} : Chemin vers un ou plusieurs fichiers où rechercher les identifacateurs
     \end{itemize}
@@ -112,7 +112,7 @@
     Nous sommes parti du principe que le programme doit produire la même sortie écran (et donc par extension les mêmes données stockées en interne)
     si il est lancé deux fois sur la même collection de fichiers et avec les mêmes arguments.
 
-    En partant de ce principe nous avons réaliser les tests de la façon suivante : 
+    En partant de ce principe nous avons réalisé les tests de la façon suivante : 
 
     \begin{enumerate}
       \item Lancer le programme sur une collection de fichier
@@ -127,7 +127,7 @@
       \item Faire le hash md5 du fichier résultat et du fichier témoin
       \item Comparer les deux hash md5
       \item Si les hashs diffèrent c'est que le programme ne possède pas les mêmes données en interne et donc le test échoue
-      \item Si les hashs sont égaux c'est que le programme possède les mêmes données et donc le test réussi
+      \item Si les hashs sont égaux c'est que le programme possède les mêmes données et donc le test est réussi
     \end{enumerate}
 
  \end{subsection}
@@ -139,19 +139,19 @@
     \begin{paragraph}{Avantages :}
       Avec cette méthode de réalisation des tests on s'abstrait de la représentation interne des données. On vérifie uniquement
       que le programme délivre correctement à l'utilisateur les informations voulues. Ainsi tout changement dans la structure de
-      données interne n'affectera pas les tests tant que le programme délivre les memes informations à l'utilisateur.
+      données interne n'affectera pas les tests tant que le programme délivre les mêmes informations à l'utilisateur.
       
       De plus la réalisation d'un test supplémentaire se fait facilement et ne prend pas beaucoup de temps par rapport à une analyse
-      compléte de la structure de données interne.
+      complète de la structure de données interne.
       
       Nous gardons une sauvegarde du flux de sortie lors d'un état fonctionnel de l'application, de ce fait, le développeur peut 
-      comparer visuellement les deux sorties pour trouver plus facilement les éléments divergeants. D'où un gain de temps lors du débuggage 
+      comparer visuellement les deux sorties pour trouver plus facilement les éléments divergeants. D'où un gain de temps lors du débuggage. 
     \end{paragraph}
 
     \begin{paragraph}{Inconvénients :}
       Avec cette méthode, le formatage des informations à l'utilisateur devient un élément critique. Tout changement dans l'affichage des résultats causera
       inevitablement l'échec de tous les tests. Toutefois, il peut être facile de créer un script bash permettant de regénérer les fichiers témoins
-      si le développeur est sur des changements qu'il a effectués.
+      si le développeur est sûr des changements qu'il a effectués.
       
       Si un fichier témoin venait à être corrompu cela entrainerait l'échec du test le mettant en jeu.
     \end{paragraph}
@@ -197,7 +197,7 @@
       lues ainsi que le nom du fichier ouvert. 
       
       Un ``Referenceur'' se sert d'un ``FichierLu'' pour lire les fichiers sources et en extraire les identifacateurs.
-      Une collection de ``References'' permet de stocker les identifacteurs qui sont des mots clefs.
+      La classe ``References'' permet de stocker les identifacteurs qui sont des mots clefs.
    \end{subsection}
    
    \newpage
@@ -220,19 +220,19 @@
 %-----------------------------------------------------------------------------------------------------------------------------------%
 \begin{section}{Algorithmes principaux}
 
-  \begin{subsection}{Parseur pour la ligne de commandes}
+  \begin{subsection}{Parseur pour la ligne de commande}
   Pour extraire les informations de la ligne de commande nous utilisons un automate avec un nombre d'états fini.
   
   \begin{paragraph}{Description des états :}
     \begin{itemize}
       \item \textbf{Free} : Lorsque l'automate rencontre quelque chose qui n'est pas un argument ou une option \\Exemple: un caractère séparateur comme un espace
       \item \textbf{ShortCondition} : Lorsque l'automate rencontre une option courte \\Exemple: -e ou -k
-      \item \textbf{LongCondition} : Lorsque l'automate rencontre une option longue \\Exemple: --exclude ou --keyword
+      \item \textbf{LongCondition} : Lorsque l'automate rencontre une option longue \\Exemple: - -exclude ou - -keyword
       \item \textbf{FreeArgument} : Lorsque l'automate rencontre un argument rataché à aucune option\\Exemple: le nom d'un fichier à analyser\\
     \end{itemize}
   \end{paragraph}
   
-  Une action est déclenché en fonction de l'état de l'automate. L'action extrait, analyse et stocke l'argument de la ligne de commande s'il est valide, sinon une exception est levé.
+  Une action est déclenché en fonction de l'état de l'automate. L'action extrait, analyse et stocke l'argument de la ligne de commande s'il est valide, sinon une exception est levée.
   \end{subsection}
 
   \begin{subsection}{Parseur pour les fichiers C++}
@@ -264,8 +264,8 @@
 
   \begin{subsection}{Structure des mots-clefs}
     \begin {paragraph}{Analyse des besoins :}
-    Les mots-clefs sont extraits d'un ou plusieurs fichiers passés en paramètres. À chaque Identificateur rencontré durant l'analyse,
-    il faut vérifier s'il a déjà été référencé auparavant et si non créer son entrée dans la structure de données. Le programme devant
+    Les mots-clefs sont extraits d'un ou plusieurs fichiers passés en paramètres. À chaque identificateur rencontré durant l'analyse,
+    il faut vérifier s'il a déjà été référencé auparavant et si non, créer son entrée dans la structure de données. Le programme devant
     tester de nombreuses fois l'égalité avec un mot clef, nous souhaitons optimiser les accès. De plus chaque mot clef référencé 
     possède une liste de fichiers où il apparait. Il faudra donc pouvoir associer des valeurs aux mots-clefs.
     \end{paragraph}
@@ -285,10 +285,10 @@
     \end{paragraph}
     
     \begin{paragraph}{Étude d'une table de hashage :}
-     Dans le cas d'une table de hash l'accès aux données est divisé par une constante C qui est le temps de calcul de la fonction de hash.
-     Nous pouvons dire que l'accès est de compléxité O(1) dans le pire des cas. En contrepartie de cette vitesse d'accès, la table de hash
-     prend plus de place en mémoire que les autres structures de données et les clefs ne sont pas triés. De plus il faut que la fonction de
-     hashage soit bien choisi pour qu'il y ait peu de collisions.
+     Dans le cas d'une table de hashage l'accès aux données est divisé par une constante C qui est le temps de calcul de la fonction de hashage.
+     Nous pouvons dire que l'accès est de compléxité O(1) dans le pire des cas. En contrepartie de cette vitesse d'accès, la table de hashage
+     prend plus de place en mémoire que les autres structures de données et les clefs ne sont pas triées. De plus il faut que la fonction de
+     hashage soit bien choisit pour qu'il y ait peu de collisions.
      
     \begin{figure}[htp]
     \centering
@@ -298,33 +298,33 @@
 
     \end{paragraph}
     \begin{paragraph}{Decision :}
-	Le programme devra fréquement vérifier si un identificateur est un mot clé, donc la structure de donnée doit en priorité favoriser l'acces.
-	Notre cahier des charges n'indiquant rien sur une eventuelle limitation de mémoire, on preferera utiliser une table de hashage car elle possede la meilleure rapidité d'accès.
+	Le programme devra fréquement vérifier si un identificateur est un mot clé, donc la structure de donnée doit en priorité favoriser l'accès.
+	Notre cahier des charges n'indiquant rien sur une eventuelle limitation de mémoire, on préfèrera utiliser une table de hashage car elle possède la meilleure rapidité d'accès.
     \end{paragraph}
 
   \end{subsection}
 
   \begin{subsection}{Structure localisant les Identificateurs}
     \begin{paragraph}{Analyse des besoins :}
-    A chaque occurence est associée une paire contenant le nom du fichier et le numéro de ligne où elle apparait, il nous faut donc une structure de données pouvant représenter
+    À chaque occurence est associée une paire contenant le nom du fichier et le numéro de ligne où elle apparait, il nous faut donc une structure de données pouvant représenter
     cette multiplicité. Si un mot clef apparait plusieurs fois sur une même ligne nous choisissons de référencer cette ligne autant de fois que le mot clef est présent.
     La compléxité en lecture n'a que peu d'importance dans notre programme car nous devons faire un parcours complet pour afficher toutes les occurences.
     
     Dans un soucis de réutilisabilité, on considère que l'utilisateur pourra en plus de voir apparaître les occurences
-    sur la console, vouloir récupérer une structure de donnée représentant ces occurences.
+    sur la console, vouloir récupérer une structure de données représentant ces occurences.
     \end{paragraph}
 
     \begin{paragraph}{Étude d'un arbre de liste :}
-    Nous pouvons utiliser un arbre de liste pour stocker les occurences des Identificateurs. Chaque noeud de l'arbre contiendrait en clef le nom d'un fichier source
+    Nous pouvons utiliser un arbre de liste pour stocker les occurences des identificateurs. Chaque noeud de l'arbre contient en clef le nom d'un fichier source
     et en valeur la liste des lignes dans lesquelles le mot clef est présent. L'avantage de cette méthode est que nous stockons juste ce qu'il faut, il n'y a pas de redondances
     d'informations. En revanche chaque insertion de référence demandera une complexité moyenne en O(log(n)).
   
     \end{paragraph}
     
-    \begin{paragraph}{Étude d'une liste de pair :}
-      Chaque occurence étant une paire d'un nom de fichier et d'un numéro de ligne, nous pourrions utiliser une liste pour stocker chacunes de ces pairs.
-      L'avantage de cette méthode est qu'étant donné que nous lisons les fichiers séquentiellements, l'insertion des pairs se fera de manière ordonnée et donc sera de complexité O(1).
-      Le désavantage c'est que nous stockons des doublons, le nom des fichiers où apparaissent les mots clefs.
+    \begin{paragraph}{Étude d'une liste de paire :}
+      Chaque occurence étant une paire d'un nom de fichier et d'un numéro de ligne, nous pourrions utiliser une liste pour stocker chacunes de ces paires.
+      L'avantage de cette méthode est qu'étant donné que nous lisons les fichiers séquentiellement, l'insertion des paires se fera de manière ordonnée et donc sera de complexité O(1).
+      Le désavantage est que nous stockons des doublons, le nom des fichiers où apparaissent les mots clefs.
   
         \begin{figure}[htp]
     \centering
@@ -335,8 +335,8 @@
       \FloatBarrier
 
     \begin{paragraph}{Décision :}
-      Dans un but de réutilisabilité nous préférons utliser un arbre de liste pour stocker les références des occurences. Nous evitons la redondance d'informations
-      et ainsi il est sera plus facile de maintenir la cohérence des données si nous souhaitons appliquer des traitements dessus.
+      Dans un but de réutilisabilité nous préférons utiliser un arbre de liste pour stocker les références des occurences. Nous évitons la redondance d'informations
+      et il sera plus facile de maintenir la cohérence des données si nous souhaitons appliquer des traitements dessus.
     \end{paragraph}
     
   \end{subsection}

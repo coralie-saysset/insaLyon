@@ -305,7 +305,7 @@ void Referenceur::lireIdentificateur( FichierLu& fic, References& refs )
     }
 
     if( estInserable( mot ) ) 
-    {    refs.Add( mot, fic.getNomFichier(), fic.getNbLignesLues() );
+    {    refs.Add( mot, fic.GetNomFichier(), fic.GetNbLignesLues() );
     }
 
 }/*}}}*/

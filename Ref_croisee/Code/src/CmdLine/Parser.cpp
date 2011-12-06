@@ -184,8 +184,8 @@ void Parser::processInput( string::iterator& it, Arguments& args )
                it++;
          }
 
-         if ( !_lOptions.Count( key ) ) 
-         (      throw UnknownOption( key );
+         if ( !_lOptions.count( key ) ) 
+         {      throw UnknownOption( key );
          }
 
          lItem& item = *( _lOptions.find( key ) );
@@ -227,7 +227,7 @@ void Parser::processInput( string::iterator& it, Arguments& args )
      	   {	string key;
            	key += *it;
 
-           	if ( !_sOptions.Count( *it ) ) 
+           	if ( !_sOptions.count( *it ) ) 
            	{	throw UnknownOption( key );
            	}
 
