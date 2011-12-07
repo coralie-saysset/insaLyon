@@ -1,7 +1,7 @@
 #include "serveurtcppull.h"
-#include <DemandeTcpPull.h>
+#include "demandetcppull.h"
 #include <QFile>
-#include <qDebug>
+
 
 ServeurTcpPull::ServeurTcpPull(): QTcpServer()
 {
