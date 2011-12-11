@@ -1,10 +1,9 @@
 #include <QtGui/QApplication>
 #include "mainwindow.h"
 #include <QtNetwork>
-#include <serveur.h>
-#include <client.h>
-#include <serveurtcppull.h>
-#include <demandetcppull.h>
+#include "serveur.h"
+#include "serveurtcppull.h"
+#include "serveurudppull.h"
 
 
 int main(int argc, char *argv[])
@@ -13,6 +12,7 @@ int main(int argc, char *argv[])
     MainWindow w;
     Serveur serveurVideo;
     ServeurTcpPull Serfichou;
+    ServeurUdpPull SerMoiABoire;
 
     w.show();
 
