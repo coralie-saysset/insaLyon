@@ -26,24 +26,24 @@ int main() {
 
     
     int nb_maillon;
-    printf("Veuillez saisir le nombre d'élément de la liste : ");
+    
+   // printf("Veuillez saisir le n ombre d'élément de la liste : ");
+    srand( time(NULL) );
     scanf("%d", &nb_maillon );
 
-
     liste* l = initialiser( nb_maillon, NULL );
-    printf("Allocation terminé\n");
 
     
     srand(time(NULL));
     clock_t depart = clock();
     l = triFusion( l );
     double temps = (double) ( clock() - depart ) / CLOCKS_PER_SEC;
-    printf("%f\n", temps);
 
 
-    afficher(l);
-    printf("\n");
+    printf("%d %f;\n", nb_maillon, temps);
+
     supprimer_liste(l);
+    l=NULL;
 
 
     return 0;
@@ -54,10 +54,10 @@ liste *initialiser( double r,  liste *l)
 {
     static int i = 1;
 
-    if( i > r ) return l;
+    if( i++ > r ) return l;
 
     liste* tmp = malloc(sizeof(liste));
-    tmp->valeur = i++;
+    tmp->valeur = rand();
     tmp->suivant = l;
 
     return initialiser( r,  tmp );
