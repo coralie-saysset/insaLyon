@@ -59,3 +59,16 @@ liste* triFusion( liste* l1 ) {
     return fusion( l1, l2 );
 
 }
+
+int testReussite(liste* l1)
+{
+while (l1 && l1->suivant)
+{
+	if (l1 > l1->suivant)
+	{
+		return 0;
+	}
+	l1=l1->suivant;
+}
+return 1;
+}
